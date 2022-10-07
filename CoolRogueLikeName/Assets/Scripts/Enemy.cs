@@ -4,7 +4,16 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    int health = 5;
+    float health;
+    float maxHealth = 5.0f;
+
+    GameObject healthBar;
+
+    void Start()
+    {
+        healthBar = transform.parent.Find("HealthBar").gameObject;
+        health = maxHealth;
+    }
 
     // Take damage on colliding with projectile
     private void OnCollisionEnter(Collision collision)
@@ -17,9 +26,14 @@ public class Enemy : MonoBehaviour
             int damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
 
             health -= damageTaken;
+
+            healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
         }
 
-        if (health <= 0)
+        if (health <= 0.0f)
+        {
             Destroy(gameObject);
+            Destroy(healthBar);
+        }
     }
 }

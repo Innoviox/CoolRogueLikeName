@@ -21,6 +21,8 @@ public class ExitScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+
+
         if (collision.transform.gameObject.name != collideWith.gameObject.name)
         {
             return;
@@ -28,12 +30,15 @@ public class ExitScript : MonoBehaviour
 
         var player = collideWith.gameObject;
 
-        // player.canMove = false;
 
-        ContactPoint contact = collision.contacts[0];
-        Quaternion rotation = new Quaternion();
-        Vector3 position = contact.point + new Vector3(-2.7f, -0.6f, 5.05f);
-        Instantiate(roomPrefabs[0], position, rotation);
+        var newRoom = Instantiate(roomPrefabs[0], new Vector3(0, 0, 0), new Quaternion());
+
+        var entrancePosition = newRoom.Find("Entrance").position;
+        var newRoomPosition = transform.position - entrancePosition;
+
+        newRoom.position = newRoomPosition;
+
+        Debug.Log(transform.position + " " + entrancePosition + " " + newRoomPosition);
 
         Destroy(gameObject);
     }

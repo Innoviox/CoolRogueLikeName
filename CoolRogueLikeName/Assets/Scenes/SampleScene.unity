@@ -589,6 +589,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 5
   jump: 5
+  canMove: 1
 --- !u!54 &1240120249
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -692,6 +693,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 166809153951642465, guid: 3706c28f64b1b417c924bd8048ca7ef1, type: 3}
+      propertyPath: collideWith
+      value: 
+      objectReference: {fileID: 1240120253}
+    - target: {fileID: 166809153951642465, guid: 3706c28f64b1b417c924bd8048ca7ef1, type: 3}
+      propertyPath: roomPrefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 166809153951642465, guid: 3706c28f64b1b417c924bd8048ca7ef1, type: 3}
+      propertyPath: roomPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 2913552145802838488, guid: 3706c28f64b1b417c924bd8048ca7ef1, type: 3}
     - target: {fileID: 2913552145802838488, guid: 3706c28f64b1b417c924bd8048ca7ef1, type: 3}
       propertyPath: m_RootOrder
       value: 2

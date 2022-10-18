@@ -699,12 +699,16 @@ PrefabInstance:
       objectReference: {fileID: 1240120253}
     - target: {fileID: 166809153951642465, guid: 3706c28f64b1b417c924bd8048ca7ef1, type: 3}
       propertyPath: roomPrefabs.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 166809153951642465, guid: 3706c28f64b1b417c924bd8048ca7ef1, type: 3}
       propertyPath: roomPrefabs.Array.data[0]
       value: 
       objectReference: {fileID: 2913552145802838488, guid: 3706c28f64b1b417c924bd8048ca7ef1, type: 3}
+    - target: {fileID: 166809153951642465, guid: 3706c28f64b1b417c924bd8048ca7ef1, type: 3}
+      propertyPath: roomPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 8319813874428163325, guid: 4b2c028c79d5a43ddbdd7b4029ab2e52, type: 3}
     - target: {fileID: 2913552145802838488, guid: 3706c28f64b1b417c924bd8048ca7ef1, type: 3}
       propertyPath: m_RootOrder
       value: 2

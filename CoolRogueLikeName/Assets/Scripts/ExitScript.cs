@@ -30,7 +30,7 @@ public class ExitScript : MonoBehaviour
         var player = collideWith.gameObject;
 
         // make new room and set its position
-        var newRoom = Instantiate(roomPrefabs[0], new Vector3(0, 0, 0), new Quaternion());
+        var newRoom = Instantiate(roomPrefabs[Random.Range(0, roomPrefabs.Length)], new Vector3(0, 0, 0), new Quaternion());
 
         var entrancePosition = newRoom.Find("Entrance").position;
         var newRoomPosition = transform.position - entrancePosition;

@@ -7,12 +7,14 @@ public class RoomScript : MonoBehaviour
     float difficulty = 0.5f; // todo
 
     private int nEnemies;
-    private Transform[] doors;
+    private List<Transform> doors;
 
     // Start is called before the first frame update
     void Start()
     {
-        Transform enemy;
+        doors = new List<Transform>();
+
+        Transform enemy, door;
         int n = 1;
 
         while ((enemy = transform.Find($"Enemy{n++}")) != null)
@@ -23,7 +25,6 @@ public class RoomScript : MonoBehaviour
         }
 
         n = 1;
-
         while ((door = transform.Find($"Door{n++}")) != null)
         {
             doors.Add(door);

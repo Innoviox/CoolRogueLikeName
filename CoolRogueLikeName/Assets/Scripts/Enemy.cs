@@ -36,4 +36,10 @@ public class Enemy : MonoBehaviour
             Destroy(healthBar);
         }
     }
+
+    private void OnDestroy()
+    {
+        // Tell the room that this enemy has been destroyed
+        transform.parent.GetComponent<RoomScript>().SendMessage("EnemyDestroyed");
+    }
 }

@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class ExitScript : MonoBehaviour
 {
+    public Material doorOpenMaterial;
+
     public Transform collideWith;
     public Transform[] roomPrefabs;
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +32,12 @@ public class ExitScript : MonoBehaviour
 
         var player = collideWith.gameObject;
 
+        // destroy self
+        Destroy(gameObject);
+    }
+
+    private void GenerateRoom()
+    {
         // make new room and set its position
         var newRoom = Instantiate(roomPrefabs[Random.Range(0, roomPrefabs.Length)], new Vector3(0, 0, 0), new Quaternion());
 
@@ -38,11 +47,8 @@ public class ExitScript : MonoBehaviour
         newRoom.position = newRoomPosition;
 
         // update the exit script
-        var script = newRoom.Find("Exit").GetComponent<ExitScript>();
-        script.collideWith = collideWith;
-        script.roomPrefabs = roomPrefabs;
-
-        // destroy self
-        Destroy(gameObject);
+        // var script = newRoom.Find("Exit").GetComponent<ExitScript>();
+        // script.collideWith = collideWith;
+        // script.roomPrefabs = roomPrefabs;
     }
 }

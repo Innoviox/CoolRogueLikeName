@@ -813,7 +813,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6350c5c6d05084631a901b30f379b05a, type: 2}
+  - {fileID: 2100000, guid: ddaabb999a10242e78de75e78dcfb2a0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -860,5 +860,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c114817d542b642ce8fd491d7b52caac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorOpenMaterial: {fileID: 2100000, guid: 6350c5c6d05084631a901b30f379b05a, type: 2}
   collideWith: {fileID: 0}
   roomPrefabs: []

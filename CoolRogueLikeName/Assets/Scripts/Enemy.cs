@@ -40,6 +40,6 @@ public class Enemy : MonoBehaviour
     private void OnDestroy()
     {
         // Tell the room that this enemy has been destroyed
-        transform.parent.GetComponent<RoomScript>().SendMessage("EnemyDestroyed");
+        transform.parent.parent.SendMessage("EnemyDestroyed"); // todo move this to the empty thing? probably
     }
 }

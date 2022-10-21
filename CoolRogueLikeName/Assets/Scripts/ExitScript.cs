@@ -9,11 +9,13 @@ public class ExitScript : MonoBehaviour
     public Transform collideWith;
     public Transform[] roomPrefabs;
 
+    private Renderer renderer;
+
 
     // Start is called before the first frame update
     void Start()
     {
-
+        renderer = GetComponent<Renderer>();
     }
 
     // Update is called once per frame
@@ -45,6 +47,9 @@ public class ExitScript : MonoBehaviour
         var newRoomPosition = transform.position - entrancePosition;
 
         newRoom.position = newRoomPosition;
+
+        // set material to open
+        renderer.material = doorOpenMaterial;
 
         // update the exit script
         // var script = newRoom.Find("Exit").GetComponent<ExitScript>();

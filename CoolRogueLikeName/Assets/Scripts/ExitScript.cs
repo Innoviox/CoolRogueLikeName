@@ -37,8 +37,9 @@ public class ExitScript : MonoBehaviour
 
     private void GenerateRoom()
     {
+        Debug.Log(transform.rotation);
         // make new room and set its position
-        var newRoom = Instantiate(roomPrefabs[Random.Range(0, roomPrefabs.Length)], new Vector3(0, 0, 0), new Quaternion());
+        var newRoom = Instantiate(roomPrefabs[Random.Range(0, roomPrefabs.Length)], new Vector3(0, 0, 0), transform.rotation);
 
         var entrancePosition = newRoom.Find("Entrance").position;
         var newRoomPosition = transform.position - entrancePosition;

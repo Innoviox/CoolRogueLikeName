@@ -6,10 +6,10 @@ public class ExitScript : MonoBehaviour
 {
     public Material doorOpenMaterial;
 
-    public Transform collideWith;
     public Transform[] roomPrefabs;
 
     private Renderer renderer;
+    private bool open = false;
 
 
     // Start is called before the first frame update
@@ -26,13 +26,10 @@ public class ExitScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // only collide with player
-        if (collision.transform.gameObject.name != collideWith.gameObject.name)
+        if (!open)
         {
             return;
         }
-
-        var player = collideWith.gameObject;
 
         // destroy self
         Destroy(gameObject);
@@ -50,6 +47,8 @@ public class ExitScript : MonoBehaviour
 
         // set material to open
         renderer.material = doorOpenMaterial;
+
+        open = true;
 
         // update the exit script
         // var script = newRoom.Find("Exit").GetComponent<ExitScript>();

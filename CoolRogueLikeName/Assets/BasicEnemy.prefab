@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7939358501406336153}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: BasicEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 7939358501461894313}
   - component: {fileID: 7939358501461894318}
   - component: {fileID: 7939358501461894319}
-  - component: {fileID: 7939358501461894316}
+  - component: {fileID: 5315596972973551692}
   m_Layer: 0
   m_Name: EnemyCapsule
   m_TagString: Untagged
@@ -132,7 +132,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7939358501461894316
+--- !u!114 &5315596972973551692
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

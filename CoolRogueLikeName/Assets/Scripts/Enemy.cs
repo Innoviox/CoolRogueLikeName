@@ -32,14 +32,8 @@ public class Enemy : MonoBehaviour
 
         if (health <= 0.0f)
         {
-            Destroy(gameObject);
-            Destroy(healthBar);
+            transform.parent.parent.SendMessage("EnemyDestroyed");
+            Destroy(transform.parent.gameObject);
         }
-    }
-
-    private void OnDestroy()
-    {
-        // Tell the room that this enemy has been destroyed
-        transform.parent.parent.SendMessage("EnemyDestroyed"); // todo move this to the empty thing? probably
     }
 }

@@ -619,7 +619,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3557168551287760185, guid: 3706c28f64b1b417c924bd8048ca7ef1, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3828261200751360702, guid: 3706c28f64b1b417c924bd8048ca7ef1, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6471227144743156355, guid: 3706c28f64b1b417c924bd8048ca7ef1, type: 3}
       propertyPath: m_LocalPosition.y

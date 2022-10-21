@@ -17,18 +17,22 @@ public class RoomScript : MonoBehaviour
         Transform enemy, door;
         int n = 1;
 
-        while ((enemy = transform.Find($"Enemy{n++}")) != null)
+        while ((enemy = transform.Find($"Enemy{n}")) != null)
         {
             nEnemies++;
+            n++;
 
             enemy.SendMessage("CreateEnemy");
         }
 
         n = 1;
-        while ((door = transform.Find($"Door{n++}")) != null)
+        while ((door = transform.Find($"Door{n}")) != null)
         {
+            n++;
             doors.Add(door);
         }
+
+        Debug.Log($"RoomScript: {nEnemies} enemies, {doors.Count} doors");
     }
 
     // Update is called once per frame
@@ -40,13 +44,14 @@ public class RoomScript : MonoBehaviour
     private void EnemyDestroyed()
     {
         nEnemies--;
+        Debug.Log($"destroyed enemy: {nEnemies} enemies");
 
         if (nEnemies == 0)
         {
             // open all doors
             foreach (var door in doors)
             {
-                door.SendMessage("GenerateRoom");
+                door.gameObject.SendMessage("GenerateRoom");
             }
         }
     }

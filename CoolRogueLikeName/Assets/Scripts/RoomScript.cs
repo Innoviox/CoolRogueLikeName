@@ -5,6 +5,7 @@ using UnityEngine;
 public class RoomScript : MonoBehaviour
 {
     float difficulty = 0.5f; // todo
+    public Transform player;
 
     private int nEnemies;
     private List<Transform> doors;
@@ -22,7 +23,7 @@ public class RoomScript : MonoBehaviour
             nEnemies++;
             n++;
 
-            enemy.SendMessage("CreateEnemy");
+            enemy.SendMessage("CreateEnemy", player);
         }
 
         n = 1;
@@ -51,7 +52,7 @@ public class RoomScript : MonoBehaviour
             // open all doors
             foreach (var door in doors)
             {
-                door.gameObject.SendMessage("GenerateRoom");
+                door.gameObject.SendMessage("GenerateRoom", player);
             }
         }
     }

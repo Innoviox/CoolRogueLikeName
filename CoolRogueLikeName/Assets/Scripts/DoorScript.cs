@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExitScript : MonoBehaviour
+public class DoorScript : MonoBehaviour
 {
     public Material doorOpenMaterial;
 
@@ -35,11 +35,12 @@ public class ExitScript : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void GenerateRoom()
+    private void GenerateRoom(Transform player)
     {
         Debug.Log(transform.rotation);
         // make new room and set its position
         var newRoom = Instantiate(roomPrefabs[Random.Range(0, roomPrefabs.Length)], new Vector3(0, 0, 0), transform.rotation);
+        newRoom.gameObject.GetComponent<RoomScript>().player = player;
 
         var entrancePosition = newRoom.Find("Entrance").position;
         var newRoomPosition = transform.position - entrancePosition;

@@ -43,8 +43,8 @@ public class Enemy : MonoBehaviour
 
         if (health <= 0.0f)
         {
-            Destroy(gameObject);
-            Destroy(healthBar);
+            transform.parent.parent.SendMessage("EnemyDestroyed");
+            Destroy(transform.parent.gameObject);
         }
     }
 }

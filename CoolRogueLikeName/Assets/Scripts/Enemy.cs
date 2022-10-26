@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    float health;
-    float maxHealth = 5.0f;
+    float health;            
+    float maxHealth = 5.0f; 
 
     GameObject healthBar;
+    public Transform player;   
 
     void Start()
     {
         healthBar = transform.parent.Find("HealthBar").gameObject;
         health = maxHealth;
+    }
+    
+    void Update()
+    {
+        // The enemy will constantly look at the player.
+        transform.LookAt(player);
+        // Make the enemy health bar follow the enemy as they move around. 
+        healthBar.transform.position = new Vector3(transform.position.x, 
+                                                   healthBar.transform.position.y, 
+                                                   transform.position.z);
     }
 
     // Take damage on colliding with projectile

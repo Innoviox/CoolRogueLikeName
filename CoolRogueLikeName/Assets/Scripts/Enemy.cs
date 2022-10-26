@@ -8,9 +8,11 @@ public class Enemy : MonoBehaviour
     float maxHealth = 5.0f;
 
     GameObject healthBar;
+    private PowerupManager stats;
 
     void Start()
     {
+        stats = GameObject.Find("PowerupManager").GetComponent<PowerupManager>();
         healthBar = transform.parent.Find("HealthBar").gameObject;
         health = maxHealth;
     }
@@ -23,7 +25,7 @@ public class Enemy : MonoBehaviour
         if (collision.transform.gameObject.name == "Bullet(Clone)")
         {
             // Get the projectiles damage
-            int damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
+            float damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage * stats.playerDamageFactor;
 
             health -= damageTaken;
 

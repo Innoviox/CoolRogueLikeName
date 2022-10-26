@@ -28,7 +28,7 @@ public class ExitScript : MonoBehaviour
     {
         if (!open)
         {
-            return; 
+            return;
         }
 
         // destroy self

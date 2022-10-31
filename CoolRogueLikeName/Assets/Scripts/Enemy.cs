@@ -8,11 +8,10 @@ public class Enemy : MonoBehaviour
     float maxHealth = 5.0f;
 
     GameObject healthBar;
-    private PowerupManager stats;
+    public PowerupManager stats;
 
     void Start()
     {
-        stats = GameObject.Find("PowerupManager").GetComponent<PowerupManager>();
         healthBar = transform.parent.Find("HealthBar").gameObject;
         health = maxHealth;
     }

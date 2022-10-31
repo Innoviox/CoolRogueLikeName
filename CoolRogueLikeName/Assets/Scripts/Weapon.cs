@@ -8,11 +8,10 @@ public class Weapon : MonoBehaviour
     public GameObject projectile;  // Selected Bullet prefab through inspector
     public float baseProjectileSpeed = 5;
     public int baseDamage = 1;
-    private PowerupManager stats;
+    public PowerupManager stats;
 
     void Start()
     {
-        stats = GameObject.Find("PowerupManager").GetComponent<PowerupManager>();
     }
 
     // Update is called once per frame

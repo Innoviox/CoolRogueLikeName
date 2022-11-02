@@ -7,6 +7,8 @@ public class RoomScript : MonoBehaviour
     float difficulty = 0.5f; // todo
     public Transform player;
 
+    public int pregenerateDepth = 1; // for now, just pregenerate 1 rooms ahead
+
     private int nEnemies;
     private List<Transform> doors;
 
@@ -34,6 +36,8 @@ public class RoomScript : MonoBehaviour
         }
 
         Debug.Log($"RoomScript: {nEnemies} enemies, {doors.Count} doors");
+
+        PreGenerate();
     }
 
     // Update is called once per frame
@@ -54,6 +58,20 @@ public class RoomScript : MonoBehaviour
             {
                 door.gameObject.SendMessage("GenerateRoom", player);
             }
+        }
+    }
+
+    private void PreGenerate()
+    {
+        if (pregenerateDepth == 0)
+        {
+            return;
+        }
+
+        foreach (var door in doors)
+        {
+            var newRoom = door.gameObject.GetComponent<DoorScript>().GenerateRoom(player);
+            newRoom.gameObject.GetComponent<RoomScript>().pregenerateDepth = pregenerateDepth - 1;
         }
     }
 }

@@ -35,7 +35,7 @@ public class DoorScript : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void GenerateRoom(Transform player)
+    public Transform GenerateRoom(Transform player)
     {
         Debug.Log(transform.rotation);
         // make new room and set its position
@@ -56,5 +56,7 @@ public class DoorScript : MonoBehaviour
         // var script = newRoom.Find("Exit").GetComponent<ExitScript>();
         // script.collideWith = collideWith;
         // script.roomPrefabs = roomPrefabs;
+
+        return newRoom;
     }
 }

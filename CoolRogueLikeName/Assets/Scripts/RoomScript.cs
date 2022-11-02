@@ -17,18 +17,9 @@ public class RoomScript : MonoBehaviour
     {
         doors = new List<Transform>();
 
-        Transform enemy, door;
+        Transform door;
         int n = 1;
 
-        while ((enemy = transform.Find($"Enemy{n}")) != null)
-        {
-            nEnemies++;
-            n++;
-
-            enemy.SendMessage("CreateEnemy", player);
-        }
-
-        n = 1;
         while ((door = transform.Find($"Door{n}")) != null)
         {
             n++;
@@ -56,7 +47,8 @@ public class RoomScript : MonoBehaviour
             // open all doors
             foreach (var door in doors)
             {
-                door.gameObject.SendMessage("GenerateRoom", player);
+                // for now dont do this
+                // door.gameObject.SendMessage("GenerateRoom", player);
             }
         }
     }
@@ -72,6 +64,20 @@ public class RoomScript : MonoBehaviour
         {
             var newRoom = door.gameObject.GetComponent<DoorScript>().GenerateRoom(player);
             newRoom.gameObject.GetComponent<RoomScript>().pregenerateDepth = pregenerateDepth - 1;
+        }
+    }
+
+    public void ActivateEnemies()
+    {
+        Transform enemy;
+        int n = 1;
+
+        while ((enemy = transform.Find($"Enemy{n}")) != null)
+        {
+            nEnemies++;
+            n++;
+
+            enemy.SendMessage("CreateEnemy", player);
         }
     }
 }

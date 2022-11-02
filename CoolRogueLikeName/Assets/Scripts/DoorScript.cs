@@ -37,7 +37,6 @@ public class DoorScript : MonoBehaviour
 
     public Transform GenerateRoom(Transform player)
     {
-        Debug.Log(transform.rotation);
         // make new room and set its position
         var newRoom = Instantiate(roomPrefabs[Random.Range(0, roomPrefabs.Length)], new Vector3(0, 0, 0), transform.rotation);
         newRoom.gameObject.GetComponent<RoomScript>().player = player;
@@ -48,9 +47,9 @@ public class DoorScript : MonoBehaviour
         newRoom.position = newRoomPosition;
 
         // set material to open
-        renderer.material = doorOpenMaterial;
+        // renderer.material = doorOpenMaterial;
 
-        open = true;
+        // open = true;
 
         // update the exit script
         // var script = newRoom.Find("Exit").GetComponent<ExitScript>();

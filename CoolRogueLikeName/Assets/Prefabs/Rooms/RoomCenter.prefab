@@ -687,6 +687,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   pregenerateDepth: 1
+  generateEnemies: 1
 --- !u!1 &5029939604136258536
 GameObject:
   m_ObjectHideFlags: 0
@@ -1068,7 +1069,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c114817d542b642ce8fd491d7b52caac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorClosedMaterial: {fileID: 2100000, guid: ddaabb999a10242e78de75e78dcfb2a0, type: 2}
   doorOpenMaterial: {fileID: 2100000, guid: 6350c5c6d05084631a901b30f379b05a, type: 2}
+  doorGoesNowhereMaterial: {fileID: 2100000, guid: efc504fc4ad9d4e3982ae61857655a04, type: 2}
   roomPrefabs:
   - {fileID: 2913552145802838488}
 --- !u!1 &6215280772676461373
@@ -1181,6 +1184,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c114817d542b642ce8fd491d7b52caac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorClosedMaterial: {fileID: 2100000, guid: ddaabb999a10242e78de75e78dcfb2a0, type: 2}
   doorOpenMaterial: {fileID: 2100000, guid: 6350c5c6d05084631a901b30f379b05a, type: 2}
+  doorGoesNowhereMaterial: {fileID: 2100000, guid: efc504fc4ad9d4e3982ae61857655a04, type: 2}
   roomPrefabs:
   - {fileID: 2913552145802838488}

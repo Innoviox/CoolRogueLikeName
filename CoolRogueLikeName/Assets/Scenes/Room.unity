@@ -287,6 +287,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RoomCenter
       objectReference: {fileID: 0}
+    - target: {fileID: 4207222120415101663, guid: a2df012d98d7840908fa1559966ded1e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5384878663768701330, guid: a2df012d98d7840908fa1559966ded1e, type: 3}
       propertyPath: player
       value: 

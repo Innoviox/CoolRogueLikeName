@@ -47,6 +47,9 @@ public class RoomScript : MonoBehaviour
         room = GetComponent<Transform>();
         bounds = room.GetComponent<Collider>().bounds;
         playerBounds = player.GetComponent<Collider>().bounds;
+
+        // hide ceiling for now
+        transform.Find("Ceiling").gameObject.SetActive(false);
     }
 
     // Update is called once per frame

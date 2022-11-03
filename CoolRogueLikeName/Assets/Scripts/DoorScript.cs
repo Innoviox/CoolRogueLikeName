@@ -85,7 +85,7 @@ public class DoorScript : MonoBehaviour
         }
 
         // activate enemies
-        roomThisDoorLeadsTo.ActivateEnemies();
+        roomThisDoorLeadsTo.WalkedInto();
 
         Lock();
     }

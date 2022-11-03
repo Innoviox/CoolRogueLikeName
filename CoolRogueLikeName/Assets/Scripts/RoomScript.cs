@@ -40,7 +40,7 @@ public class RoomScript : MonoBehaviour
 
         if (generateEnemies)
         {
-            ActivateEnemies();
+            WalkedInto();
         }
 
         room = GetComponent<Transform>();
@@ -92,6 +92,17 @@ public class RoomScript : MonoBehaviour
             newRoom.gameObject.GetComponent<RoomScript>().pregenerateDepth = pregenerateDepth - 1;
             newRoom.gameObject.GetComponent<RoomScript>().generateEnemies = false;
         }
+    }
+
+    public void WalkedInto()
+    {
+        RemoveLid();
+        ActivateEnemies();
+    }
+
+    private void RemoveLid()
+    {
+        transform.Find("Ceiling").gameObject.SetActive(false);
     }
 
     public void ActivateEnemies()

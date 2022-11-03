@@ -7,7 +7,7 @@ public class RoomScript : MonoBehaviour
     float difficulty = 0.5f; // todo
     public Transform player;
 
-    public int pregenerateDepth = 1; // for now, just pregenerate 1 rooms ahead
+    public int pregenerateDepth = 2; // for now, just pregenerate 1 rooms ahead
 
     public bool generateEnemies = true; // todo make private with getter/setter
 
@@ -17,6 +17,7 @@ public class RoomScript : MonoBehaviour
     private Transform room;
     private Bounds bounds;
     private Bounds playerBounds;
+    private DoorScript entryPoint = null;
 
     // Start is called before the first frame update
     void Start()
@@ -62,9 +63,13 @@ public class RoomScript : MonoBehaviour
             // open all doors
             foreach (var door in doors)
             {
-                // for now dont do this
                 // todo make list of DoorScripts so this is faster
-                door.gameObject.SendMessage("Open");
+                door.gameObject.SendMessage("Unlock");
+            }
+
+            if (entryPoint != null)
+            {
+                entryPoint.Unlock();
             }
         }
     }
@@ -102,5 +107,15 @@ public class RoomScript : MonoBehaviour
     public bool PlayerInRoom()
     {
         return bounds.Contains(player.position + playerBounds.min) && bounds.Contains(player.position + playerBounds.max);
+    }
+
+    public void AddDoor(Transform door)
+    {
+        doors.Add(door);
+    }
+
+    public void SetEntryPoint(DoorScript door)
+    {
+        entryPoint = door;
     }
 }

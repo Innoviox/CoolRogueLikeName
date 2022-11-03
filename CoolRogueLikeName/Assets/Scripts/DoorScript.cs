@@ -62,7 +62,7 @@ public class DoorScript : MonoBehaviour
 
         if (other.gameObject.name == "Player")
         {
-            renderer.enabled = false;
+            Open();
             StartCoroutine(WaitUntilDoorWalkedThrough());
         }
     }
@@ -82,11 +82,7 @@ public class DoorScript : MonoBehaviour
         // activate enemies
         roomThisDoorLeadsTo.ActivateEnemies();
 
-        // lock door
-        collider.isTrigger = false;
-        locked = true;
-        renderer.material = doorClosedMaterial;
-        renderer.enabled = true;
+        Lock();
     }
 
     public Transform GenerateRoom(Transform player)
@@ -103,10 +99,12 @@ public class DoorScript : MonoBehaviour
 
         renderer.material = doorClosedMaterial;
 
+        roomThisDoorLeadsTo.SetEntryPoint(this);
+
         return newRoom;
     }
 
-    public void Open()
+    public void Unlock()
     {
         if (roomThisDoorLeadsTo != null)
         {
@@ -118,5 +116,19 @@ public class DoorScript : MonoBehaviour
 
             locked = false;
         }
+    }
+
+    public void Open()
+    {
+        renderer.enabled = false;
+    }
+
+    public void Lock()
+    {
+        // lock door
+        collider.isTrigger = false;
+        locked = true;
+        renderer.material = doorClosedMaterial;
+        renderer.enabled = true;
     }
 }

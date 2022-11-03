@@ -14,6 +14,8 @@ public class RoomScript : MonoBehaviour
     private int nEnemies;
     private List<Transform> doors;
 
+    private Transform room;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +38,8 @@ public class RoomScript : MonoBehaviour
         {
             ActivateEnemies();
         }
+
+        room = GetComponent<Transform>();
     }
 
     // Update is called once per frame
@@ -89,5 +93,12 @@ public class RoomScript : MonoBehaviour
 
             enemy.SendMessage("CreateEnemy", player);
         }
+    }
+
+    public bool PlayerInRoom()
+    {
+        var bounds = room.GetComponent<Collider>().bounds;
+        var playerBounds = player.GetComponent<Collider>().bounds;
+        return bounds.Contains(playerBounds.min) && bounds.Contains(playerBounds.max);
     }
 }

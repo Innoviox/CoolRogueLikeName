@@ -5,7 +5,7 @@ using UnityEngine;
 public class DoorScript : MonoBehaviour
 {
     public Material doorClosedMaterial;
-    public Material doorOpenMaterial;
+    public Material doorUnlockedMaterial;
     public Material doorGoesNowhereMaterial;
 
 
@@ -13,6 +13,9 @@ public class DoorScript : MonoBehaviour
 
     private Renderer renderer;
 
+    private Collider collider;
+
+    private bool locked = true;
 
     private bool open = false;
 
@@ -25,6 +28,8 @@ public class DoorScript : MonoBehaviour
         renderer = GetComponent<Renderer>();
 
         renderer.material = doorGoesNowhereMaterial;
+
+        collider = GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -35,20 +40,51 @@ public class DoorScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!open)
+        // if (locked)
+        // {
+        //     return;
+        // }
+
+        // Debug.Log(collision.gameObject.name);
+        // if (collision.gameObject.name == "Player")
+        // {
+        //     renderer.enabled = false;
+        //     StartCoroutine(WaitUntilDoorWalkedThrough());
+        // }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (locked)
         {
             return;
         }
 
-        Debug.Log(collision.gameObject.name);
-        if (collision.gameObject.name == "Player")
+        if (other.gameObject.name == "Player")
         {
-            // activate enemies
-            roomThisDoorLeadsTo.ActivateEnemies();
-
-            // destroy self
-            Destroy(gameObject);
+            renderer.enabled = false;
+            StartCoroutine(WaitUntilDoorWalkedThrough());
         }
+    }
+
+    private IEnumerator WaitUntilDoorWalkedThrough()
+    {
+        Debug.Log("started wudwt");
+        while (!roomThisDoorLeadsTo.PlayerInRoom())
+        {
+            yield return null;
+        }
+
+        DoorWalkedThrough();
+    }
+
+    void DoorWalkedThrough()
+    {
+        // activate enemies
+        roomThisDoorLeadsTo.ActivateEnemies();
+
+        // destroy self
+        Destroy(gameObject);
     }
 
     public Transform GenerateRoom(Transform player)
@@ -73,9 +109,12 @@ public class DoorScript : MonoBehaviour
         if (roomThisDoorLeadsTo != null)
         {
             // set material to open
-            renderer.material = doorOpenMaterial;
+            renderer.material = doorUnlockedMaterial;
 
-            open = true;
+            // set collider to trigger
+            collider.isTrigger = true;
+
+            locked = false;
         }
     }
 }

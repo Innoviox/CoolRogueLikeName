@@ -19,6 +19,7 @@ public class RoomScript : MonoBehaviour
     private Bounds playerBounds;
     private DoorScript entryPoint = null;
     private bool roomDone = false;
+    private bool enemiesActivated = false;
 
     // Start is called before the first frame update
     void Start()
@@ -107,7 +108,7 @@ public class RoomScript : MonoBehaviour
 
     public void ActivateEnemies()
     {
-        if (roomDone)
+        if (roomDone || enemiesActivated)
         {
             return;
         }
@@ -122,6 +123,8 @@ public class RoomScript : MonoBehaviour
 
             enemy.SendMessage("CreateEnemy", player);
         }
+
+        enemiesActivated = true;
     }
 
     public bool PlayerInRoom()

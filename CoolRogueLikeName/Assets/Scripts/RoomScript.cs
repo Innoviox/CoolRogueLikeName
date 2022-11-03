@@ -18,6 +18,7 @@ public class RoomScript : MonoBehaviour
     private Bounds bounds;
     private Bounds playerBounds;
     private DoorScript entryPoint = null;
+    private bool roomDone = false;
 
     // Start is called before the first frame update
     void Start()
@@ -60,6 +61,9 @@ public class RoomScript : MonoBehaviour
 
         if (nEnemies == 0)
         {
+            // finish room
+            roomDone = true;
+
             // open all doors
             foreach (var door in doors)
             {
@@ -92,6 +96,11 @@ public class RoomScript : MonoBehaviour
 
     public void ActivateEnemies()
     {
+        if (roomDone)
+        {
+            return;
+        }
+
         Transform enemy;
         int n = 1;
 
@@ -117,5 +126,10 @@ public class RoomScript : MonoBehaviour
     public void SetEntryPoint(DoorScript door)
     {
         entryPoint = door;
+    }
+
+    public bool RoomDone()
+    {
+        return roomDone;
     }
 }

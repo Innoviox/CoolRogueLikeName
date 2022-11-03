@@ -79,6 +79,11 @@ public class DoorScript : MonoBehaviour
 
     void DoorWalkedThrough()
     {
+        if (roomThisDoorLeadsTo.RoomDone())
+        {
+            return;
+        }
+
         // activate enemies
         roomThisDoorLeadsTo.ActivateEnemies();
 

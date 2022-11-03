@@ -69,7 +69,6 @@ public class DoorScript : MonoBehaviour
 
     private IEnumerator WaitUntilDoorWalkedThrough()
     {
-        Debug.Log("started wudwt");
         while (!roomThisDoorLeadsTo.PlayerInRoom())
         {
             yield return null;
@@ -83,8 +82,11 @@ public class DoorScript : MonoBehaviour
         // activate enemies
         roomThisDoorLeadsTo.ActivateEnemies();
 
-        // destroy self
-        Destroy(gameObject);
+        // lock door
+        collider.isTrigger = false;
+        locked = true;
+        renderer.material = doorClosedMaterial;
+        renderer.enabled = true;
     }
 
     public Transform GenerateRoom(Transform player)

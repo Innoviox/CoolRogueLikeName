@@ -15,6 +15,8 @@ public class RoomScript : MonoBehaviour
     private List<Transform> doors;
 
     private Transform room;
+    private Bounds bounds;
+    private Bounds playerBounds;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +42,8 @@ public class RoomScript : MonoBehaviour
         }
 
         room = GetComponent<Transform>();
+        bounds = room.GetComponent<Collider>().bounds;
+        playerBounds = player.GetComponent<Collider>().bounds;
     }
 
     // Update is called once per frame
@@ -97,8 +101,6 @@ public class RoomScript : MonoBehaviour
 
     public bool PlayerInRoom()
     {
-        var bounds = room.GetComponent<Collider>().bounds;
-        var playerBounds = player.GetComponent<Collider>().bounds;
-        return bounds.Contains(playerBounds.min) && bounds.Contains(playerBounds.max);
+        return bounds.Contains(player.position + playerBounds.min) && bounds.Contains(player.position + playerBounds.max);
     }
 }

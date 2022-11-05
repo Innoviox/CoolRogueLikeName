@@ -45,11 +45,23 @@ public class RoomScript : MonoBehaviour
         }
 
         room = GetComponent<Transform>();
-        bounds = room.GetComponent<Collider>().bounds;
+        var boxCollider = room.GetComponent<BoxCollider>();
+        bounds = boxCollider.bounds;
         playerBounds = player.GetComponent<Collider>().bounds;
+
+        // fit room bounds to children
+        foreach (Collider collider in GetComponentsInChildren<Collider>())
+        {
+            Debug.Log($"RoomScript: {collider.name} {collider.bounds}");
+            bounds.Encapsulate(collider.bounds);
+        }
+
+        boxCollider.center = bounds.center - transform.position;
+        boxCollider.size = bounds.size;
 
         // hide ceiling for now
         transform.Find("Ceiling").gameObject.SetActive(false);
+
     }
 
     // Update is called once per frame

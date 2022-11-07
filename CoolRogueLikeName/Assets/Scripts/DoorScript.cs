@@ -63,6 +63,7 @@ public class DoorScript : MonoBehaviour
         if (other.gameObject.name == "Player")
         {
             Open();
+            roomThisDoorLeadsTo.ShowRoom(true);
             StartCoroutine(WaitUntilDoorWalkedThrough());
         }
     }

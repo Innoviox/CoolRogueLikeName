@@ -9,21 +9,26 @@ public class RoomScript : MonoBehaviour
 
     public int pregenerateDepth = 2; // for now, just pregenerate 1 rooms ahead
 
-    public bool generateEnemies = true; // todo make private with getter/setter
+    public bool roomActiveAtStart = true; // todo make private with getter/setter
 
     private int nEnemies;
     private List<Transform> doors;
 
     private Transform room;
+    private Renderer[] renderers;
     private Bounds bounds;
     private Bounds playerBounds;
     private DoorScript entryPoint = null;
     private bool roomDone = false;
     private bool enemiesActivated = false;
 
+
     // Start is called before the first frame update
     void Start()
     {
+        room = GetComponent<Transform>();
+        renderers = GetComponentsInChildren<Renderer>();
+
         doors = new List<Transform>();
 
         Transform door;
@@ -39,12 +44,15 @@ public class RoomScript : MonoBehaviour
 
         PreGenerate();
 
-        if (generateEnemies)
+        if (roomActiveAtStart)
         {
             WalkedInto();
         }
+        else
+        {
+            ShowRoom(false);
+        }
 
-        room = GetComponent<Transform>();
         var boxCollider = room.GetComponent<BoxCollider>();
         bounds = boxCollider.bounds;
         playerBounds = player.GetComponent<Collider>().bounds;
@@ -106,7 +114,7 @@ public class RoomScript : MonoBehaviour
             // todo make this better
             var newRoom = door.gameObject.GetComponent<DoorScript>().GenerateRoom(player);
             newRoom.gameObject.GetComponent<RoomScript>().pregenerateDepth = pregenerateDepth - 1;
-            newRoom.gameObject.GetComponent<RoomScript>().generateEnemies = false;
+            newRoom.gameObject.GetComponent<RoomScript>().roomActiveAtStart = false;
         }
     }
 
@@ -114,6 +122,14 @@ public class RoomScript : MonoBehaviour
     {
         RemoveLid();
         ActivateEnemies();
+    }
+
+    public void ShowRoom(bool visible)
+    {
+        foreach (Renderer r in renderers)
+        {
+            r.enabled = visible;
+        }
     }
 
     private void RemoveLid()

@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float baseMovementSpeed = 5, jump = 5;
     public PowerupManager stats;
 
+    public bool canMove = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +19,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!canMove)
+        {
+            return;
+        }
+
         float hInput = Input.GetAxis("Horizontal"); // Keeps track of left and right movement 
         float vInput = Input.GetAxis("Vertical");   // Keeps track of forward and backwards movement
 

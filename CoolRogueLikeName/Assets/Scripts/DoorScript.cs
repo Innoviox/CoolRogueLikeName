@@ -7,6 +7,7 @@ public class DoorScript : MonoBehaviour
     public Material doorClosedMaterial;
     public Material doorUnlockedMaterial;
     public Material doorGoesNowhereMaterial;
+    public int playerUnlockDistance = 5; // don't know what this should be
 
 
     public Transform[] roomPrefabs;
@@ -21,6 +22,7 @@ public class DoorScript : MonoBehaviour
     private bool open = false;
 
     private RoomScript roomThisDoorLeadsTo = null;
+    private bool swinging = false;
 
 
     // Start is called before the first frame update
@@ -38,9 +40,9 @@ public class DoorScript : MonoBehaviour
     {
         if (!locked)
         {
-            if (Input.GetKey(KeyCode.E) && collider.bounds.SqrDistance(player.position) < 1)
+            if (Input.GetKey(KeyCode.E) && collider.bounds.SqrDistance(player.position) < playerUnlockDistance)
             {
-                Debug.Log("DoorScript: E pressed");
+                StartCoroutine(SwingDoorOpen());
             }
         }
     }
@@ -84,6 +86,27 @@ public class DoorScript : MonoBehaviour
         DoorWalkedThrough();
     }
 
+    private IEnumerator SwingDoorOpen()
+    {
+        if (swinging)
+        {
+            yield break; // only run one instance of swing at a time to prevent shenanigans (dancing door)
+        }
+
+        swinging = true;
+
+        int rotation = 0;
+        Vector3 point = collider.bounds.min;
+        while (rotation < 360)
+        {
+            transform.RotateAround(point, Vector3.up, 90 * Time.deltaTime);
+            rotation++;
+            yield return null;
+        }
+
+        swinging = false;
+    }
+
     void DoorWalkedThrough()
     {
         if (roomThisDoorLeadsTo.RoomDone())
@@ -124,7 +147,7 @@ public class DoorScript : MonoBehaviour
             renderer.material = doorUnlockedMaterial;
 
             // set collider to trigger
-            collider.isTrigger = true;
+            // collider.isTrigger = true;
 
             locked = false;
         }
@@ -138,7 +161,7 @@ public class DoorScript : MonoBehaviour
     public void Lock()
     {
         // lock door
-        collider.isTrigger = false;
+        // collider.isTrigger = false;
         locked = true;
         renderer.material = doorClosedMaterial;
         renderer.enabled = true;

@@ -10,6 +10,7 @@ public class DoorScript : MonoBehaviour
 
 
     public Transform[] roomPrefabs;
+    public Transform player;
 
     private Renderer renderer;
 
@@ -35,7 +36,13 @@ public class DoorScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (!locked)
+        {
+            if (Input.GetKey(KeyCode.E) && collider.bounds.SqrDistance(player.position) < 1)
+            {
+                Debug.Log("DoorScript: E pressed");
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

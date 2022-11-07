@@ -4,18 +4,32 @@ using UnityEngine;
 
 public class DoorScript : MonoBehaviour
 {
-    public Material doorOpenMaterial;
+    public Material doorClosedMaterial;
+    public Material doorUnlockedMaterial;
+    public Material doorGoesNowhereMaterial;
+
 
     public Transform[] roomPrefabs;
 
     private Renderer renderer;
+
+    private Collider collider;
+
+    private bool locked = true;
+
     private bool open = false;
+
+    private RoomScript roomThisDoorLeadsTo = null;
 
 
     // Start is called before the first frame update
     void Start()
     {
         renderer = GetComponent<Renderer>();
+
+        renderer.material = doorGoesNowhereMaterial;
+
+        collider = GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -26,35 +40,100 @@ public class DoorScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!open)
+        // if (locked)
+        // {
+        //     return;
+        // }
+
+        // Debug.Log(collision.gameObject.name);
+        // if (collision.gameObject.name == "Player")
+        // {
+        //     renderer.enabled = false;
+        //     StartCoroutine(WaitUntilDoorWalkedThrough());
+        // }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (locked)
         {
             return;
         }
 
-        // destroy self
-        Destroy(gameObject);
+        if (other.gameObject.name == "Player")
+        {
+            Open();
+            StartCoroutine(WaitUntilDoorWalkedThrough());
+        }
     }
 
-    private void GenerateRoom(Transform player)
+    private IEnumerator WaitUntilDoorWalkedThrough()
     {
-        Debug.Log(transform.rotation);
+        while (!roomThisDoorLeadsTo.PlayerInRoom())
+        {
+            yield return null;
+        }
+
+        DoorWalkedThrough();
+    }
+
+    void DoorWalkedThrough()
+    {
+        if (roomThisDoorLeadsTo.RoomDone())
+        {
+            return;
+        }
+
+        // activate enemies
+        roomThisDoorLeadsTo.WalkedInto();
+
+        Lock();
+    }
+
+    public Transform GenerateRoom(Transform player)
+    {
         // make new room and set its position
         var newRoom = Instantiate(roomPrefabs[Random.Range(0, roomPrefabs.Length)], new Vector3(0, 0, 0), transform.rotation);
-        newRoom.gameObject.GetComponent<RoomScript>().player = player;
+        roomThisDoorLeadsTo = newRoom.gameObject.GetComponent<RoomScript>();
+        roomThisDoorLeadsTo.player = player;
 
         var entrancePosition = newRoom.Find("Entrance").position;
         var newRoomPosition = transform.position - entrancePosition;
 
         newRoom.position = newRoomPosition;
 
-        // set material to open
-        renderer.material = doorOpenMaterial;
+        renderer.material = doorClosedMaterial;
 
-        open = true;
+        roomThisDoorLeadsTo.SetEntryPoint(this);
 
-        // update the exit script
-        // var script = newRoom.Find("Exit").GetComponent<ExitScript>();
-        // script.collideWith = collideWith;
-        // script.roomPrefabs = roomPrefabs;
+        return newRoom;
+    }
+
+    public void Unlock()
+    {
+        if (roomThisDoorLeadsTo != null)
+        {
+            // set material to open
+            renderer.material = doorUnlockedMaterial;
+
+            // set collider to trigger
+            collider.isTrigger = true;
+
+            locked = false;
+        }
+    }
+
+    public void Open()
+    {
+        renderer.enabled = false;
+    }
+
+    public void Lock()
+    {
+        // lock door
+        collider.isTrigger = false;
+        locked = true;
+        renderer.material = doorClosedMaterial;
+        renderer.enabled = true;
     }
 }

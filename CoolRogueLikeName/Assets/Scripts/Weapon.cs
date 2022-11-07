@@ -25,7 +25,7 @@ public class Weapon : MonoBehaviour
 
             // Set projectiles damage
             // Damage scaling for player statistics is done when the enemy takes damage (Enemy.cs)
-            bullet.GetComponent<Projectile>().Damage = baseDamage;
+            bullet.GetComponent<Projectile>().Damage = baseDamage * stats.playerDamageFactor;
 
             // Set its velocity to go forward by projectileSpeed
             bullet.GetComponent<Rigidbody>().velocity = spawnPoint.forward * baseProjectileSpeed * stats.bulletSpeedFactor;

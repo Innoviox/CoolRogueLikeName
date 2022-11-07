@@ -8,7 +8,6 @@ public class EnemyScript : MonoBehaviour
     float maxHealth = 5.0f; 
 
     GameObject healthBar;
-    public PowerupManager stats;
     public Transform player;   
 
     void Start()
@@ -35,7 +34,7 @@ public class EnemyScript : MonoBehaviour
         if (collision.transform.gameObject.name == "Bullet(Clone)")
         {
             // Get the projectiles damage
-            float damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage * stats.playerDamageFactor;
+            float damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
 
             health -= damageTaken;
 

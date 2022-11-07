@@ -34,7 +34,7 @@ public class EnemyScript : MonoBehaviour
         if (collision.transform.gameObject.name == "Bullet(Clone)")
         {
             // Get the projectiles damage
-            int damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
+            float damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
 
             health -= damageTaken;
 

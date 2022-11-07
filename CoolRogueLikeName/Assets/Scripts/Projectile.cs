@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public int Damage;
+    public float Damage;
 
     // Projectile ends its life when colliding with a wall
     // or an enemy. 

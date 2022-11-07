@@ -6,9 +6,13 @@ public class Weapon : MonoBehaviour
 {
     public Transform spawnPoint;   // Select this through the inspector
     public GameObject projectile;  // Selected Bullet prefab through inspector
-    public float projectileSpeed = 5;
+    public float baseProjectileSpeed = 5;
     public int baseDamage = 1;
+    public PowerupManager stats;
 
+    void Start()
+    {
+    }
 
     // Update is called once per frame
     void Update()
@@ -20,10 +24,11 @@ public class Weapon : MonoBehaviour
             GameObject bullet = Instantiate(projectile, spawnPoint.position, spawnPoint.rotation);
 
             // Set projectiles damage
-            bullet.GetComponent<Projectile>().Damage = baseDamage;
+            // Damage scaling for player statistics is done when the enemy takes damage (Enemy.cs)
+            bullet.GetComponent<Projectile>().Damage = baseDamage * stats.playerDamageFactor;
 
             // Set its velocity to go forward by projectileSpeed
-            bullet.GetComponent<Rigidbody>().velocity = spawnPoint.forward * projectileSpeed;
+            bullet.GetComponent<Rigidbody>().velocity = spawnPoint.forward * baseProjectileSpeed * stats.bulletSpeedFactor;
         }
     }
 }

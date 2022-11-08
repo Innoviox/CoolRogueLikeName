@@ -35,6 +35,7 @@ public class RoomScript : MonoBehaviour
             n++;
             var doorScript = door.gameObject.GetComponent<DoorScript>();
             doorScript.player = player;
+            doorScript.roomThisDoorLeadsFrom = this;
             doors.Add(doorScript);
         }
 

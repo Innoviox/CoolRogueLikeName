@@ -11,6 +11,7 @@ public class DoorScript : MonoBehaviour
     public float maxSwingAngle = 90.0f;
     public Transform[] roomPrefabs;
     public Transform player;
+    public RoomScript roomThisDoorLeadsFrom;
 
     private Renderer renderer;
 
@@ -119,10 +120,21 @@ public class DoorScript : MonoBehaviour
     {
         StartCoroutine(SwingDoor(false, wasOriginallyinRoom));
 
-        // activate enemies
-        roomThisDoorLeadsTo.WalkedInto();
 
-        Lock();
+        if (!wasOriginallyinRoom)
+        {
+            roomThisDoorLeadsTo.WalkedInto();
+        }
+        else
+        {
+            roomThisDoorLeadsFrom.WalkedInto();
+        }
+
+
+        if (!roomThisDoorLeadsTo.RoomDone())
+        {
+            Lock();
+        }
     }
 
     public Transform GenerateRoom(Transform player)

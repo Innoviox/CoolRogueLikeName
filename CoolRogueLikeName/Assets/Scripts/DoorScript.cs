@@ -9,7 +9,6 @@ public class DoorScript : MonoBehaviour
     public Material doorGoesNowhereMaterial;
     public int playerUnlockDistance = 5; // don't know what this should be
 
-
     public Transform[] roomPrefabs;
     public Transform player;
 
@@ -22,17 +21,40 @@ public class DoorScript : MonoBehaviour
     private bool open = false;
 
     private RoomScript roomThisDoorLeadsTo = null;
-    private bool swinging = false;
+    private bool swungOpen = false;
+    private Vector3 rotationPoint;
 
 
     // Start is called before the first frame update
     void Start()
     {
         renderer = GetComponent<Renderer>();
-
         renderer.material = doorGoesNowhereMaterial;
 
         collider = GetComponent<Collider>();
+
+
+        // rotation point is the "bottom left corner" of the door
+        rotationPoint = transform.position;
+        rotationPoint.y -= transform.localScale.y / 2;
+
+        switch (transform.rotation.eulerAngles.y)
+        {
+            case 0:
+                rotationPoint.x -= transform.localScale.x / 2;
+                break;
+            case 90:
+                rotationPoint.z += transform.localScale.x / 2;
+                break;
+            case 270:
+                rotationPoint.z -= transform.localScale.x / 2;
+                break;
+            case 360:
+                rotationPoint.x += transform.localScale.x / 2;
+                break;
+        }
+
+        Debug.Log($"DoorScript: {transform.rotation.eulerAngles.y} {rotationPoint}");
     }
 
     // Update is called once per frame
@@ -88,23 +110,20 @@ public class DoorScript : MonoBehaviour
 
     private IEnumerator SwingDoorOpen()
     {
-        if (swinging)
+        if (swungOpen)
         {
             yield break; // only run one instance of swing at a time to prevent shenanigans (dancing door)
         }
 
-        swinging = true;
+        swungOpen = true;
 
         int rotation = 0;
-        Vector3 point = collider.bounds.min;
         while (rotation < 360)
         {
-            transform.RotateAround(point, Vector3.up, 90 * Time.deltaTime);
+            transform.RotateAround(rotationPoint, Vector3.up, -90 * Time.deltaTime);
             rotation++;
             yield return null;
         }
-
-        swinging = false;
     }
 
     void DoorWalkedThrough()

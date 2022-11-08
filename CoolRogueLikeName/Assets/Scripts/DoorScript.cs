@@ -7,10 +7,9 @@ public class DoorScript : MonoBehaviour
     public Material doorClosedMaterial;
     public Material doorUnlockedMaterial;
     public Material doorGoesNowhereMaterial;
-    public int playerUnlockDistance = 5; // don't know what this should be
-    public float maxSwingAngle = 90.0f;
+
+
     public Transform[] roomPrefabs;
-    public Transform player;
 
     private Renderer renderer;
 
@@ -21,104 +20,65 @@ public class DoorScript : MonoBehaviour
     private bool open = false;
 
     private RoomScript roomThisDoorLeadsTo = null;
-    private bool swungOpen = false;
-    private Vector3 rotationPoint;
 
 
     // Start is called before the first frame update
     void Start()
     {
         renderer = GetComponent<Renderer>();
+
         renderer.material = doorGoesNowhereMaterial;
 
         collider = GetComponent<Collider>();
-
-
-        // rotation point is the "bottom left corner" of the door
-        rotationPoint = transform.position;
-        rotationPoint.y -= transform.localScale.y / 2;
-
-        switch (transform.rotation.eulerAngles.y)
-        {
-            case 0:
-                rotationPoint.x -= transform.localScale.x / 2;
-                break;
-            case 90:
-                rotationPoint.z += transform.localScale.x / 2;
-                break;
-            case 270:
-                rotationPoint.z -= transform.localScale.x / 2;
-                break;
-            case 360:
-                rotationPoint.x += transform.localScale.x / 2;
-                break;
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!locked)
-        {
-            if (Input.GetKey(KeyCode.E) && collider.bounds.SqrDistance(player.position) < playerUnlockDistance)
-            {
-                StartCoroutine(SwingDoor(true, roomThisDoorLeadsTo.PlayerInRoom()));
-            }
-        }
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        // if (locked)
+        // {
+        //     return;
+        // }
+
+        // Debug.Log(collision.gameObject.name);
+        // if (collision.gameObject.name == "Player")
+        // {
+        //     renderer.enabled = false;
+        //     StartCoroutine(WaitUntilDoorWalkedThrough());
+        // }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (locked)
+        {
+            return;
+        }
+
+        if (other.gameObject.name == "Player")
+        {
+            Open();
+            StartCoroutine(WaitUntilDoorWalkedThrough());
+        }
     }
 
-    private IEnumerator WaitUntilDoorWalkedThrough(bool inRoom)
+    private IEnumerator WaitUntilDoorWalkedThrough()
     {
-        // door walked through <=> inRoom status changes
-        while (roomThisDoorLeadsTo.PlayerInRoom() == inRoom)
+        while (!roomThisDoorLeadsTo.PlayerInRoom())
         {
             yield return null;
         }
 
-        DoorWalkedThrough(inRoom);
+        DoorWalkedThrough();
     }
 
-    private IEnumerator SwingDoor(bool open, bool inRoom)
+    void DoorWalkedThrough()
     {
-        if (open == swungOpen)
-        {
-            yield break; // only run one instance of swing at a time to prevent shenanigans (dancing door)
-        }
-
-        swungOpen = open;
-        collider.isTrigger = true;
-
-        int mul = open ? -1 : 1;
-        mul *= inRoom ? -1 : 1; // if player is in room, swing door the other way
-
-        float time = 0;
-        while (time < 1)
-        {
-            time += Time.deltaTime;
-            transform.RotateAround(rotationPoint, Vector3.up, mul * maxSwingAngle * Time.deltaTime);
-            yield return null;
-        }
-
-        collider.isTrigger = false;
-
-        if (open)
-        {
-            StartCoroutine(WaitUntilDoorWalkedThrough(inRoom));
-        }
-    }
-
-    void DoorWalkedThrough(bool wasOriginallyinRoom)
-    {
-        StartCoroutine(SwingDoor(false, wasOriginallyinRoom));
-
         if (roomThisDoorLeadsTo.RoomDone())
         {
             return;
@@ -157,7 +117,7 @@ public class DoorScript : MonoBehaviour
             renderer.material = doorUnlockedMaterial;
 
             // set collider to trigger
-            // collider.isTrigger = true;
+            collider.isTrigger = true;
 
             locked = false;
         }
@@ -171,7 +131,7 @@ public class DoorScript : MonoBehaviour
     public void Lock()
     {
         // lock door
-        // collider.isTrigger = false;
+        collider.isTrigger = false;
         locked = true;
         renderer.material = doorClosedMaterial;
         renderer.enabled = true;

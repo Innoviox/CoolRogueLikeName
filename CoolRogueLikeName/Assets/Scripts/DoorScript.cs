@@ -119,11 +119,6 @@ public class DoorScript : MonoBehaviour
     {
         StartCoroutine(SwingDoor(false, wasOriginallyinRoom));
 
-        if (roomThisDoorLeadsTo.RoomDone())
-        {
-            return;
-        }
-
         // activate enemies
         roomThisDoorLeadsTo.WalkedInto();
 

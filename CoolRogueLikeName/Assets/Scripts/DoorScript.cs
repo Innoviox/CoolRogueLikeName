@@ -53,8 +53,6 @@ public class DoorScript : MonoBehaviour
                 rotationPoint.x += transform.localScale.x / 2;
                 break;
         }
-
-        Debug.Log($"DoorScript: {transform.rotation.eulerAngles.y} {rotationPoint}");
     }
 
     // Update is called once per frame

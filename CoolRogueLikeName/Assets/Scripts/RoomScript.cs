@@ -54,7 +54,6 @@ public class RoomScript : MonoBehaviour
         // fit room bounds to children
         foreach (Collider collider in GetComponentsInChildren<Collider>())
         {
-            Debug.Log($"RoomScript: {collider.name} {collider.bounds}");
             bounds.Encapsulate(collider.bounds);
         }
 

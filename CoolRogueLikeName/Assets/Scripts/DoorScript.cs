@@ -62,70 +62,63 @@ public class DoorScript : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.E) && collider.bounds.SqrDistance(player.position) < playerUnlockDistance)
             {
-                StartCoroutine(SwingDoorOpen());
+                StartCoroutine(SwingDoor(true, roomThisDoorLeadsTo.PlayerInRoom()));
             }
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        // if (locked)
-        // {
-        //     return;
-        // }
-
-        // Debug.Log(collision.gameObject.name);
-        // if (collision.gameObject.name == "Player")
-        // {
-        //     renderer.enabled = false;
-        //     StartCoroutine(WaitUntilDoorWalkedThrough());
-        // }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (locked)
-        {
-            return;
-        }
-
-        if (other.gameObject.name == "Player")
-        {
-            Open();
-            StartCoroutine(WaitUntilDoorWalkedThrough());
-        }
     }
 
-    private IEnumerator WaitUntilDoorWalkedThrough()
+    private IEnumerator WaitUntilDoorWalkedThrough(bool inRoom)
     {
-        while (!roomThisDoorLeadsTo.PlayerInRoom())
+        // door walked through <=> inRoom status changes
+        while (roomThisDoorLeadsTo.PlayerInRoom() == inRoom)
         {
             yield return null;
         }
 
-        DoorWalkedThrough();
+        DoorWalkedThrough(inRoom);
     }
 
-    private IEnumerator SwingDoorOpen()
+    private IEnumerator SwingDoor(bool open, bool inRoom)
     {
-        if (swungOpen)
+        if (open == swungOpen)
         {
             yield break; // only run one instance of swing at a time to prevent shenanigans (dancing door)
         }
 
-        swungOpen = true;
+        swungOpen = open;
+        collider.isTrigger = true;
+
+        int mul = open ? -1 : 1;
+        mul *= inRoom ? -1 : 1; // if player is in room, swing door the other way
 
         float time = 0;
         while (time < 1)
         {
             time += Time.deltaTime;
-            transform.RotateAround(rotationPoint, Vector3.up, -maxSwingAngle * Time.deltaTime);
+            transform.RotateAround(rotationPoint, Vector3.up, mul * maxSwingAngle * Time.deltaTime);
             yield return null;
+        }
+
+        collider.isTrigger = false;
+
+        if (open)
+        {
+            StartCoroutine(WaitUntilDoorWalkedThrough(inRoom));
         }
     }
 
-    void DoorWalkedThrough()
+    void DoorWalkedThrough(bool wasOriginallyinRoom)
     {
+        StartCoroutine(SwingDoor(false, wasOriginallyinRoom));
+
         if (roomThisDoorLeadsTo.RoomDone())
         {
             return;

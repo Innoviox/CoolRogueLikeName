@@ -8,7 +8,7 @@ public class DoorScript : MonoBehaviour
     public Material doorUnlockedMaterial;
     public Material doorGoesNowhereMaterial;
     public int playerUnlockDistance = 5; // don't know what this should be
-
+    public float maxSwingAngle = 90.0f;
     public Transform[] roomPrefabs;
     public Transform player;
 
@@ -115,11 +115,11 @@ public class DoorScript : MonoBehaviour
 
         swungOpen = true;
 
-        int rotation = 0;
-        while (rotation < 360)
+        float time = 0;
+        while (time < 1)
         {
-            transform.RotateAround(rotationPoint, Vector3.up, -90 * Time.deltaTime);
-            rotation++;
+            time += Time.deltaTime;
+            transform.RotateAround(rotationPoint, Vector3.up, -maxSwingAngle * Time.deltaTime);
             yield return null;
         }
     }

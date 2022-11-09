@@ -82,19 +82,24 @@ public class RoomScript : MonoBehaviour
 
         if (nEnemies == 0)
         {
-            // finish room
-            roomDone = true;
+            RoomFinished();
+        }
+    }
 
-            // open all doors
-            foreach (var door in doors)
-            {
-                door.Unlock();
-            }
+    private void RoomFinished()
+    {
+        // finish room
+        roomDone = true;
 
-            if (entryPoint != null)
-            {
-                entryPoint.Unlock();
-            }
+        // open all doors
+        foreach (var door in doors)
+        {
+            door.Unlock();
+        }
+
+        if (entryPoint != null)
+        {
+            entryPoint.Unlock();
         }
     }
 
@@ -152,6 +157,11 @@ public class RoomScript : MonoBehaviour
         }
 
         enemiesActivated = true;
+
+        if (nEnemies == 0)
+        {
+            RoomFinished();
+        }
     }
 
     private IEnumerator MoveCamera()

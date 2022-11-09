@@ -72,7 +72,11 @@ public class RoomScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        // maybe this should exist? unsure
+        // if (PlayerInRoom())
+        // {
+        //     camera.transform.position = cameraPosition;
+        // }
     }
 
     private void EnemyDestroyed()

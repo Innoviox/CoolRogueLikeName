@@ -53,7 +53,7 @@ public class RoomScript : MonoBehaviour
 
         PreGenerate();
 
-        if (roomActiveAtStart)
+        if (generateEnemies)
         {
             WalkedInto();
         }

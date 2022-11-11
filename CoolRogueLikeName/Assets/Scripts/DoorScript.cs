@@ -63,6 +63,7 @@ public class DoorScript : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.E) && collider.bounds.SqrDistance(player.position) < playerUnlockDistance)
             {
+                roomThisDoorLeadsTo.ShowRoom(true);
                 StartCoroutine(SwingDoor(true, roomThisDoorLeadsTo.PlayerInRoom()));
             }
         }

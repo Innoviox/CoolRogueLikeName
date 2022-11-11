@@ -9,12 +9,14 @@ public class RoomScript : MonoBehaviour
 
     public int pregenerateDepth = 2; // for now, just pregenerate 1 rooms ahead
 
+
     public bool generateEnemies = true; // todo make private with getter/setter
     public Camera camera;
     private int nEnemies;
     private List<DoorScript> doors;
 
     private Transform room;
+    private Renderer[] renderers;
     private Bounds bounds;
     private Bounds playerBounds;
     private DoorScript entryPoint = null;
@@ -22,9 +24,14 @@ public class RoomScript : MonoBehaviour
     private bool enemiesActivated = false;
     private Vector3 cameraPosition; // todo set camera rotation as well
 
+
     // Start is called before the first frame update
     void Start()
     {
+        room = GetComponent<Transform>();
+        renderers = GetComponentsInChildren<Renderer>();
+
+
         doors = new List<DoorScript>();
 
         Transform door;
@@ -50,8 +57,11 @@ public class RoomScript : MonoBehaviour
         {
             WalkedInto();
         }
+        else
+        {
+            ShowRoom(false);
+        }
 
-        room = GetComponent<Transform>();
         var boxCollider = room.GetComponent<BoxCollider>();
         bounds = boxCollider.bounds;
         playerBounds = player.GetComponent<Collider>().bounds;
@@ -135,6 +145,14 @@ public class RoomScript : MonoBehaviour
         }
 
         StartCoroutine(MoveCamera());
+    }
+
+    public void ShowRoom(bool visible)
+    {
+        foreach (Renderer r in renderers)
+        {
+            r.enabled = visible;
+        }
     }
 
     private void RemoveLid()

@@ -10,9 +10,9 @@ public class RoomScript : MonoBehaviour
     public int pregenerateDepth = 2; // for now, just pregenerate 1 rooms ahead
 
     public bool generateEnemies = true; // todo make private with getter/setter
-
+    public Camera camera;
     private int nEnemies;
-    private List<Transform> doors;
+    private List<DoorScript> doors;
 
     private Transform room;
     private Bounds bounds;
@@ -20,11 +20,12 @@ public class RoomScript : MonoBehaviour
     private DoorScript entryPoint = null;
     private bool roomDone = false;
     private bool enemiesActivated = false;
+    private Vector3 cameraPosition; // todo set camera rotation as well
 
     // Start is called before the first frame update
     void Start()
     {
-        doors = new List<Transform>();
+        doors = new List<DoorScript>();
 
         Transform door;
         int n = 1;
@@ -32,10 +33,16 @@ public class RoomScript : MonoBehaviour
         while ((door = transform.Find($"Door{n}")) != null)
         {
             n++;
-            doors.Add(door);
+            var doorScript = door.gameObject.GetComponent<DoorScript>();
+            doorScript.player = player;
+            doorScript.roomThisDoorLeadsFrom = this;
+            doors.Add(doorScript);
         }
 
-        Debug.Log($"RoomScript: {nEnemies} enemies, {doors.Count} doors");
+        if (cameraPosition == Vector3.zero)
+        {
+            cameraPosition = camera.transform.position;
+        }
 
         PreGenerate();
 
@@ -52,7 +59,6 @@ public class RoomScript : MonoBehaviour
         // fit room bounds to children
         foreach (Collider collider in GetComponentsInChildren<Collider>())
         {
-            Debug.Log($"RoomScript: {collider.name} {collider.bounds}");
             bounds.Encapsulate(collider.bounds);
         }
 
@@ -61,13 +67,16 @@ public class RoomScript : MonoBehaviour
 
         // hide ceiling for now
         transform.Find("Ceiling").gameObject.SetActive(false);
-
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        // maybe this should exist? unsure
+        // if (PlayerInRoom())
+        // {
+        //     camera.transform.position = cameraPosition;
+        // }
     }
 
     private void EnemyDestroyed()
@@ -77,20 +86,24 @@ public class RoomScript : MonoBehaviour
 
         if (nEnemies == 0)
         {
-            // finish room
-            roomDone = true;
+            RoomFinished();
+        }
+    }
 
-            // open all doors
-            foreach (var door in doors)
-            {
-                // todo make list of DoorScripts so this is faster
-                door.gameObject.SendMessage("Unlock");
-            }
+    private void RoomFinished()
+    {
+        // finish room
+        roomDone = true;
 
-            if (entryPoint != null)
-            {
-                entryPoint.Unlock();
-            }
+        // open all doors
+        foreach (var door in doors)
+        {
+            door.Unlock();
+        }
+
+        if (entryPoint != null)
+        {
+            entryPoint.Unlock();
         }
     }
 
@@ -104,16 +117,24 @@ public class RoomScript : MonoBehaviour
         foreach (var door in doors)
         {
             // todo make this better
-            var newRoom = door.gameObject.GetComponent<DoorScript>().GenerateRoom(player);
+            var newRoom = door.GenerateRoom(player);
             newRoom.gameObject.GetComponent<RoomScript>().pregenerateDepth = pregenerateDepth - 1;
             newRoom.gameObject.GetComponent<RoomScript>().generateEnemies = false;
+            newRoom.gameObject.GetComponent<RoomScript>().camera = camera;
+            Debug.Log($"aoeirjg {cameraPosition} {newRoom.position} {transform.position}");
+            newRoom.gameObject.GetComponent<RoomScript>().SetCameraPosition(cameraPosition + newRoom.position - transform.position);
         }
     }
 
     public void WalkedInto()
     {
-        RemoveLid();
-        ActivateEnemies();
+        if (!RoomDone())
+        {
+            RemoveLid();
+            ActivateEnemies();
+        }
+
+        StartCoroutine(MoveCamera());
     }
 
     private void RemoveLid()
@@ -140,6 +161,18 @@ public class RoomScript : MonoBehaviour
         }
 
         enemiesActivated = true;
+
+        if (nEnemies == 0)
+        {
+            RoomFinished();
+        }
+    }
+
+    private IEnumerator MoveCamera()
+    {
+        Debug.Log("setting camera position to " + cameraPosition);
+        camera.transform.position = cameraPosition;
+        yield break;
     }
 
     public bool PlayerInRoom()
@@ -147,8 +180,9 @@ public class RoomScript : MonoBehaviour
         return bounds.Contains(player.position + playerBounds.min) && bounds.Contains(player.position + playerBounds.max);
     }
 
-    public void AddDoor(Transform door)
+    public void AddDoor(DoorScript door)
     {
+        door.player = player;
         doors.Add(door);
     }
 
@@ -160,5 +194,10 @@ public class RoomScript : MonoBehaviour
     public bool RoomDone()
     {
         return roomDone;
+    }
+
+    public void SetCameraPosition(Vector3 position)
+    {
+        cameraPosition = position;
     }
 }

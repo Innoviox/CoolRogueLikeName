@@ -337,8 +337,8 @@ GameObject:
   - component: {fileID: 4093053622673991518}
   - component: {fileID: 4093053622673991514}
   - component: {fileID: 4093053622673991517}
-  - component: {fileID: 4093053622673991508}
-  - component: {fileID: 4093053622673991515}
+  - component: {fileID: 8324220240391201916}
+  - component: {fileID: 6282670160552794105}
   m_Layer: 0
   m_Name: EnemyCapsule
   m_TagString: Untagged
@@ -457,7 +457,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
---- !u!114 &4093053622673991508
+--- !u!114 &8324220240391201916
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -466,16 +466,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4093053622673991516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1be8b0943c2771d4badd61dbcb9ad2d4, type: 3}
+  m_Script: {fileID: 11500000, guid: ccdfaf0ca4438784fb1dbed745ce9aec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  shootRate: 0
   spawnPoint: {fileID: 4093053621994218214}
   enemyProjectile: {fileID: 3618787135062484332, guid: 5aa76b0cbe9356a4291e347e8e36f4d6, type: 3}
   projectileSpeed: 5
   baseDamage: 1
-  initialWait: 2
-  shootRate: 1.5
---- !u!114 &4093053622673991515
+--- !u!114 &6282670160552794105
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -484,7 +484,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4093053622673991516}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 799d4a2e8812f184884bc66b0891117d, type: 3}
+  m_Script: {fileID: 11500000, guid: 555bada48a268144ead250dbd26935d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
@@ -493,6 +493,4 @@ MonoBehaviour:
   enemyBody: {fileID: 0}
   enemySpeed: 2.5
   dodgeSpeed: 3
-  maxDist: 5
-  initialWait: 2
-  walkRate: 0.1
+  walkRate: 0

@@ -13,7 +13,8 @@ public class EnemyCreator : MonoBehaviour
         enemy.parent = transform.parent;
         enemy.localPosition = transform.localPosition;
 
-        GameObject capsule = enemy.Find("EnemyCapsule").gameObject;
+        //GameObject capsule = enemy.Find("EnemyCapsule").gameObject;
+        GameObject capsule = enemy.Find("SwordEnemy").gameObject;
         capsule.GetComponent<EnemyScript>().player = player;
         capsule.GetComponent<EnemyMovement>().player = player;
         capsule.GetComponent<EnemyAttack>().player = player;

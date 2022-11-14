@@ -5,55 +5,38 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     public Transform player;
-    public Transform rightSide;      // Used to raycast 
-    public Transform leftSide;       // from the enemy to the room
+    public Transform rightSide;     // Used to raycast 
+    public Transform leftSide;      // from the enemy to the room
 
     public Rigidbody enemyBody;
-    public float enemySpeed = 2.5f;   // Walking speed of enemy
-    public float dodgeSpeed = 3;      // How fast the enemy moves when it dodges.
+    public float enemySpeed = 2.5f; // Walking speed of enemy
+    public float dodgeSpeed = 3;    // How fast the enemy moves when it dodges.
 
-    public float maxDist = 5.0f;      // Distance enemy can be from player before moving. 
-    private int allowedDistance;      // How close enemy can be to an object before changing directions (left/right) when dodging player bullets.
-    private bool moveRight;           // Enemy moves right to dodge player bullets by default
-    public float initialWait = 2.0f;  // How long to wait before the first call of Invoke in seconds.
-    public float walkRate = 0.1f;     // How often the enemy will walk towards the player based on their distance. 
-    
+    protected int allowedDistance;  // How close enemy can be to an object before changing directions (left/right) when dodging player bullets.
+    protected bool moveRight;       // Enemy moves right to dodge player bullets by default
 
-    // Start is called before the first frame update
-    void Start()
+    public float walkRate;          // How often the enemy will walk towards the player based on their distance. 
+
+    /// <summary>
+    /// If the player is too far from the enemy on the x-z plane
+    /// Then the enemy will walk towards the player. 
+    /// </summary>
+    protected virtual bool WalkTowardsPlayer(float maxDist)
     {
-        enemyBody = GetComponent<Rigidbody>();
-        allowedDistance = RandomDistance();
-        moveRight = true;
-        EnemyMove();
-    }
+        bool tooFar = EnemyHelpers.DistToPlayer(player, transform) >= maxDist;
 
-    public virtual void EnemyMove()
-    {
-        InvokeRepeating(nameof(WalkTowardsPlayer), initialWait, walkRate);
-    }
-
-    // If the player is too far from the enemy on the x-z plane
-    // Then the enemy will walk towards the player. 
-    private void WalkTowardsPlayer()
-    {
-        // Get vector between player and enemy position
-        var vectorTarget = player.position - transform.position;
-        // only consider x-z plane distance
-        vectorTarget.y = 0;
-
-        // Move towards player if player is too far
-        if (vectorTarget.magnitude >= maxDist)
+        if (tooFar)
         {
             // The enemy walks forward in the direction they are facing
             enemyBody.velocity = new Vector3(transform.forward.x * enemySpeed, 0, transform.forward.z * enemySpeed);
         }
-        else
-            DodgePlayerLineOfFire();
+        return tooFar;
     }
 
-    // Shoots ray out of player and moves left or right if enemy's body is hit the ray. 
-    private void DodgePlayerLineOfFire()
+    /// <summary>
+    /// Shoots ray out of player and moves left or right if enemy's body is hit the ray. 
+    /// </summary>
+    protected virtual void DodgePlayerLineOfFire()
     {
         // Get direcion player is looking
         Ray playerRay = new Ray(player.position, player.forward);
@@ -103,7 +86,7 @@ public class EnemyMovement : MonoBehaviour
             }
         }
     }
-    private int RandomDistance()
+    protected int RandomDistance()
     {
         return Random.Range(1, 4);
     }

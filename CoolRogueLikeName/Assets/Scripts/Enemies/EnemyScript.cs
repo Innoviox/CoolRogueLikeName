@@ -4,29 +4,32 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
-    float health;            
-    float maxHealth = 5.0f; 
+    private float health;
+    private float maxHealth;
+    protected bool inDistance;
 
     GameObject healthBar;
-    public Transform player;   
+    public Transform player;
 
-    void Start()
+    // Called before Start to initialize 
+    private void Awake()
     {
         healthBar = transform.parent.Find("HealthBar").gameObject;
-        health = maxHealth;
+        health = maxHealth = 5.0f;
+        inDistance = false;
     }
-    
+
     void Update()
     {
-        // The enemy will constantly look at the player.
-        transform.LookAt(player);
         // Make the enemy health bar follow the enemy as they move around. 
-        healthBar.transform.position = new Vector3(transform.position.x, 
-                                                   healthBar.transform.position.y, 
+        healthBar.transform.position = new Vector3(transform.position.x,
+                                                   healthBar.transform.position.y,
                                                    transform.position.z);
     }
 
-    // Take damage on colliding with projectile
+    /// <summary>
+    /// Take damage on colliding with projectile
+    /// </summary>
     private void OnCollisionEnter(Collision collision)
     {
         // Check collision occured with a bullet

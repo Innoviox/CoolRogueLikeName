@@ -13,7 +13,10 @@ namespace Wx
     {
         public string airportID;
 
+        // ReportWind should be called with the values (wind direction, wind speed)
         public event Action<float, float> ReportWind;
+
+        // ReportState should be called with the new value of isSimulated
         public event Action<bool> ReportState;
 
         // Use these values to help in making controlled random
@@ -32,9 +35,27 @@ namespace Wx
 
         bool isSimulated = true;
 
+        public void Start()
+        {
+            StartCoroutine(GetNetworkWind());
+        }
+
         public void ChangeState()
         {
             // Add code here to switch states and inform observers
+
+            if (isSimulated)
+            {
+                StopCoroutine(SimulateWind());
+                ReportState(false);
+                StartCoroutine(GetNetworkWind());
+            } else
+            {
+                StopCoroutine(GetNetworkWind());
+                ReportState(true);
+                StartCoroutine(SimulateWind());
+            }
+            isSimulated = !isSimulated;
         }
 
         IEnumerator SimulateWind()
@@ -81,6 +102,23 @@ namespace Wx
                 // request: once to pause until the request has been answered,
                 // and a second time to pause for ten seconds before sending
                 // another request.
+
+                UnityWebRequest webRequest = UnityWebRequest.Get("https://api.weather.gov/stations/" + airportID + "/observations/latest");
+                yield return webRequest.SendWebRequest();
+
+                switch (webRequest.result)
+                {
+                    case UnityWebRequest.Result.Success:
+                        Debug.Log("Successful weather request for " + airportID + ": " + webRequest.downloadHandler.text);
+                        break;
+                    default:
+                        Debug.Log("Error on weather request for " + airportID + ": " + webRequest.error);
+                        break;
+                }
+
+                Wx windData = JsonUtility.FromJson<Wx>(webRequest.downloadHandler.text);
+                webRequest.Dispose();
+                ReportWind(windData.properties.windDirection.value, windData.properties.windSpeed.value);
 
                 yield return wait;
             }

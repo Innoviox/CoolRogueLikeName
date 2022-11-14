@@ -24,6 +24,10 @@ public class RoomScript : MonoBehaviour
     private bool enemiesActivated = false;
     private Vector3 cameraPosition; // todo set camera rotation as well
 
+    /* These members are used for sending messages to the HUD */
+    public GameObject killedEnemiesScore;
+    public GameObject clearedRoomsScore;
+
 
     // Start is called before the first frame update
     void Start()
@@ -93,10 +97,12 @@ public class RoomScript : MonoBehaviour
     {
         nEnemies--;
         Debug.Log($"destroyed enemy: {nEnemies} enemies");
+        killedEnemiesScore.SendMessage("Increment"); // increases the enemies killed score
 
         if (nEnemies == 0)
         {
             RoomFinished();
+            clearedRoomsScore.SendMessage("Increment"); // increases the rooms cleared score
         }
     }
 

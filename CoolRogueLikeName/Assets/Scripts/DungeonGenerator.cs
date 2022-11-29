@@ -5,6 +5,8 @@ using UnityEngine;
 public class DungeonGenerator : MonoBehaviour
 {
     public int baseRoomSize = 10;
+    public float minRoomSize = 5.0f;
+    public float maxRoomSize = 15.0f;
     public List<Room> rooms;
     public List<int> expandableRooms;
 
@@ -12,10 +14,13 @@ public class DungeonGenerator : MonoBehaviour
     void Start()
     {
         rooms = new List<Room>();
-        rooms.Add(Room(0, 0, baseRoomSize)); // base room
+        rooms.Add(new Room(0, 0, baseRoomSize, 0)); // base room
 
         expandableRooms = new List<int>();
         expandableRooms.Add(0); // base room is expandable
+
+        Expand(); // make 4 starting rooms
+
     }
 
     void Expand()
@@ -23,9 +28,8 @@ public class DungeonGenerator : MonoBehaviour
         int roomToExpand = expandableRooms[Random.Range(0, expandableRooms.Count)];
         Room room = rooms[roomToExpand];
 
-        if (room == 0)
+        if (roomToExpand == 0) // choose every wall in base room
         {
-            // choose every wall in base room
             foreach (int wallToExpand in room.expandableWalls)
             {
                 ExpandWall(room, wallToExpand);
@@ -45,9 +49,14 @@ public class DungeonGenerator : MonoBehaviour
 
     void ExpandWall(Room room, int wallToExpand)
     {
-        int newRoomSize = GenerateRoomSize();
+        int newRoomSize = GenerateRoomSize(room);
+        int roomOffset = GenerateRoomOffset();
+
         int newRoomX = 0;
         int newRoomY = 0;
+
+        int oppositeWall = (wallToExpand + 2) % 4;
+        int unGuaranteeableWall = (wallToExpand + 1) % 4;
 
         // todo door offset
         switch (wallToExpand)
@@ -70,7 +79,10 @@ public class DungeonGenerator : MonoBehaviour
                 break;
         }
 
-        Room newRoom = Room(newRoomX, newRoomY, newRoomSize);
+        Room newRoom = new Room(newRoomX, newRoomY, newRoomSize, rooms.Count);
+        newRoom.expandableWalls.Remove(oppositeWall); // can't expand into the room we just came from
+        newRoom.expandableWalls.Remove(unGuaranteeableWall); // a room could generate at this wall, don't expand into it
+
         rooms.Add(newRoom);
         expandableRooms.Add(rooms.Count - 1);
 
@@ -78,10 +90,92 @@ public class DungeonGenerator : MonoBehaviour
         room.expandableWalls.Remove(wallToExpand);
     }
 
-    int GenerateRoomSize()
+    int GenerateRoomSize(Room room, int wallToExpand)
     {
-        return baseRoomSize;
-        // return Random.Range(10, 20) / 10.0f * baseRoomSize;
+        // todo do something cool here
+        // return (int)(Random.Range(minRoomSize, maxRoomSize)); // room sizes are ints so the block system works
+        int maxSize = (int)minRoomSize;
+
+        while (maxSize < maxRoomSize)
+        {
+            maxSize++;
+
+            if (InOtherRoom(room, wallToExpand, maxSize))
+            {
+                break;
+            }
+        }
+
+        return (int)Random.Range(minRoomSize, maxSize);
+    }
+
+    bool InOtherRoom(Room room, int wallToExpand, int size)
+    {
+        foreach (Room r in rooms)
+        {
+            if (r.id == room.id)
+            {
+                continue;
+            }
+
+            int x1 = 0;
+            int y1 = 0;
+
+            switch (wallToExpand)
+            {
+                case 0: // north wall
+                    x1 = room.x + room.size - size;
+                    y1 = room.y + room.size;
+                    break;
+                case 1: // east wall
+                    x1 = room.x + room.size + size;
+                    y1 = room.y - room.size;
+                    break;
+                case 2: // south wall
+                    x1 = room.x - room.size + size;
+                    y1 = room.y - room.size;
+                    break;
+                case 3: // west wall
+                    x1 = room.x - room.size - size;
+                    y1 = room.y + room.size;
+                    break;
+            }
+
+            int x2 = 0;
+            int y2 = 0;
+
+            switch (wallToExpand)
+            {
+                case 0: // north wall
+                    x2 = room.x + room.size;
+                    y2 = room.y + room.size + size;
+                    break;
+                case 1: // east wall
+                    x2 = room.x + room.size;
+                    y2 = room.y - room.size + size;
+                    break;
+                case 2: // south wall
+                    x2 = room.x - room.size;
+                    y2 = room.y - room.size - size;
+                    break;
+                case 3: // west wall
+                    x2 = room.x - room.size;
+                    y2 = room.y + room.size - size;
+                    break;
+            }
+
+            if (r.InRoom(x1, y1) || r.InRoom(x2, y2))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    int GenerateRoomOffset()
+    {
+        return 0; // todo
     }
 
     // Update is called once per frame

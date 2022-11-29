@@ -29,15 +29,14 @@ public class Room
 
     public bool InRoom(int x, int y)
     {
-        // todo
-        // if (x > this.x - this.size && x < this.x + this.size)
-        // {
-        //     if (y > this.y - this.size && y < this.y + this.size)
-        //     {
-        //         return true;
-        //     }
-        // }
+        if (x >= this.x - this.size && x <= this.x + this.size)
+        {
+            if (y >= this.y - this.size && y <= this.y + this.size)
+            {
+                return true;
+            }
+        }
 
-        // return false;
+        return false;
     }
 }

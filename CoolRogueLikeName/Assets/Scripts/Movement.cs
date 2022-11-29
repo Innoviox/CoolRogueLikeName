@@ -6,7 +6,7 @@ public class Movement : MonoBehaviour
 {
     public float acceleration; // Rate at which the player speeds up
     public float decceleration; // Rate at which the player slows down, changes the drag value of the Rigidbody
-    public float maxSpeed; // Max speed of the player
+    public float baseMaxSpeed; // Max speed of the player
     public float jumpForce; // Increases the jump height of the player
     public float jumpCoolDown; // Amount of time between jumps
     public bool doubleJump; // Enables the player to double jump
@@ -14,6 +14,7 @@ public class Movement : MonoBehaviour
     public float dashTime; // Sets the time the player is dashing for
     public KeyCode jumpKey; // Sets the jump key
     public KeyCode dashKey; // Sets the dash key
+    public PowerupManager stats;
 
     private Rigidbody rb;
     private bool dashLock;
@@ -51,9 +52,9 @@ public class Movement : MonoBehaviour
 
             /* Keeps the velocity capped at maxSpeed */
             Vector3 velocity = rb.velocity;
-            if (velocity.magnitude > maxSpeed)
+            if (velocity.magnitude > baseMaxSpeed * stats.playerMoveSpeedFactor)
             {
-                rb.velocity = velocity.normalized * maxSpeed;
+                rb.velocity = velocity.normalized * baseMaxSpeed * stats.playerMoveSpeedFactor;
             }
 
         }

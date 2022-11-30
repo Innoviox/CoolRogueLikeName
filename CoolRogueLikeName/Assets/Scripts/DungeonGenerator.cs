@@ -11,10 +11,10 @@ public class DungeonGenerator : MonoBehaviour
     public int maxRoomSize = 15;
     public int doorSize = 1;
     public int nRooms = 10;
-    public List<Transform> blocks;
+    public List<Transform> blocks; // id prefer this to be a dict but unity doesnt do dicts in the inspector
+    private Dictionary<string, Transform> blocksDict;
     public List<Room> rooms;
     public List<int> expandableRooms;
-    private Dictionary<string, Transform> blocksDict;
     private int expands;
     private List<Transform> roomBlocks;
 
@@ -72,7 +72,8 @@ public class DungeonGenerator : MonoBehaviour
 
     void ExpandWall(Room room, int wallToExpand)
     {
-        Debug.Log($"Expanding room {room.id} wall {wallToExpand}");
+        // Debug.Log($"Expanding room {room.id} wall {wallToExpand}");
+
         int maxSize = GetMaxSize(room, wallToExpand);
         if (maxSize == 0)
         {
@@ -119,7 +120,7 @@ public class DungeonGenerator : MonoBehaviour
         // remove wall from expandable walls
         room.expandableWalls.Remove(wallToExpand);
 
-        Debug.Log($"Made room {newRoom.id} size {room.size} offset {roomOffset}");
+        // Debug.Log($"Made room {newRoom.id} size {room.size} offset {roomOffset}");
     }
 
     int GetMaxSize(Room room, int wallToExpand)
@@ -137,7 +138,7 @@ public class DungeonGenerator : MonoBehaviour
         }
         maxSize /= 2;
 
-        Debug.Log($"Found Max size: {maxSize}");
+        // Debug.Log($"Found Max size: {maxSize}");
 
         if (maxSize < minRoomSize)
         {
@@ -204,12 +205,43 @@ public class DungeonGenerator : MonoBehaviour
         return (int)Random.Range(newRoomSize - oldRoomSize, Mathf.Min(max1, max2));
     }
 
+    void GenerateDoors()
+    {
+        var doors = new Dictionary<int, List<int>>();
+        foreach (Room room1 in rooms)
+        {
+            foreach (Room room2 in rooms)
+            {
+                if (room1.id == room2.id) continue;
+
+                int wall = room1.SharedWall(room2);
+                if (wall == -1) continue;
+                if (doors.ContainsKey(room2.id) && doors[room2.id].Contains(((wall + 2) % 4))) continue;
+
+                room1.AddDoor(room1.GenerateDoorLocation(wall, room2), blocksDict);
+
+                if (doors.ContainsKey(room1.id))
+                {
+                    doors[room1.id].Add(wall);
+                }
+                else
+                {
+                    doors[room1.id] = new List<int> { wall };
+                }
+
+                Debug.Log($"Door on wall {wall} of room {room1.id} going to {room2.id}");
+            }
+        }
+    }
+
     void MakeDungeon()
     {
         foreach (Room room in rooms)
         {
             roomBlocks.AddRange(room.MakeRoom(blocksDict));
         }
+
+        GenerateDoors();
     }
 
     void ClearDungeon()
@@ -217,6 +249,10 @@ public class DungeonGenerator : MonoBehaviour
         foreach (Transform block in roomBlocks)
         {
             Destroy(block.gameObject);
+        }
+        foreach (Room room in rooms)
+        {
+            room.ClearDoors();
         }
         roomBlocks.Clear();
     }

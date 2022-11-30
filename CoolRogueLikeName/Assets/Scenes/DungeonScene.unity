@@ -338,6 +338,7 @@ MonoBehaviour:
   blocks:
   - {fileID: 1148656669565794936, guid: 205fb134216364438aed4e394315d7f4, type: 3}
   - {fileID: 3596348016256263366, guid: b4b0451de600749c295e129820152158, type: 3}
+  - {fileID: 2266810356618841464, guid: 26ddde87ccad241d28aae95a746da6d4, type: 3}
   expandableRooms: 
 --- !u!4 &1934108695
 Transform:

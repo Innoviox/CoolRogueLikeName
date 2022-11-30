@@ -11,7 +11,7 @@ public class Room
 
     public List<int> expandableWalls;
 
-    // todo doors
+    public List<Transform> doors;
 
     public Room(int x, int y, int size, int id)
     {
@@ -25,6 +25,8 @@ public class Room
         expandableWalls.Add(1); // east wall
         expandableWalls.Add(2); // south wall
         expandableWalls.Add(3); // west wall
+
+        doors = new List<Transform>();
     }
 
     public bool InRoom(int x, int y)
@@ -66,6 +68,17 @@ public class Room
         {
             for (int j = y - size; j < y + size; j++)
             {
+                bool isDoor = false;
+                foreach (Transform door in doors)
+                {
+                    if (door.position.x == i && door.position.y == j)
+                    {
+                        isDoor = true;
+                        break;
+                    }
+                }
+                if (isDoor) continue;
+
                 Transform block;
                 if (i == x - size || i == x + size - 1 || j == y - size || j == y + size - 1)
                 {
@@ -95,5 +108,67 @@ public class Room
         // Debug.Log($"Made Rom {id} Size {size} Blocks {blocks.Count}");
 
         return blocks;
+    }
+
+    public int SharedWall(Room o)
+    {
+        if (y + size == o.y - o.size) return 0;
+        if (x + size == o.x - o.size) return 1;
+        if (y - size == o.y + o.size) return 2;
+        if (x - size == o.x + o.size) return 3;
+        return -1;
+    }
+
+    public Vector2 GenerateDoorLocation(int wall, Room other)
+    {
+        // todo should this method guarantee padding?
+        int x = 0;
+        int y = 0;
+        switch (wall)
+        {
+            case 0:
+                int xMin = Mathf.Max(this.x - this.size, other.x - other.size);
+                int xMax = Mathf.Min(this.x + this.size, other.x + other.size);
+                x = Random.Range(xMin, xMax);
+                y = this.y + this.size;
+                break;
+            case 1:
+                int yMin = Mathf.Max(this.y - this.size, other.y - other.size);
+                int yMax = Mathf.Min(this.y + this.size, other.y + other.size);
+                x = this.x + this.size;
+                y = Random.Range(yMin, yMax);
+                break;
+            case 2:
+                xMin = Mathf.Max(this.x - this.size, other.x - other.size);
+                xMax = Mathf.Min(this.x + this.size, other.x + other.size);
+                x = Random.Range(xMin, xMax);
+                y = this.y - this.size;
+                break;
+            case 3:
+                yMin = Mathf.Max(this.y - this.size, other.y - other.size);
+                yMax = Mathf.Min(this.y + this.size, other.y + other.size);
+                x = this.x - this.size;
+                y = Random.Range(yMin, yMax);
+                break;
+        }
+
+        return new Vector2(x, y);
+    }
+
+    public void ClearDoors()
+    {
+        foreach (Transform door in doors)
+        {
+            GameObject.Destroy(door.gameObject);
+        }
+        doors.Clear();
+    }
+
+    public void AddDoor(Vector2 doorLocation, Dictionary<string, Transform> blocksDict)
+    {
+        Transform prefab = blocksDict["Door"];
+        Transform door = GameObject.Instantiate(prefab, new Vector3(doorLocation.x, doorLocation.y, 0), Quaternion.identity);
+        door.name = $"Door ({doorLocation.x}, {doorLocation.y})";
+        doors.Add(door);
     }
 }

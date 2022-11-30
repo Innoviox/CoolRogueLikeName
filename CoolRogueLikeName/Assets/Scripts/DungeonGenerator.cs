@@ -7,6 +7,7 @@ public class DungeonGenerator : MonoBehaviour
     public int baseRoomSize = 10;
     public float minRoomSize = 5.0f;
     public float maxRoomSize = 15.0f;
+    public int doorSize = 1;
     public List<Room> rooms;
     public List<int> expandableRooms;
 
@@ -49,7 +50,7 @@ public class DungeonGenerator : MonoBehaviour
 
     void ExpandWall(Room room, int wallToExpand)
     {
-        int newRoomSize = GenerateRoomSize(room);
+        int newRoomSize = GenerateRoomSize(room, wallToExpand);
         int roomOffset = GenerateRoomOffset();
 
         int newRoomX = 0;
@@ -173,9 +174,9 @@ public class DungeonGenerator : MonoBehaviour
         return false;
     }
 
-    int GenerateRoomOffset()
+    int GenerateRoomOffset(Room oldRoom, Room newRoom)
     {
-        return 0; // todo
+        return (int)Random.Range(newRoom.size - oldRoom.size, newRoom.size + oldRoom.size - doorSize * 2);
     }
 
     // Update is called once per frame

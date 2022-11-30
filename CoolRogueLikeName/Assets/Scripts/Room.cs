@@ -40,6 +40,79 @@ public class Room
         return false;
     }
 
+    public bool CornersInSquare(int x1, int y1, int x2, int y2)
+    {
+        // todo make this better
+        int cx1 = this.x - this.size;
+        int cy1 = this.y + this.size;
+
+        int cx2 = this.x + this.size;
+        int cy2 = this.y - this.size;
+
+        int cx3 = this.x - this.size;
+        int cy3 = this.y - this.size;
+
+        int cx4 = this.x + this.size;
+        int cy4 = this.y + this.size;
+
+        if (x1 <= cx1 && x2 >= cx1 && y1 >= cy1 && y2 <= cy1)
+        {
+            return true;
+        }
+
+        if (x1 <= cx2 && x2 >= cx2 && y1 >= cy2 && y2 <= cy2)
+        {
+            return true;
+        }
+
+        if (x1 <= cx3 && x2 >= cx3 && y1 >= cy3 && y2 <= cy3)
+        {
+            return true;
+        }
+
+        if (x1 <= cx4 && x2 >= cx4 && y1 >= cy4 && y2 <= cy4)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    // public bool Overlaps(int x1, int y1, int x2, int y2)
+    // {
+    //     if (x - size > x2 || x1 > x + size)
+    //     {
+    //         return false;
+    //     }
+
+    //     if (y + size > y1 || y2 > y - size)
+    //     {
+    //         return false;
+    //     }
+
+    //     return true;
+    // }
+
+    public bool Overlaps(int l2x, int l2y, int r2x, int r2y)
+    {
+        int l1x = x - size;
+        int l1y = y + size;
+        int r1x = x + size;
+        int r1y = y - size;
+
+        // If one rectangle is on left side of other
+        if (l1x > r2x || l2x > r1x)
+            return false;
+
+        // If one rectangle is above other
+        if (r1y > l2y || r2y > l1y)
+            return false;
+
+        return true;
+    }
+
+
+
     public List<Transform> MakeRoom(Dictionary<string, Transform> blocksDict)
     {
         List<Transform> blocks = new List<Transform>();

@@ -7,8 +7,8 @@ using System.Reflection;
 public class DungeonGenerator : MonoBehaviour
 {
     public int baseRoomSize = 10;
-    public float minRoomSize = 5.0f;
-    public float maxRoomSize = 15.0f;
+    public int minRoomSize = 5;
+    public int maxRoomSize = 15;
     public int doorSize = 1;
     public int nRooms = 10;
     public List<Transform> blocks;
@@ -154,6 +154,7 @@ public class DungeonGenerator : MonoBehaviour
 
     bool InOtherRoom(Room room, int wallToExpand, int size)
     {
+        // note that here size is double what it normally is (eg diameter not radius)
         foreach (Room r in rooms)
         {
             if (r.id == room.id)
@@ -168,14 +169,14 @@ public class DungeonGenerator : MonoBehaviour
             {
                 case 0: // north wall
                     x1 = room.x + room.size - size;
-                    y1 = room.y + room.size;
+                    y1 = room.y + room.size + size;
                     break;
                 case 1: // east wall
-                    x1 = room.x + room.size + size;
-                    y1 = room.y - room.size;
+                    x1 = room.x + room.size;
+                    y1 = room.y - room.size + size;
                     break;
                 case 2: // south wall
-                    x1 = room.x - room.size + size;
+                    x1 = room.x - room.size;
                     y1 = room.y - room.size;
                     break;
                 case 3: // west wall
@@ -184,30 +185,10 @@ public class DungeonGenerator : MonoBehaviour
                     break;
             }
 
-            int x2 = 0;
-            int y2 = 0;
+            int x2 = x1 + size;
+            int y2 = y1 - size;
 
-            switch (wallToExpand)
-            {
-                case 0: // north wall
-                    x2 = room.x + room.size;
-                    y2 = room.y + room.size + size;
-                    break;
-                case 1: // east wall
-                    x2 = room.x + room.size;
-                    y2 = room.y - room.size + size;
-                    break;
-                case 2: // south wall
-                    x2 = room.x - room.size;
-                    y2 = room.y - room.size - size;
-                    break;
-                case 3: // west wall
-                    x2 = room.x - room.size;
-                    y2 = room.y + room.size - size;
-                    break;
-            }
-
-            if (r.InRoom(x1, y1) || r.InRoom(x2, y2) || r.InRoom(x2, y1) || r.InRoom(x1, y2))
+            if (r.Overlaps(x1, y1, x2, y2))
             {
                 return true;
             }

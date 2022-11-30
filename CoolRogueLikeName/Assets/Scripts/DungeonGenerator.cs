@@ -11,6 +11,7 @@ public class DungeonGenerator : MonoBehaviour
     public int maxRoomSize = 15;
     public int doorSize = 1;
     public int nRooms = 10;
+    public int bossSize = 20;
     public List<Transform> blocks; // id prefer this to be a dict but unity doesnt do dicts in the inspector
     private Dictionary<string, Transform> blocksDict;
     public List<Room> rooms;
@@ -42,11 +43,11 @@ public class DungeonGenerator : MonoBehaviour
     { // expand N times
         for (int i = 0; i < n; i++)
         {
-            Expand();
+            Expand(false);
         }
     }
 
-    void Expand()
+    void Expand(bool bossRoom)
     {
         int roomToExpand = expandableRooms[Random.Range(0, expandableRooms.Count)];
         Room room = rooms[roomToExpand];
@@ -55,14 +56,14 @@ public class DungeonGenerator : MonoBehaviour
         {
             foreach (int wallToExpand in new List<int>(room.expandableWalls))
             {
-                ExpandWall(room, wallToExpand); // this should always work
+                ExpandWall(room, wallToExpand, bossRoom); // this should always work
             }
         }
         else
         {
             int wallToExpand = room.expandableWalls[Random.Range(0, room.expandableWalls.Count)];
             int tries = 0, maxTries = 10;
-            while (!ExpandWall(room, wallToExpand) && tries < maxTries)
+            while (!ExpandWall(room, wallToExpand, bossRoom) && tries < maxTries)
             {
                 roomToExpand = expandableRooms[Random.Range(0, expandableRooms.Count)];
                 room = rooms[roomToExpand];
@@ -77,17 +78,17 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
-    bool ExpandWall(Room room, int wallToExpand)
+    bool ExpandWall(Room room, int wallToExpand, bool bossRoom)
     {
         // Debug.Log($"Expanding room {room.id} wall {wallToExpand}");
 
-        int maxSize = GetMaxSize(room, wallToExpand);
-        if (maxSize == 0)
+        int maxSize = GetMaxSize(room, wallToExpand, bossRoom);
+        if (maxSize == 0 || (bossRoom && maxSize < bossSize))
         {
             return false; // not enough room here, skip expand
         }
 
-        int newRoomSize = GenerateRoomSize(maxSize);
+        int newRoomSize = bossRoom ? bossSize : GenerateRoomSize(maxSize);
         int roomOffset = GenerateRoomOffset(room.size, newRoomSize, maxSize);
 
         int newRoomX = 0;
@@ -132,11 +133,12 @@ public class DungeonGenerator : MonoBehaviour
         return true;
     }
 
-    int GetMaxSize(Room room, int wallToExpand)
+    int GetMaxSize(Room room, int wallToExpand, bool bossRoom)
     {
         int maxSize = (int)minRoomSize;
+        int maximum = bossRoom ? bossSize : maxRoomSize;
 
-        while (maxSize < maxRoomSize * 2)
+        while (maxSize < maximum * 2)
         {
             maxSize++;
 
@@ -274,7 +276,10 @@ public class DungeonGenerator : MonoBehaviour
             ClearLog();
             ClearDungeon();
             Start();
+
             ExpandN(expands);
+            Expand(true); // expand the boss room
+
             MakeDungeon();
         }
     }

@@ -74,8 +74,14 @@ public class DungeonGenerator : MonoBehaviour
     void ExpandWall(Room room, int wallToExpand)
     {
         Debug.Log($"Expanding room {room.id} wall {wallToExpand}");
-        int newRoomSize = GenerateRoomSize(room, wallToExpand);
-        int roomOffset = GenerateRoomOffset(room.size, newRoomSize);
+        int maxSize = GetMaxSize(room, wallToExpand);
+        if (maxSize == 0)
+        {
+            return; // not enough room here, skip expand
+        }
+
+        int newRoomSize = GenerateRoomSize(maxSize);
+        int roomOffset = GenerateRoomOffset(room.size, newRoomSize, maxSize);
 
         int newRoomX = 0;
         int newRoomY = 0;
@@ -114,10 +120,10 @@ public class DungeonGenerator : MonoBehaviour
         // remove wall from expandable walls
         room.expandableWalls.Remove(wallToExpand);
 
-        Debug.Log($"Made room {room.id} size {room.size} offset {roomOffset}");
+        Debug.Log($"Made room {newRoom.id} size {room.size} offset {roomOffset}");
     }
 
-    int GenerateRoomSize(Room room, int wallToExpand)
+    int GetMaxSize(Room room, int wallToExpand)
     {
         int maxSize = (int)minRoomSize;
 
@@ -134,6 +140,16 @@ public class DungeonGenerator : MonoBehaviour
 
         Debug.Log($"Found Max size: {maxSize}");
 
+        if (maxSize < minRoomSize)
+        {
+            return 0;
+        }
+
+        return maxSize;
+    }
+
+    int GenerateRoomSize(int maxSize)
+    {
         return (int)Random.Range(minRoomSize, maxSize);
     }
 
@@ -192,7 +208,7 @@ public class DungeonGenerator : MonoBehaviour
                     break;
             }
 
-            if (r.InRoom(x1, y1) || r.InRoom(x2, y2))
+            if (r.InRoom(x1, y1) || r.InRoom(x2, y2) || r.InRoom(x2, y1) || r.InRoom(x1, y2))
             {
                 return true;
             }
@@ -201,9 +217,10 @@ public class DungeonGenerator : MonoBehaviour
         return false;
     }
 
-    int GenerateRoomOffset(int oldRoomSize, int newRoomSize)
+    int GenerateRoomOffset(int oldRoomSize, int newRoomSize, int maxSize)
     {
-        return (int)Random.Range(newRoomSize - oldRoomSize, newRoomSize + oldRoomSize - doorSize * 2);
+        Debug.Log($"Min Offset {newRoomSize - oldRoomSize} Max Offset {newRoomSize + oldRoomSize - doorSize * 2}");
+        return (int)Random.Range(newRoomSize - oldRoomSize, 2 * maxSize - newRoomSize - oldRoomSize);
     }
 
     void MakeDungeon()

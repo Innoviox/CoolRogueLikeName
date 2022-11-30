@@ -73,6 +73,8 @@ public class Room
         t.transform.localPosition += new Vector3(x - size, y + size, 0);
         blocks.Add(text.transform);
 
+        // Debug.Log($"Made Rom {id} Size {size} Blocks {blocks.Count}");
+
         return blocks;
     }
 }

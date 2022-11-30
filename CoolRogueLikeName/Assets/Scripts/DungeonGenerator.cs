@@ -35,7 +35,7 @@ public class DungeonGenerator : MonoBehaviour
         expandableRooms = new List<int>();
         expandableRooms.Add(0); // base room is expandable
 
-        expands = nRooms - 1;
+        expands = nRooms - 3;
     }
 
     void ExpandN(int n)
@@ -55,13 +55,20 @@ public class DungeonGenerator : MonoBehaviour
         {
             foreach (int wallToExpand in new List<int>(room.expandableWalls))
             {
-                ExpandWall(room, wallToExpand);
+                ExpandWall(room, wallToExpand); // this should always work
             }
         }
         else
         {
             int wallToExpand = room.expandableWalls[Random.Range(0, room.expandableWalls.Count)];
-            ExpandWall(room, wallToExpand);
+            int tries = 0, maxTries = 10;
+            while (!ExpandWall(room, wallToExpand) && tries < maxTries)
+            {
+                roomToExpand = expandableRooms[Random.Range(0, expandableRooms.Count)];
+                room = rooms[roomToExpand];
+                wallToExpand = room.expandableWalls[Random.Range(0, room.expandableWalls.Count)];
+                tries++;
+            }
         }
 
         if (room.expandableWalls.Count == 0)
@@ -70,14 +77,14 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
-    void ExpandWall(Room room, int wallToExpand)
+    bool ExpandWall(Room room, int wallToExpand)
     {
         // Debug.Log($"Expanding room {room.id} wall {wallToExpand}");
 
         int maxSize = GetMaxSize(room, wallToExpand);
         if (maxSize == 0)
         {
-            return; // not enough room here, skip expand
+            return false; // not enough room here, skip expand
         }
 
         int newRoomSize = GenerateRoomSize(maxSize);
@@ -121,6 +128,8 @@ public class DungeonGenerator : MonoBehaviour
         room.expandableWalls.Remove(wallToExpand);
 
         // Debug.Log($"Made room {newRoom.id} size {room.size} offset {roomOffset}");
+
+        return true;
     }
 
     int GetMaxSize(Room room, int wallToExpand)

@@ -112,10 +112,15 @@ public class Room
 
     public int SharedWall(Room o)
     {
-        if (y + size == o.y - o.size) return 0;
-        if (x + size == o.x - o.size) return 1;
-        if (y - size == o.y + o.size) return 2;
-        if (x - size == o.x + o.size) return 3;
+        int w = -1;
+        if (y + size == o.y - o.size) w = 0;
+        if (x + size == o.x - o.size) w = 1;
+        if (y - size == o.y + o.size) w = 2;
+        if (x - size == o.x + o.size) w = 3;
+
+        var ov = Overlap(w, o);
+        if (ov.max - ov.min > 0) return w; // todo maybe this can help with padding
+
         return -1;
     }
 
@@ -124,35 +129,53 @@ public class Room
         // todo should this method guarantee padding?
         int x = 0;
         int y = 0;
+        var overlap = Overlap(wall, other);
         switch (wall)
         {
             case 0:
-                int xMin = Mathf.Max(this.x - this.size, other.x - other.size);
-                int xMax = Mathf.Min(this.x + this.size, other.x + other.size);
-                x = Random.Range(xMin, xMax);
+                x = Random.Range(overlap.min, overlap.max);
                 y = this.y + this.size;
                 break;
             case 1:
-                int yMin = Mathf.Max(this.y - this.size, other.y - other.size);
-                int yMax = Mathf.Min(this.y + this.size, other.y + other.size);
                 x = this.x + this.size;
-                y = Random.Range(yMin, yMax);
+                y = Random.Range(overlap.min, overlap.max);
                 break;
             case 2:
-                xMin = Mathf.Max(this.x - this.size, other.x - other.size);
-                xMax = Mathf.Min(this.x + this.size, other.x + other.size);
-                x = Random.Range(xMin, xMax);
+                x = Random.Range(overlap.min, overlap.max);
                 y = this.y - this.size;
                 break;
             case 3:
-                yMin = Mathf.Max(this.y - this.size, other.y - other.size);
-                yMax = Mathf.Min(this.y + this.size, other.y + other.size);
                 x = this.x - this.size;
-                y = Random.Range(yMin, yMax);
+                y = Random.Range(overlap.min, overlap.max);
                 break;
         }
 
         return new Vector2(x, y);
+    }
+
+    private (int min, int max) Overlap(int wall, Room other)
+    {
+        int min = 0, max = 0;
+        switch (wall)
+        {
+            case 0:
+                min = Mathf.Max(this.x - this.size, other.x - other.size);
+                max = Mathf.Min(this.x + this.size, other.x + other.size);
+                break;
+            case 1:
+                min = Mathf.Max(this.y - this.size, other.y - other.size);
+                max = Mathf.Min(this.y + this.size, other.y + other.size);
+                break;
+            case 2:
+                min = Mathf.Max(this.x - this.size, other.x - other.size);
+                max = Mathf.Min(this.x + this.size, other.x + other.size);
+                break;
+            case 3:
+                min = Mathf.Max(this.y - this.size, other.y - other.size);
+                max = Mathf.Min(this.y + this.size, other.y + other.size);
+                break;
+        }
+        return (min: min, max: max);
     }
 
     public void ClearDoors()

@@ -13,7 +13,7 @@ public class DungeonGenerator : MonoBehaviour
     public List<Room> rooms;
     public List<int> expandableRooms;
     private Dictionary<string, Transform> blocksDict;
-    private int expandsLeft;
+    private int expands;
     private List<Transform> roomBlocks;
 
     // Start is called before the first frame update
@@ -33,10 +33,7 @@ public class DungeonGenerator : MonoBehaviour
         expandableRooms = new List<int>();
         expandableRooms.Add(0); // base room is expandable
 
-        expandsLeft = nRooms - 1;
-        // ExpandN(nRooms - 1); // make the rest of the rooms
-        // MakeDungeon();
-
+        expands = nRooms - 1;
     }
 
     void ExpandN(int n)
@@ -243,12 +240,12 @@ public class DungeonGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && expandsLeft > 0)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             ClearDungeon();
-            Expand();
+            Start();
+            ExpandN(expands);
             MakeDungeon();
-            expandsLeft--;
         }
     }
 }

@@ -241,7 +241,7 @@ public class DungeonGenerator : MonoBehaviour
                     doors[room1.id] = new List<Wall> { wall };
                 }
 
-                Debug.Log($"Door on wall {wall} of room {room1.id} going to {room2.id}");
+                // Debug.Log($"Door on wall {wall} of room {room1.id} going to {room2.id}");
             }
         }
     }
@@ -293,6 +293,4 @@ public class DungeonGenerator : MonoBehaviour
         var method = type.GetMethod("Clear");
         method.Invoke(new object(), null);
     }
-
-
 }

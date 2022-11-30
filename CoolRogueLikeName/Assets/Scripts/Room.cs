@@ -8,9 +8,7 @@ public class Room
     public int y;
     public int size;
     public int id;
-
     public List<Wall> expandableWalls;
-
     public List<Transform> doors;
     public int doorWidth = 1; // todo make a class for variables or smth
 

@@ -199,8 +199,9 @@ public class DungeonGenerator : MonoBehaviour
 
     int GenerateRoomOffset(int oldRoomSize, int newRoomSize, int maxSize)
     {
-        Debug.Log($"Min Offset {newRoomSize - oldRoomSize} Max Offset {newRoomSize + oldRoomSize - doorSize * 2}");
-        return (int)Random.Range(newRoomSize - oldRoomSize, 2 * maxSize - newRoomSize - oldRoomSize);
+        int max1 = newRoomSize + oldRoomSize - doorSize * 2;
+        int max2 = 2 * maxSize - newRoomSize - oldRoomSize;
+        return (int)Random.Range(newRoomSize - oldRoomSize, Mathf.Min(max1, max2));
     }
 
     void MakeDungeon()

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Reflection;
+
 
 public class DungeonGenerator : MonoBehaviour
 {
@@ -242,10 +244,22 @@ public class DungeonGenerator : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            ClearLog();
             ClearDungeon();
             Start();
             ExpandN(expands);
             MakeDungeon();
         }
     }
+
+    // https://stackoverflow.com/questions/40577412/clear-editor-console-logs-from-script
+    public void ClearLog()
+    {
+        var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
+        var type = assembly.GetType("UnityEditor.LogEntries");
+        var method = type.GetMethod("Clear");
+        method.Invoke(new object(), null);
+    }
+
+
 }

@@ -62,7 +62,7 @@ public class DungeonGenerator : MonoBehaviour
         else
         {
             int wallToExpand = room.expandableWalls[Random.Range(0, room.expandableWalls.Count)];
-            int tries = 0, maxTries = 10;
+            int tries = 0, maxTries = bossRoom ? 100 : 10; // we really wanna generate the boss room
             while (!ExpandWall(room, wallToExpand, bossRoom) && tries < maxTries)
             {
                 roomToExpand = expandableRooms[Random.Range(0, expandableRooms.Count)];

@@ -29,14 +29,50 @@ public class Room
 
     public bool InRoom(int x, int y)
     {
-        if (x >= this.x - this.size && x <= this.x + this.size)
+        if (x > this.x - this.size && x < this.x + this.size)
         {
-            if (y >= this.y - this.size && y <= this.y + this.size)
+            if (y > this.y - this.size && y < this.y + this.size)
             {
                 return true;
             }
         }
 
         return false;
+    }
+
+    public List<Transform> MakeRoom(Dictionary<string, Transform> blocksDict)
+    {
+        List<Transform> blocks = new List<Transform>();
+        for (int i = x - size; i < x + size; i++)
+        {
+            for (int j = y - size; j < y + size; j++)
+            {
+                Transform block;
+                if (i == x - size || i == x + size - 1 || j == y - size || j == y + size - 1)
+                {
+                    Transform prefab = blocksDict["Wall"];
+                    block = GameObject.Instantiate(prefab, new Vector3(i, j, 0), Quaternion.identity);
+                    block.name = $"Wall ({i}, {j})";
+                }
+                else
+                {
+                    Transform prefab = blocksDict["Floor"];
+                    block = GameObject.Instantiate(prefab, new Vector3(i, j, 0), Quaternion.identity);
+                    block.name = $"Floor ({i}, {j})";
+                }
+
+                blocks.Add(block);
+            }
+        }
+
+        GameObject text = new GameObject();
+        TextMesh t = text.AddComponent<TextMesh>();
+        t.text = $"{id}";
+        t.fontSize = 100;
+        t.color = Color.black;
+        t.transform.localPosition += new Vector3(x - size, y + size, 0);
+        blocks.Add(text.transform);
+
+        return blocks;
     }
 }

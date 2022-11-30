@@ -8,20 +8,43 @@ public class DungeonGenerator : MonoBehaviour
     public float minRoomSize = 5.0f;
     public float maxRoomSize = 15.0f;
     public int doorSize = 1;
+    public int nRooms = 10;
+    public List<Transform> blocks;
     public List<Room> rooms;
     public List<int> expandableRooms;
+    private Dictionary<string, Transform> blocksDict;
+    private int expandsLeft;
+    private List<Transform> roomBlocks;
 
     // Start is called before the first frame update
     void Start()
     {
+        blocksDict = new Dictionary<string, Transform>();
+        foreach (Transform block in blocks)
+        {
+            blocksDict.Add(block.name, block);
+        }
+
+        roomBlocks = new List<Transform>();
+
         rooms = new List<Room>();
         rooms.Add(new Room(0, 0, baseRoomSize, 0)); // base room
 
         expandableRooms = new List<int>();
         expandableRooms.Add(0); // base room is expandable
 
-        Expand(); // make 4 starting rooms
+        expandsLeft = nRooms - 1;
+        // ExpandN(nRooms - 1); // make the rest of the rooms
+        // MakeDungeon();
 
+    }
+
+    void ExpandN(int n)
+    { // expand N times
+        for (int i = 0; i < n; i++)
+        {
+            Expand();
+        }
     }
 
     void Expand()
@@ -31,7 +54,7 @@ public class DungeonGenerator : MonoBehaviour
 
         if (roomToExpand == 0) // choose every wall in base room
         {
-            foreach (int wallToExpand in room.expandableWalls)
+            foreach (int wallToExpand in new List<int>(room.expandableWalls))
             {
                 ExpandWall(room, wallToExpand);
             }
@@ -50,8 +73,9 @@ public class DungeonGenerator : MonoBehaviour
 
     void ExpandWall(Room room, int wallToExpand)
     {
+        Debug.Log($"Expanding room {room.id} wall {wallToExpand}");
         int newRoomSize = GenerateRoomSize(room, wallToExpand);
-        int roomOffset = GenerateRoomOffset();
+        int roomOffset = GenerateRoomOffset(room.size, newRoomSize);
 
         int newRoomX = 0;
         int newRoomY = 0;
@@ -63,20 +87,20 @@ public class DungeonGenerator : MonoBehaviour
         switch (wallToExpand)
         {
             case 0: // north wall
-                newRoomX = room.x;
+                newRoomX = room.x - roomOffset;
                 newRoomY = room.y + room.size + newRoomSize;
                 break;
             case 1: // east wall
                 newRoomX = room.x + room.size + newRoomSize;
-                newRoomY = room.y;
+                newRoomY = room.y + roomOffset;
                 break;
             case 2: // south wall
-                newRoomX = room.x;
+                newRoomX = room.x + roomOffset;
                 newRoomY = room.y - room.size - newRoomSize;
                 break;
             case 3: // west wall
                 newRoomX = room.x - room.size - newRoomSize;
-                newRoomY = room.y;
+                newRoomY = room.y - roomOffset;
                 break;
         }
 
@@ -89,15 +113,15 @@ public class DungeonGenerator : MonoBehaviour
 
         // remove wall from expandable walls
         room.expandableWalls.Remove(wallToExpand);
+
+        Debug.Log($"Made room {room.id} size {room.size} offset {roomOffset}");
     }
 
     int GenerateRoomSize(Room room, int wallToExpand)
     {
-        // todo do something cool here
-        // return (int)(Random.Range(minRoomSize, maxRoomSize)); // room sizes are ints so the block system works
         int maxSize = (int)minRoomSize;
 
-        while (maxSize < maxRoomSize)
+        while (maxSize < maxRoomSize * 2)
         {
             maxSize++;
 
@@ -106,6 +130,9 @@ public class DungeonGenerator : MonoBehaviour
                 break;
             }
         }
+        maxSize /= 2;
+
+        Debug.Log($"Found Max size: {maxSize}");
 
         return (int)Random.Range(minRoomSize, maxSize);
     }
@@ -174,14 +201,37 @@ public class DungeonGenerator : MonoBehaviour
         return false;
     }
 
-    int GenerateRoomOffset(Room oldRoom, Room newRoom)
+    int GenerateRoomOffset(int oldRoomSize, int newRoomSize)
     {
-        return (int)Random.Range(newRoom.size - oldRoom.size, newRoom.size + oldRoom.size - doorSize * 2);
+        return (int)Random.Range(newRoomSize - oldRoomSize, newRoomSize + oldRoomSize - doorSize * 2);
+    }
+
+    void MakeDungeon()
+    {
+        foreach (Room room in rooms)
+        {
+            roomBlocks.AddRange(room.MakeRoom(blocksDict));
+        }
+    }
+
+    void ClearDungeon()
+    {
+        foreach (Transform block in roomBlocks)
+        {
+            Destroy(block.gameObject);
+        }
+        roomBlocks.Clear();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Space) && expandsLeft > 0)
+        {
+            ClearDungeon();
+            Expand();
+            MakeDungeon();
+            expandsLeft--;
+        }
     }
 }

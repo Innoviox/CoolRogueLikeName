@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
+using WallMethods;
 
 
 public class DungeonGenerator : MonoBehaviour
@@ -54,14 +55,14 @@ public class DungeonGenerator : MonoBehaviour
 
         if (roomToExpand == 0) // choose every wall in base room
         {
-            foreach (int wallToExpand in new List<int>(room.expandableWalls))
+            foreach (Wall wallToExpand in new List<Wall>(room.expandableWalls))
             {
                 ExpandWall(room, wallToExpand, bossRoom); // this should always work
             }
         }
         else
         {
-            int wallToExpand = room.expandableWalls[Random.Range(0, room.expandableWalls.Count)];
+            Wall wallToExpand = room.expandableWalls[Random.Range(0, room.expandableWalls.Count)];
             int tries = 0, maxTries = bossRoom ? 100 : 10; // we really wanna generate the boss room
             while (!ExpandWall(room, wallToExpand, bossRoom) && tries < maxTries)
             {
@@ -78,7 +79,7 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
-    bool ExpandWall(Room room, int wallToExpand, bool bossRoom)
+    bool ExpandWall(Room room, Wall wallToExpand, bool bossRoom)
     {
         // Debug.Log($"Expanding room {room.id} wall {wallToExpand}");
 
@@ -94,25 +95,25 @@ public class DungeonGenerator : MonoBehaviour
         int newRoomX = 0;
         int newRoomY = 0;
 
-        int oppositeWall = (wallToExpand + 2) % 4;
-        int unGuaranteeableWall = (wallToExpand + 1) % 4;
+        Wall oppositeWall = wallToExpand.Opposite();
+        Wall unGuaranteeableWall = wallToExpand.UnGuaranteeable();
 
         // todo door offset
         switch (wallToExpand)
         {
-            case 0: // north wall
+            case Wall.North: // north wall
                 newRoomX = room.x - roomOffset;
                 newRoomY = room.y + room.size + newRoomSize;
                 break;
-            case 1: // east wall
+            case Wall.East: // east wall
                 newRoomX = room.x + room.size + newRoomSize;
                 newRoomY = room.y + roomOffset;
                 break;
-            case 2: // south wall
+            case Wall.South: // south wall
                 newRoomX = room.x + roomOffset;
                 newRoomY = room.y - room.size - newRoomSize;
                 break;
-            case 3: // west wall
+            case Wall.West: // west wall
                 newRoomX = room.x - room.size - newRoomSize;
                 newRoomY = room.y - roomOffset;
                 break;
@@ -133,7 +134,7 @@ public class DungeonGenerator : MonoBehaviour
         return true;
     }
 
-    int GetMaxSize(Room room, int wallToExpand, bool bossRoom)
+    int GetMaxSize(Room room, Wall wallToExpand, bool bossRoom)
     {
         int maxSize = (int)minRoomSize;
         int maximum = bossRoom ? bossSize : maxRoomSize;
@@ -164,7 +165,7 @@ public class DungeonGenerator : MonoBehaviour
         return (int)Random.Range(minRoomSize, maxSize);
     }
 
-    bool InOtherRoom(Room room, int wallToExpand, int size)
+    bool InOtherRoom(Room room, Wall wallToExpand, int size)
     {
         // note that here size is double what it normally is (eg diameter not radius)
         foreach (Room r in rooms)
@@ -179,19 +180,19 @@ public class DungeonGenerator : MonoBehaviour
 
             switch (wallToExpand)
             {
-                case 0: // north wall
+                case Wall.North: // north wall
                     x1 = room.x + room.size - size;
                     y1 = room.y + room.size + size;
                     break;
-                case 1: // east wall
+                case Wall.East: // east wall
                     x1 = room.x + room.size;
                     y1 = room.y - room.size + size;
                     break;
-                case 2: // south wall
+                case Wall.South: // south wall
                     x1 = room.x - room.size;
                     y1 = room.y - room.size;
                     break;
-                case 3: // west wall
+                case Wall.West: // west wall
                     x1 = room.x - room.size - size;
                     y1 = room.y + room.size;
                     break;
@@ -218,16 +219,16 @@ public class DungeonGenerator : MonoBehaviour
 
     void GenerateDoors()
     {
-        var doors = new Dictionary<int, List<int>>();
+        var doors = new Dictionary<int, List<Wall>>(); // dict from room id to list of walls with doors
         foreach (Room room1 in rooms)
         {
             foreach (Room room2 in rooms)
             {
                 if (room1.id == room2.id) continue;
 
-                int wall = room1.SharedWall(room2);
-                if (wall == -1) continue;
-                if (doors.ContainsKey(room2.id) && doors[room2.id].Contains(((wall + 2) % 4))) continue;
+                Wall wall = room1.SharedWall(room2);
+                if (wall == Wall.None) continue;
+                if (doors.ContainsKey(room2.id) && doors[room2.id].Contains(wall.Opposite())) continue;
 
                 room1.AddDoor(room1.GenerateDoorLocation(wall, room2), blocksDict);
 
@@ -237,7 +238,7 @@ public class DungeonGenerator : MonoBehaviour
                 }
                 else
                 {
-                    doors[room1.id] = new List<int> { wall };
+                    doors[room1.id] = new List<Wall> { wall };
                 }
 
                 Debug.Log($"Door on wall {wall} of room {room1.id} going to {room2.id}");

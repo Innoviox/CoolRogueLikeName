@@ -9,7 +9,7 @@ public class Room
     public int size;
     public int id;
 
-    public List<int> expandableWalls;
+    public List<Wall> expandableWalls;
 
     public List<Transform> doors;
     public int doorWidth = 1; // todo make a class for variables or smth
@@ -21,11 +21,11 @@ public class Room
         this.size = size;
         this.id = id;
 
-        expandableWalls = new List<int>();
-        expandableWalls.Add(0); // north wall
-        expandableWalls.Add(1); // east wall
-        expandableWalls.Add(2); // south wall
-        expandableWalls.Add(3); // west wall
+        expandableWalls = new List<Wall>();
+        expandableWalls.Add(Wall.North); // north wall
+        expandableWalls.Add(Wall.East); // east wall
+        expandableWalls.Add(Wall.South); // south wall
+        expandableWalls.Add(Wall.West); // west wall
 
         doors = new List<Transform>();
     }
@@ -111,21 +111,21 @@ public class Room
         return blocks;
     }
 
-    public int SharedWall(Room o)
+    public Wall SharedWall(Room o)
     {
-        int w = -1;
-        if (y + size == o.y - o.size) w = 0;
-        if (x + size == o.x - o.size) w = 1;
-        if (y - size == o.y + o.size) w = 2;
-        if (x - size == o.x + o.size) w = 3;
+        Wall w = Wall.None;
+        if (y + size == o.y - o.size) w = Wall.North;
+        if (x + size == o.x - o.size) w = Wall.East;
+        if (y - size == o.y + o.size) w = Wall.South;
+        if (x - size == o.x + o.size) w = Wall.West;
 
         var ov = Overlap(w, o);
         if (ov.max - ov.min > doorWidth * 2) return w; // todo maybe this can help with padding
 
-        return -1;
+        return Wall.None;
     }
 
-    public Vector2 GenerateDoorLocation(int wall, Room other)
+    public Vector2 GenerateDoorLocation(Wall wall, Room other)
     {
         // todo should this method guarantee padding?
         int x = 0;
@@ -135,19 +135,19 @@ public class Room
 
         switch (wall)
         {
-            case 0:
+            case Wall.North:
                 x = pos;
                 y = this.y + this.size;
                 break;
-            case 1:
+            case Wall.East:
                 x = this.x + this.size;
                 y = pos;
                 break;
-            case 2:
+            case Wall.South:
                 x = pos;
                 y = this.y - this.size;
                 break;
-            case 3:
+            case Wall.West:
                 x = this.x - this.size;
                 y = pos;
                 break;
@@ -156,24 +156,24 @@ public class Room
         return new Vector2(x, y);
     }
 
-    private (int min, int max) Overlap(int wall, Room other)
+    private (int min, int max) Overlap(Wall wall, Room other)
     {
         int min = 0, max = 0;
         switch (wall)
         {
-            case 0:
+            case Wall.North:
                 min = Mathf.Max(this.x - this.size, other.x - other.size);
                 max = Mathf.Min(this.x + this.size, other.x + other.size);
                 break;
-            case 1:
+            case Wall.East:
                 min = Mathf.Max(this.y - this.size, other.y - other.size);
                 max = Mathf.Min(this.y + this.size, other.y + other.size);
                 break;
-            case 2:
+            case Wall.South:
                 min = Mathf.Max(this.x - this.size, other.x - other.size);
                 max = Mathf.Min(this.x + this.size, other.x + other.size);
                 break;
-            case 3:
+            case Wall.West:
                 min = Mathf.Max(this.y - this.size, other.y - other.size);
                 max = Mathf.Min(this.y + this.size, other.y + other.size);
                 break;

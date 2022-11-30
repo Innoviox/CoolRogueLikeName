@@ -12,6 +12,7 @@ public class Room
     public List<int> expandableWalls;
 
     public List<Transform> doors;
+    public int doorWidth = 1; // todo make a class for variables or smth
 
     public Room(int x, int y, int size, int id)
     {
@@ -119,7 +120,7 @@ public class Room
         if (x - size == o.x + o.size) w = 3;
 
         var ov = Overlap(w, o);
-        if (ov.max - ov.min > 0) return w; // todo maybe this can help with padding
+        if (ov.max - ov.min > doorWidth * 2) return w; // todo maybe this can help with padding
 
         return -1;
     }
@@ -130,23 +131,25 @@ public class Room
         int x = 0;
         int y = 0;
         var overlap = Overlap(wall, other);
+        int pos = Random.Range(overlap.min + doorWidth, overlap.max - doorWidth);
+
         switch (wall)
         {
             case 0:
-                x = Random.Range(overlap.min, overlap.max);
+                x = pos;
                 y = this.y + this.size;
                 break;
             case 1:
                 x = this.x + this.size;
-                y = Random.Range(overlap.min, overlap.max);
+                y = pos;
                 break;
             case 2:
-                x = Random.Range(overlap.min, overlap.max);
+                x = pos;
                 y = this.y - this.size;
                 break;
             case 3:
                 x = this.x - this.size;
-                y = Random.Range(overlap.min, overlap.max);
+                y = pos;
                 break;
         }
 

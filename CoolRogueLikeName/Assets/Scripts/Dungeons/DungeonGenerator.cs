@@ -22,6 +22,8 @@ public class DungeonGenerator : MonoBehaviour
     private Transform player;
     private int expands;
     private List<Transform> roomBlocks;
+    private List<Transform> dungeonRooms;
+    private List<Vector2> globalDoorLocations;
 
     // Start is called before the first frame update
     void Start()
@@ -33,22 +35,34 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         roomBlocks = new List<Transform>();
+        dungeonRooms = new List<Transform>();
+        globalDoorLocations = new List<Vector2>();
 
         rooms = new List<Room>();
-        rooms.Add(new Room(0, 0, baseRoomSize, 0)); // base room
-
         expandableRooms = new List<int>();
+
+        MakeRoom(0, 0, baseRoomSize, 0); // base room
+
         expandableRooms.Add(0); // base room is expandable
 
         expands = nRooms - 3;
 
         camera.transform.position = rooms[0].CameraPosition();
 
-        GenerateDungeon();
-        MakeDungeon();
-
         player = Instantiate(playerPrefab, rooms[0].PlayerPosition(), Quaternion.identity);
         player.transform.position = rooms[0].PlayerPosition();
+
+        GenerateDungeon();
+        MakeDungeon();
+    }
+
+    Room MakeRoom(int x, int y, int size, int depth)
+    {
+        var room = new Room(x, y, size, depth);
+        rooms.Add(room);
+        expandableRooms.Add(rooms.Count - 1);
+
+        return room;
     }
 
     void ExpandN(int n)
@@ -130,17 +144,14 @@ public class DungeonGenerator : MonoBehaviour
                 break;
         }
 
-        Room newRoom = new Room(newRoomX, newRoomY, newRoomSize, rooms.Count);
+        Room newRoom = MakeRoom(newRoomX, newRoomY, newRoomSize, rooms.Count);
         newRoom.expandableWalls.Remove(oppositeWall); // can't expand into the room we just came from
         newRoom.expandableWalls.Remove(unGuaranteeableWall); // a room could generate at this wall, don't expand into it
-
-        rooms.Add(newRoom);
-        expandableRooms.Add(rooms.Count - 1);
 
         // remove wall from expandable walls
         room.expandableWalls.Remove(wallToExpand);
 
-        Debug.Log($"Made room {newRoom.id} size {newRoom.size} offset {roomOffset}");
+        // Debug.Log($"Made room {newRoom.id} size {newRoom.size} offset {roomOffset}");
 
         return true;
     }
@@ -241,7 +252,8 @@ public class DungeonGenerator : MonoBehaviour
                 if (wall == Wall.None) continue;
                 if (doors.ContainsKey(room2.id) && doors[room2.id].Contains(wall.Opposite())) continue;
 
-                room1.AddDoor(room1.GenerateDoorLocation(wall, room2), blocksDict);
+                // room1.AddDoor(room1.GenerateDoorLocation(wall, room2));
+                globalDoorLocations.AddRange(room1.GenerateDoorLocation(wall, room2));
 
                 if (doors.ContainsKey(room1.id))
                 {
@@ -255,53 +267,62 @@ public class DungeonGenerator : MonoBehaviour
                 // Debug.Log($"Door on wall {wall} of room {room1.id} going to {room2.id}");
             }
         }
+
+        foreach (Room room in rooms) // i have no clue why this is necessary :/
+        {
+            room.doorLocations = globalDoorLocations;
+        }
     }
 
     void GenerateDungeon()
     {
         ExpandN(expands);
         Expand(true); // expand the boss room
+        GenerateDoors();
     }
 
     void MakeDungeon()
     {
-        GenerateDoors();
         foreach (Room room in rooms)
         {
-            roomBlocks.AddRange(room.MakeRoom(blocksDict));
+            dungeonRooms.Add(room.MakeRoom(blocksDict, player, camera));
+            // var blocks = room.MakeRoom(blocksDict);
+            // roomBlocks.AddRange(blocks);
         }
+        // Debug.Log("dungeon all made");
     }
 
     void ClearDungeon()
     {
-        foreach (Transform block in roomBlocks)
-        {
-            Destroy(block.gameObject);
-        }
-        foreach (Room room in rooms)
-        {
-            room.ClearDoors();
-        }
-        roomBlocks.Clear();
+        // todo
+        // foreach (Transform block in roomBlocks)
+        // {
+        //     Destroy(block.gameObject);
+        // }
+        // foreach (Room room in rooms)
+        // {
+        //     room.ClearDoors();
+        // }
+        // roomBlocks.Clear();
     }
 
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < keyCodes.Length; i++)
-        {
-            if (Input.GetKeyDown(keyCodes[i]))
-            {
-                int numberPressed = i + 1;
-                foreach (Room room in rooms)
-                {
-                    if (room.id == numberPressed)
-                    {
-                        camera.transform.position = room.CameraPosition();
-                    }
-                }
-            }
-        }
+        // for (int i = 0; i < keyCodes.Length; i++)
+        // {
+        //     if (Input.GetKeyDown(keyCodes[i]))
+        //     {
+        //         int numberPressed = i + 1;
+        //         foreach (Room room in rooms)
+        //         {
+        //             if (room.id == numberPressed)
+        //             {
+        //                 camera.transform.position = room.CameraPosition();
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     // https://stackoverflow.com/questions/40577412/clear-editor-console-logs-from-script

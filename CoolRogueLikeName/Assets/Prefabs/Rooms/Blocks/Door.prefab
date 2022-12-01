@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2266810356618841467}
   - component: {fileID: 2266810356618841466}
   - component: {fileID: 2266810356618841469}
+  - component: {fileID: 9004258842739670222}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -97,3 +98,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &9004258842739670222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2266810356618841468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3547307e33b25430a860b113b7971f89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doorClosedMaterial: {fileID: 2100000, guid: ddaabb999a10242e78de75e78dcfb2a0, type: 2}
+  doorUnlockedMaterial: {fileID: 2100000, guid: 6350c5c6d05084631a901b30f379b05a, type: 2}
+  doorGoesNowhereMaterial: {fileID: 0}
+  playerUnlockDistance: 5
+  maxSwingAngle: 90
+  roomPrefabs: []
+  player: {fileID: 0}
+  roomThisDoorLeadsFrom: {fileID: 0}

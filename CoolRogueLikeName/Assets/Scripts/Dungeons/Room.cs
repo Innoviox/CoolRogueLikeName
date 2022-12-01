@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Room
 {
@@ -10,6 +11,7 @@ public class Room
     public int id;
     public List<Wall> expandableWalls;
     public List<Transform> doors;
+    public List<Vector2> doorLocations;
     public int doorWidth = 1; // todo make a class for variables or smth
     private List<Transform> blocks;
 
@@ -28,6 +30,7 @@ public class Room
 
         doors = new List<Transform>();
         blocks = new List<Transform>();
+        doorLocations = new List<Vector2>();
     }
 
     public bool InRoom(int x, int y)
@@ -62,47 +65,19 @@ public class Room
         return true;
     }
 
-    public List<Transform> MakeRoom(Dictionary<string, Transform> blocksDict)
+    public Transform MakeRoom(Dictionary<string, Transform> blocksDict, Transform player, Camera camera)
     {
-        List<Transform> blocks = new List<Transform>();
-        for (int i = x - size; i < x + size; i++)
-        {
-            for (int j = y - size; j < y + size; j++)
-            {
-                bool isDoor = false;
-                foreach (Transform door in doors)
-                {
-                    if (door.position.x == i && door.position.z == j)
-                    {
-                        isDoor = true;
-                        break;
-                    }
-                }
-                if (isDoor) continue;
+        var dungeonRoom = GameObject.Instantiate(blocksDict["DungeonRoom"], new Vector3(x, 0, y), Quaternion.identity);
+        dungeonRoom.name = $"Room {id}";
 
-                Transform block;
-                if (i == x - size || i == x + size - 1 || j == y - size || j == y + size - 1)
-                {
-                    Transform prefab = blocksDict["Wall"];
-                    block = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
-                    block.name = $"Wall ({i}, {j})";
-                }
-                else
-                {
-                    Transform prefab = blocksDict["Floor"];
-                    block = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
-                    block.name = $"Floor ({i}, {j})";
-                }
+        var drs = dungeonRoom.GetComponent<DungeonRoomScript>();
+        drs.room = this;
+        drs.blocksDict = blocksDict;
+        drs.player = player;
+        drs.camera = camera;
+        drs.generateEnemies = id == 0; // only first room is shown at first
 
-                blocks.Add(block);
-            }
-        }
-
-        // Debug.Log($"Made Rom {id} Size {size} Blocks {blocks.Count}");
-
-        this.blocks = blocks;
-
-        return blocks;
+        return dungeonRoom;
     }
 
     public Wall SharedWall(Room o)
@@ -119,11 +94,13 @@ public class Room
         return Wall.None;
     }
 
-    public Vector2 GenerateDoorLocation(Wall wall, Room other)
+    public List<Vector2> GenerateDoorLocation(Wall wall, Room other)
     {
         // todo should this method guarantee padding?
         int x = 0;
         int y = 0;
+        int xdelta = 0;
+        int ydelta = 0;
         var overlap = Overlap(wall, other);
         int pos = Random.Range(overlap.min + doorWidth, overlap.max - doorWidth);
 
@@ -132,22 +109,26 @@ public class Room
             case Wall.North:
                 x = pos;
                 y = this.y + this.size;
+                ydelta = -1;
                 break;
             case Wall.East:
                 x = this.x + this.size;
                 y = pos;
+                xdelta = 1;
                 break;
             case Wall.South:
                 x = pos;
                 y = this.y - this.size;
+                ydelta = 1;
                 break;
             case Wall.West:
                 x = this.x - this.size;
                 y = pos;
+                xdelta = -1;
                 break;
         }
 
-        return new Vector2(x, y);
+        return new List<Vector2> { new Vector2(x, y) }; //, new Vector2(x + xdelta, y + ydelta) };
     }
 
     private (int min, int max) Overlap(Wall wall, Room other)
@@ -184,12 +165,9 @@ public class Room
         doors.Clear();
     }
 
-    public void AddDoor(Vector2 doorLocation, Dictionary<string, Transform> blocksDict)
+    public void AddDoor(Vector2 doorLocation)
     {
-        Transform prefab = blocksDict["Door"];
-        Transform door = GameObject.Instantiate(prefab, new Vector3(doorLocation.x, 0, doorLocation.y), Quaternion.identity);
-        door.name = $"Door ({doorLocation.x}, {doorLocation.y})";
-        doors.Add(door);
+        doorLocations.Add(doorLocation);
     }
 
     public Vector3 CameraPosition()
@@ -199,7 +177,7 @@ public class Room
 
     public Vector3 PlayerPosition()
     {
-        Debug.Log($"PlayerPosition {x} {y} {size}");
+        // Debug.Log($"PlayerPosition {x} {y} {size}");
         return new Vector3(x, 2, y);
     }
 
@@ -212,5 +190,50 @@ public class Room
         }
 
         return bounds;
+    }
+
+    public void MakeRoomBlocks(DungeonRoomScript drs)
+    {
+        // Debug.Log($"{id} {doorLocations}");
+        blocks.Clear();
+        for (int i = x - size; i < x + size; i++)
+        {
+            for (int j = y - size; j < y + size; j++)
+            {
+                // if (id == 0) Debug.Log($"looking at {i} {j}");
+                bool isDoor = doorLocations.Contains(new Vector2(i, j));
+                if (isDoor)
+                {
+                    Transform prefab = drs.blocksDict["Door"];
+                    Transform door = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
+                    door.name = $"Door ({i}, {j})";
+                    door.transform.parent = drs.Parent();
+
+                    drs.UpdateDoorScript(door.GetComponent<DungeonDoorScript>());
+
+                    doors.Add(door);
+                }
+                else
+                {
+                    Transform block;
+                    if (i == x - size || i == x + size - 1 || j == y - size || j == y + size - 1)
+                    {
+                        Transform prefab = drs.blocksDict["Wall"];
+                        // Transform prefab = drs.blocksDict["Floor"]; // for now don't generate walls
+                        block = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
+                        block.name = $"Wall ({i}, {j})";
+                    }
+                    else
+                    {
+                        Transform prefab = drs.blocksDict["Floor"];
+                        block = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
+                        block.name = $"Floor ({i}, {j})";
+                    }
+
+                    block.transform.parent = drs.Parent();
+                    blocks.Add(block);
+                }
+            }
+        }
     }
 }

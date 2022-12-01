@@ -70,7 +70,7 @@ public class Room
                 bool isDoor = false;
                 foreach (Transform door in doors)
                 {
-                    if (door.position.x == i && door.position.y == j)
+                    if (door.position.x == i && door.position.z == j)
                     {
                         isDoor = true;
                         break;
@@ -82,13 +82,13 @@ public class Room
                 if (i == x - size || i == x + size - 1 || j == y - size || j == y + size - 1)
                 {
                     Transform prefab = blocksDict["Wall"];
-                    block = GameObject.Instantiate(prefab, new Vector3(i, j, 0), Quaternion.identity);
+                    block = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
                     block.name = $"Wall ({i}, {j})";
                 }
                 else
                 {
                     Transform prefab = blocksDict["Floor"];
-                    block = GameObject.Instantiate(prefab, new Vector3(i, j, 0), Quaternion.identity);
+                    block = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
                     block.name = $"Floor ({i}, {j})";
                 }
 
@@ -101,7 +101,7 @@ public class Room
         t.text = $"{id}";
         t.fontSize = 100;
         t.color = Color.black;
-        t.transform.localPosition += new Vector3(x - size, y + size, 0);
+        t.transform.localPosition += new Vector3(x - size, 0, y + size);
         blocks.Add(text.transform);
 
         // Debug.Log($"Made Rom {id} Size {size} Blocks {blocks.Count}");
@@ -191,8 +191,19 @@ public class Room
     public void AddDoor(Vector2 doorLocation, Dictionary<string, Transform> blocksDict)
     {
         Transform prefab = blocksDict["Door"];
-        Transform door = GameObject.Instantiate(prefab, new Vector3(doorLocation.x, doorLocation.y, 0), Quaternion.identity);
+        Transform door = GameObject.Instantiate(prefab, new Vector3(doorLocation.x, 0, doorLocation.y), Quaternion.identity);
         door.name = $"Door ({doorLocation.x}, {doorLocation.y})";
         doors.Add(door);
+    }
+
+    public Vector3 CameraPosition()
+    {
+        return new Vector3(x, 10, y - size - 5); // formula should be tweaked but its probably fine for now
+    }
+
+    public Vector3 PlayerPosition()
+    {
+        Debug.Log($"PlayerPosition {x} {y} {size}");
+        return new Vector3(x, y, 2);
     }
 }

@@ -17,6 +17,9 @@ public class DungeonGenerator : MonoBehaviour
     private Dictionary<string, Transform> blocksDict;
     public List<Room> rooms;
     public List<int> expandableRooms;
+    public Camera camera;
+    public Transform playerPrefab;
+    private Transform player;
     private int expands;
     private List<Transform> roomBlocks;
 
@@ -38,6 +41,14 @@ public class DungeonGenerator : MonoBehaviour
         expandableRooms.Add(0); // base room is expandable
 
         expands = nRooms - 3;
+
+        camera.transform.position = rooms[0].CameraPosition();
+
+        GenerateDungeon();
+        MakeDungeon();
+
+        player = Instantiate(playerPrefab, rooms[0].PlayerPosition(), Quaternion.identity);
+        player.transform.position = rooms[0].PlayerPosition();
     }
 
     void ExpandN(int n)
@@ -129,7 +140,7 @@ public class DungeonGenerator : MonoBehaviour
         // remove wall from expandable walls
         room.expandableWalls.Remove(wallToExpand);
 
-        // Debug.Log($"Made room {newRoom.id} size {room.size} offset {roomOffset}");
+        Debug.Log($"Made room {newRoom.id} size {newRoom.size} offset {roomOffset}");
 
         return true;
     }
@@ -246,6 +257,12 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
+    void GenerateDungeon()
+    {
+        ExpandN(expands);
+        Expand(true); // expand the boss room
+    }
+
     void MakeDungeon()
     {
         foreach (Room room in rooms)
@@ -272,16 +289,19 @@ public class DungeonGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        for (int i = 0; i < keyCodes.Length; i++)
         {
-            ClearLog();
-            ClearDungeon();
-            Start();
-
-            ExpandN(expands);
-            Expand(true); // expand the boss room
-
-            MakeDungeon();
+            if (Input.GetKeyDown(keyCodes[i]))
+            {
+                int numberPressed = i + 1;
+                foreach (Room room in rooms)
+                {
+                    if (room.id == numberPressed)
+                    {
+                        camera.transform.position = room.CameraPosition();
+                    }
+                }
+            }
         }
     }
 
@@ -293,4 +313,16 @@ public class DungeonGenerator : MonoBehaviour
         var method = type.GetMethod("Clear");
         method.Invoke(new object(), null);
     }
+
+    private KeyCode[] keyCodes = {
+         KeyCode.Alpha1,
+         KeyCode.Alpha2,
+         KeyCode.Alpha3,
+         KeyCode.Alpha4,
+         KeyCode.Alpha5,
+         KeyCode.Alpha6,
+         KeyCode.Alpha7,
+         KeyCode.Alpha8,
+         KeyCode.Alpha9,
+     };
 }

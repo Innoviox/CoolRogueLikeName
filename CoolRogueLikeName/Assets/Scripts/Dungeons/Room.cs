@@ -11,6 +11,7 @@ public class Room
     public List<Wall> expandableWalls;
     public List<Transform> doors;
     public int doorWidth = 1; // todo make a class for variables or smth
+    private List<Transform> blocks;
 
     public Room(int x, int y, int size, int id)
     {
@@ -26,6 +27,7 @@ public class Room
         expandableWalls.Add(Wall.West); // west wall
 
         doors = new List<Transform>();
+        blocks = new List<Transform>();
     }
 
     public bool InRoom(int x, int y)
@@ -96,15 +98,9 @@ public class Room
             }
         }
 
-        GameObject text = new GameObject();
-        TextMesh t = text.AddComponent<TextMesh>();
-        t.text = $"{id}";
-        t.fontSize = 100;
-        t.color = Color.black;
-        t.transform.localPosition += new Vector3(x - size, 0, y + size);
-        blocks.Add(text.transform);
-
         // Debug.Log($"Made Rom {id} Size {size} Blocks {blocks.Count}");
+
+        this.blocks = blocks;
 
         return blocks;
     }
@@ -204,6 +200,17 @@ public class Room
     public Vector3 PlayerPosition()
     {
         Debug.Log($"PlayerPosition {x} {y} {size}");
-        return new Vector3(x, y, 2);
+        return new Vector3(x, 2, y);
+    }
+
+    public Bounds GetBounds() // if were gonna call this multiple times make a variable
+    {
+        var bounds = new Bounds();
+        foreach (Transform block in blocks)
+        {
+            bounds.Encapsulate(block.GetComponent<Collider>().bounds);
+        }
+
+        return bounds;
     }
 }

@@ -159,15 +159,18 @@ public class DungeonDoorScript : MonoBehaviour
 
     public void Unlock()
     {
+        if (renderer == null)
+        {
+            Start(); // i literally have no idea how this method could get called before start but it does sometimes so here we are
+        }
+
         if (roomThisDoorLeadsTo != null)
         {
-            Debug.Log($"{doorUnlockedMaterial}");
             // set material to open
             renderer.material = doorUnlockedMaterial;
 
             // set collider to trigger
             // collider.isTrigger = true;
-            // Debug.Log($"unlocking {roomThisDoorLeadsTo}");
             locked = false;
         }
     }

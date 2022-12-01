@@ -11,7 +11,7 @@ public class Room
     public int id;
     public List<Wall> expandableWalls;
     public List<Transform> doors;
-    public List<Vector2> doorLocations;
+    public List<Door> doorLocations;
     public int doorWidth = 1; // todo make a class for variables or smth
     private List<Transform> blocks;
 
@@ -30,7 +30,7 @@ public class Room
 
         doors = new List<Transform>();
         blocks = new List<Transform>();
-        doorLocations = new List<Vector2>();
+        doorLocations = new List<Door>();
     }
 
     public bool InRoom(int x, int y)
@@ -94,7 +94,7 @@ public class Room
         return Wall.None;
     }
 
-    public List<Vector2> GenerateDoorLocation(Wall wall, Room other)
+    public Vector2 GenerateDoorLocation(Wall wall, Room other)
     {
         // todo should this method guarantee padding?
         int x = 0;
@@ -128,7 +128,7 @@ public class Room
                 break;
         }
 
-        return new List<Vector2> { new Vector2(x, y) }; //, new Vector2(x + xdelta, y + ydelta) };
+        return new Vector2(x, y); //, new Vector2(x + xdelta, y + ydelta) };
     }
 
     private (int min, int max) Overlap(Wall wall, Room other)
@@ -165,7 +165,7 @@ public class Room
         doors.Clear();
     }
 
-    public void AddDoor(Vector2 doorLocation)
+    public void AddDoor(Door doorLocation)
     {
         doorLocations.Add(doorLocation);
     }
@@ -194,32 +194,41 @@ public class Room
 
     public void MakeRoomBlocks(DungeonRoomScript drs)
     {
-        // Debug.Log($"{id} {doorLocations}");
         blocks.Clear();
         for (int i = x - size; i < x + size; i++)
         {
             for (int j = y - size; j < y + size; j++)
             {
-                // if (id == 0) Debug.Log($"looking at {i} {j}");
-                bool isDoor = doorLocations.Contains(new Vector2(i, j));
+                bool isDoor = false;
+                Door d = null;
+                foreach (Door door in doorLocations)
+                {
+                    if (door.x == i && door.y == j)
+                    {
+                        isDoor = true;
+                        d = door;
+                        break;
+                    }
+                }
+
                 if (isDoor)
                 {
-                    Transform prefab = drs.blocksDict["Door"];
-                    Transform door = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
-                    door.name = $"Door ({i}, {j})";
-                    door.transform.parent = drs.Parent();
+                    // Transform prefab = drs.blocksDict["Door"];
+                    // Transform door = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
+                    // door.name = $"Door ({i}, {j})";
+                    // door.transform.parent = drs.Parent();
 
-                    drs.UpdateDoorScript(door.GetComponent<DungeonDoorScript>());
+                    // drs.UpdateDoorScript(door.GetComponent<DungeonDoorScript>(), d);
 
-                    doors.Add(door);
+                    // doors.Add(door);
                 }
                 else
                 {
                     Transform block;
                     if (i == x - size || i == x + size - 1 || j == y - size || j == y + size - 1)
                     {
-                        Transform prefab = drs.blocksDict["Wall"];
-                        // Transform prefab = drs.blocksDict["Floor"]; // for now don't generate walls
+                        // Transform prefab = drs.blocksDict["Wall"];
+                        Transform prefab = drs.blocksDict["Floor"]; // for now don't generate walls
                         block = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
                         block.name = $"Wall ({i}, {j})";
                     }

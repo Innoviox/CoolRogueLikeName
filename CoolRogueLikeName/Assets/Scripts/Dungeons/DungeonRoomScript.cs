@@ -175,13 +175,14 @@ public class DungeonRoomScript : MonoBehaviour
         cameraPosition = position;
     }
 
-    public void UpdateDoorScript(DungeonDoorScript d)
-    {
-        d.player = player;
-        d.roomThisDoorLeadsFrom = this;
+    // public void UpdateDoorScript(DungeonDoorScript d, Door door)
+    // {
+    //     d.player = player;
+    //     d.roomThisDoorLeadsFrom = door.from;
+    //     d.roomThisDoorLeadsTo = door.to;
 
-        doors.Add(d);
-    }
+    //     doors.Add(d);
+    // }
 
     public Transform Parent()
     {

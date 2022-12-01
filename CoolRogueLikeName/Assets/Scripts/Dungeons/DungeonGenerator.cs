@@ -23,7 +23,7 @@ public class DungeonGenerator : MonoBehaviour
     private int expands;
     private List<Transform> roomBlocks;
     private List<Transform> dungeonRooms;
-    private List<Vector2> globalDoorLocations;
+    private List<Door> globalDoorLocations;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +36,7 @@ public class DungeonGenerator : MonoBehaviour
 
         roomBlocks = new List<Transform>();
         dungeonRooms = new List<Transform>();
-        globalDoorLocations = new List<Vector2>();
+        globalDoorLocations = new List<Door>();
 
         rooms = new List<Room>();
         expandableRooms = new List<int>();
@@ -253,7 +253,8 @@ public class DungeonGenerator : MonoBehaviour
                 if (doors.ContainsKey(room2.id) && doors[room2.id].Contains(wall.Opposite())) continue;
 
                 // room1.AddDoor(room1.GenerateDoorLocation(wall, room2));
-                globalDoorLocations.AddRange(room1.GenerateDoorLocation(wall, room2));
+                var location = room1.GenerateDoorLocation(wall, room2);
+                globalDoorLocations.Add(new Door((int)location.x, (int)location.y, room1.id, room2.id));
 
                 if (doors.ContainsKey(room1.id))
                 {
@@ -268,10 +269,7 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
 
-        foreach (Room room in rooms) // i have no clue why this is necessary :/
-        {
-            room.doorLocations = globalDoorLocations;
-        }
+        room.doorLocations = globalDoorLocations;
     }
 
     void GenerateDungeon()
@@ -286,10 +284,25 @@ public class DungeonGenerator : MonoBehaviour
         foreach (Room room in rooms)
         {
             dungeonRooms.Add(room.MakeRoom(blocksDict, player, camera));
-            // var blocks = room.MakeRoom(blocksDict);
-            // roomBlocks.AddRange(blocks);
         }
-        // Debug.Log("dungeon all made");
+
+        MakeDoors();
+    }
+
+    void MakeDoors()
+    {
+        foreach (Door door in globalDoorLocations)
+        {
+            Transform prefab = drs.blocksDict["Door"];
+            Transform doorTransform = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
+            doorTransform.name = $"Door ({i}, {j})";
+
+            var drs = doorTransform.GetComponent<DungeonDoorScript>();
+            drs.player = player;
+            drs.roomThisDoorLeadsFrom = dungeomRooms[door.from];
+            drs.roomThisDoorLeadsTo = dungeonRooms[door.to];
+            drs.doorTransform = doorTransform;
+        }
     }
 
     void ClearDungeon()

@@ -183,11 +183,7 @@ public class Room
 
     public Bounds GetBounds() // if were gonna call this multiple times make a variable
     {
-        var bounds = new Bounds();
-        foreach (Transform block in blocks)
-        {
-            bounds.Encapsulate(block.GetComponent<Collider>().bounds);
-        }
+        var bounds = new Bounds(new Vector3(x, 0, y), new Vector3(size * 2, 10, size * 2));
 
         return bounds;
     }

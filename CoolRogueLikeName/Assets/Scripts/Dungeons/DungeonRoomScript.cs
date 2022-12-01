@@ -45,6 +45,7 @@ public class DungeonRoomScript : MonoBehaviour
         cameraPosition = room.CameraPosition();
 
         bounds = room.GetBounds();
+        // Debug.Log(bounds.ToString());
         playerBounds = player.GetComponent<Collider>().bounds;
 
         // boxCollider.center = bounds.center - transform.position;
@@ -123,7 +124,6 @@ public class DungeonRoomScript : MonoBehaviour
 
     public void ShowRoom(bool visible)
     {
-        Debug.Log($"{room.id} becoming {visible} vis");
         foreach (Renderer r in renderers)
         {
             r.enabled = visible;
@@ -167,6 +167,8 @@ public class DungeonRoomScript : MonoBehaviour
 
     public bool PlayerInRoom()
     {
+        // Debug.Log($"{bounds.ToString()}");
+        // Debug.Log($"min {player.position + playerBounds.min} {bounds.Contains(player.position + playerBounds.min)} max {player.position + playerBounds.max} {bounds.Contains(player.position + playerBounds.max)}");
         return bounds.Contains(player.position + playerBounds.min) && bounds.Contains(player.position + playerBounds.max);
     }
 

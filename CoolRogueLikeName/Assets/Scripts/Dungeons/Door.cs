@@ -26,8 +26,6 @@ public class Door
         {
             return;
         }
-        if (roomId == 0)
-            Debug.Log($"{x} {y}: {roomId} {room1} {room2} {visible}");
 
         doorTransform.GetComponent<Renderer>().enabled = visible;
     }

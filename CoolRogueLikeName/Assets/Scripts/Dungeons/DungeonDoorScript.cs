@@ -79,12 +79,14 @@ public class DungeonDoorScript : MonoBehaviour
 
     private IEnumerator WaitUntilDoorWalkedThrough(bool inRoom)
     {
+        Debug.Log($"waiting until door walked through {roomThisDoorLeadsTo.PlayerInRoom()} {inRoom}");
         // door walked through <=> inRoom status changes
         while (roomThisDoorLeadsTo.PlayerInRoom() == inRoom)
         {
             yield return null;
         }
 
+        Debug.Log("door walked through");
         DoorWalkedThrough(inRoom);
     }
 

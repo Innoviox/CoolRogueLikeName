@@ -26,6 +26,10 @@ public class DungeonRoomScript : MonoBehaviour
     public GameObject killedEnemiesScore;
     public GameObject clearedRoomsScore;
 
+    delegate void DoorVisibleDelegate(bool visible, int roomId);
+    DoorVisibleDelegate doorsTouchingShow;
+    delegate void DoorsTouchingUnlock(int roomId);
+    DoorsTouchingUnlock doorsTouchingUnlock;
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +47,12 @@ public class DungeonRoomScript : MonoBehaviour
         bounds = room.GetBounds();
         playerBounds = player.GetComponent<Collider>().bounds;
 
+        // boxCollider.center = bounds.center - transform.position;
+        // boxCollider.size = bounds.size;
+    }
 
+    public void StartRoom()
+    {
         if (generateEnemies)
         {
             WalkedInto();
@@ -52,9 +61,12 @@ public class DungeonRoomScript : MonoBehaviour
         {
             ShowRoom(false);
         }
+    }
 
-        // boxCollider.center = bounds.center - transform.position;
-        // boxCollider.size = bounds.size;
+    public void AddDelegates(Door door)
+    {
+        doorsTouchingShow += door.DoorVisibleDelegate;
+        doorsTouchingUnlock += door.Unlock;
     }
 
     // Update is called once per frame
@@ -87,10 +99,11 @@ public class DungeonRoomScript : MonoBehaviour
         roomDone = true;
 
         // open all doors
-        foreach (var door in doors)
-        {
-            door.Unlock();
-        }
+        // foreach (var door in doors)
+        // {
+        //     door.Unlock();
+        // }
+        doorsTouchingUnlock(room.id);
 
         if (entryPoint != null)
         {
@@ -110,10 +123,13 @@ public class DungeonRoomScript : MonoBehaviour
 
     public void ShowRoom(bool visible)
     {
+        Debug.Log($"{room.id} becoming {visible} vis");
         foreach (Renderer r in renderers)
         {
             r.enabled = visible;
         }
+
+        doorsTouchingShow(visible, room.id);
     }
 
     public void ActivateEnemies()

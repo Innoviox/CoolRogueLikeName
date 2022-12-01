@@ -24,6 +24,7 @@ public class DungeonGenerator : MonoBehaviour
     private List<Transform> roomBlocks;
     private List<Transform> dungeonRooms;
     private List<Door> globalDoorLocations;
+    private bool started = false;
 
     // Start is called before the first frame update
     void Start()
@@ -54,6 +55,7 @@ public class DungeonGenerator : MonoBehaviour
 
         GenerateDungeon();
         MakeDungeon();
+        // StartDungeon();
     }
 
     Room MakeRoom(int x, int y, int size, int depth)
@@ -269,7 +271,10 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
 
-        room.doorLocations = globalDoorLocations;
+        foreach (Room room in rooms)
+        {
+            room.doorLocations = globalDoorLocations;
+        }
     }
 
     void GenerateDungeon()
@@ -283,7 +288,15 @@ public class DungeonGenerator : MonoBehaviour
     {
         foreach (Room room in rooms)
         {
-            dungeonRooms.Add(room.MakeRoom(blocksDict, player, camera));
+            Transform drt = room.MakeRoom(blocksDict, player, camera);
+            drt.parent = GetComponent<Transform>();
+
+            foreach (Door door in globalDoorLocations)
+            {
+                drt.GetComponent<DungeonRoomScript>().AddDelegates(door);
+            }
+
+            dungeonRooms.Add(drt);
         }
 
         MakeDoors();
@@ -293,16 +306,29 @@ public class DungeonGenerator : MonoBehaviour
     {
         foreach (Door door in globalDoorLocations)
         {
-            Transform prefab = drs.blocksDict["Door"];
-            Transform doorTransform = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
-            doorTransform.name = $"Door ({i}, {j})";
+            Transform prefab = blocksDict["Door"];
+            Transform doorTransform = GameObject.Instantiate(prefab, new Vector3(door.x, 0, door.y), Quaternion.identity);
+            doorTransform.name = $"Door ({door.x}, {door.y})";
 
             var drs = doorTransform.GetComponent<DungeonDoorScript>();
             drs.player = player;
-            drs.roomThisDoorLeadsFrom = dungeomRooms[door.from];
-            drs.roomThisDoorLeadsTo = dungeonRooms[door.to];
-            drs.doorTransform = doorTransform;
+            drs.roomThisDoorLeadsFrom = dungeonRooms[door.room1].GetComponent<DungeonRoomScript>();
+            drs.roomThisDoorLeadsTo = dungeonRooms[door.room2].GetComponent<DungeonRoomScript>();
+
+            door.doorTransform = doorTransform;
         }
+    }
+
+    void StartDungeon()
+    {
+        if (started) return;
+        started = true;
+        foreach (Transform r in dungeonRooms)
+        {
+            r.GetComponent<DungeonRoomScript>().StartRoom();
+        }
+
+        dungeonRooms[0].GetComponent<DungeonRoomScript>().ShowRoom(true); // show doors
     }
 
     void ClearDungeon()
@@ -336,6 +362,11 @@ public class DungeonGenerator : MonoBehaviour
         //         }
         //     }
         // }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            StartDungeon();
+        }
     }
 
     // https://stackoverflow.com/questions/40577412/clear-editor-console-logs-from-script

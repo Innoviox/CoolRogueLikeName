@@ -265,12 +265,11 @@ public class DungeonGenerator : MonoBehaviour
 
     void MakeDungeon()
     {
+        GenerateDoors();
         foreach (Room room in rooms)
         {
             roomBlocks.AddRange(room.MakeRoom(blocksDict));
         }
-
-        GenerateDoors();
     }
 
     void ClearDungeon()

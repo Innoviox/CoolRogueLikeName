@@ -34,28 +34,13 @@ public class DungeonGenerator : MonoBehaviour
         {
             blocksDict.Add(block.name, block);
         }
+        player = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
         roomBlocks = new List<Transform>();
-        dungeonRooms = new List<Transform>();
+        rooms = new List<Room>();
         globalDoorLocations = new List<Door>();
 
-        rooms = new List<Room>();
-        expandableRooms = new List<int>();
-
-        MakeRoom(0, 0, baseRoomSize, 0); // base room
-
-        expandableRooms.Add(0); // base room is expandable
-
-        expands = nRooms - 3;
-
-        camera.transform.position = rooms[0].CameraPosition();
-
-        player = Instantiate(playerPrefab, rooms[0].PlayerPosition(), Quaternion.identity);
-        player.transform.position = rooms[0].PlayerPosition();
-
-        GenerateDungeon();
-        MakeDungeon();
-        // StartDungeon();
+        Teleport();
     }
 
     Room MakeRoom(int x, int y, int size, int depth)
@@ -326,6 +311,35 @@ public class DungeonGenerator : MonoBehaviour
         Transform prefab = blocksDict["Teleporter"];
         Transform teleporterTransform = GameObject.Instantiate(prefab, new Vector3(loc.x, 2, loc.y), Quaternion.identity);
         teleporterTransform.name = "Teleporter";
+
+        var dts = teleporterTransform.GetComponent<DungeonTeleporterScript>();
+        dts.teleport += Teleport;
+        dts.player = player;
+    }
+
+    void Teleport()
+    {
+        // todo clean this a bit
+        ClearDungeon();
+        rooms = new List<Room>();
+        roomBlocks = new List<Transform>();
+        dungeonRooms = new List<Transform>();
+        globalDoorLocations = new List<Door>();
+        expandableRooms = new List<int>();
+
+        MakeRoom(0, 0, baseRoomSize, 0); // base room
+
+        expandableRooms.Add(0); // base room is expandable
+
+        expands = nRooms - 3;
+
+        camera.transform.position = rooms[0].CameraPosition();
+
+        player.transform.position = rooms[0].PlayerPosition();
+
+        GenerateDungeon();
+        MakeDungeon();
+        // StartDungeon();
     }
 
     void StartDungeon()
@@ -342,16 +356,17 @@ public class DungeonGenerator : MonoBehaviour
 
     void ClearDungeon()
     {
-        // todo
-        // foreach (Transform block in roomBlocks)
-        // {
-        //     Destroy(block.gameObject);
-        // }
-        // foreach (Room room in rooms)
-        // {
-        //     room.ClearDoors();
-        // }
-        // roomBlocks.Clear();
+        foreach (Transform block in roomBlocks)
+        {
+            Destroy(block.gameObject);
+        }
+        foreach (Door door in globalDoorLocations)
+        {
+            Destroy(door.doorTransform.gameObject);
+        }
+        // todo destroy old teleporter
+        roomBlocks.Clear();
+        started = false;
     }
 
     // Update is called once per frame

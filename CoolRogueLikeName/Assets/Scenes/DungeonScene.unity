@@ -341,6 +341,7 @@ MonoBehaviour:
   - {fileID: 3596348016256263366, guid: b4b0451de600749c295e129820152158, type: 3}
   - {fileID: 2266810356618841464, guid: 26ddde87ccad241d28aae95a746da6d4, type: 3}
   - {fileID: 7051609126269875552, guid: 7b53ba21f305c4380b3465280a4c8f41, type: 3}
+  - {fileID: 4599781104109048924, guid: 09e18eb2bc1bf468a9c15626f89c0e1f, type: 3}
   expandableRooms: 
   camera: {fileID: 471363304}
   playerPrefab: {fileID: 3737592448777623360, guid: 6e0054fed8e5846a798c4ab52ef73f01, type: 3}

@@ -13,6 +13,7 @@ public class Room
     public List<Transform> doors;
     public List<Door> doorLocations;
     public int doorWidth = 1; // todo make a class for variables or smth
+    public int bossSize = 20; // yeah we need a variables class
     private List<Transform> blocks;
 
     public Room(int x, int y, int size, int id)
@@ -240,5 +241,12 @@ public class Room
                 }
             }
         }
+    }
+
+    public Vector2 RandomLocation()
+    {
+        int x = Random.Range(this.x - size + 1, this.x + size - 1);
+        int y = Random.Range(this.y - size + 1, this.y + size - 1);
+        return new Vector2(x, y);
     }
 }

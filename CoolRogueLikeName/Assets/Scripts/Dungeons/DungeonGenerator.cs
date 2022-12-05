@@ -17,7 +17,7 @@ public class DungeonGenerator : MonoBehaviour
     private Dictionary<string, Transform> blocksDict;
     public List<Room> rooms;
     public List<int> expandableRooms;
-    public Camera camera;
+    public new Camera camera;
     public Transform playerPrefab;
     private Transform player;
     private int expands;
@@ -40,6 +40,7 @@ public class DungeonGenerator : MonoBehaviour
         roomBlocks = new List<Transform>();
         rooms = new List<Room>();
         globalDoorLocations = new List<Door>();
+        dungeonRooms = new List<Transform>();
 
         roomGenerator = GetComponent<RoomGenerator>();
 
@@ -312,9 +313,9 @@ public class DungeonGenerator : MonoBehaviour
 
     void MakeTeleporter()
     {
-        Vector2 loc = rooms[rooms.Count - 1].RandomLocation();
+        Vector3 loc = rooms[rooms.Count - 1].RandomLocation(2.0f);
         Transform prefab = blocksDict["Teleporter"];
-        Transform teleporterTransform = GameObject.Instantiate(prefab, new Vector3(loc.x, 2, loc.y), Quaternion.identity);
+        Transform teleporterTransform = GameObject.Instantiate(prefab, loc, Quaternion.identity);
         teleporterTransform.name = "Teleporter";
 
         var dts = teleporterTransform.GetComponent<DungeonTeleporterScript>();
@@ -361,9 +362,12 @@ public class DungeonGenerator : MonoBehaviour
 
     void ClearDungeon()
     {
-        foreach (Transform block in roomBlocks)
-        {
-            Destroy(block.gameObject);
+        // foreach (Transform block in roomBlocks)
+        // {
+        //     Destroy(block.gameObject);
+        // }
+        foreach (Transform room in dungeonRooms) {
+            Destroy(room.gameObject);
         }
         foreach (Door door in globalDoorLocations)
         {

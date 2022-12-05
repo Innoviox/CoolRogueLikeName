@@ -13,9 +13,9 @@ public class DungeonDoorScript : MonoBehaviour
     public Transform player;
     public DungeonRoomScript roomThisDoorLeadsFrom;
 
-    private Renderer renderer;
+    private new Renderer renderer;
 
-    private Collider collider;
+    private new Collider collider;
 
     private bool locked = true;
 

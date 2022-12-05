@@ -11,7 +11,6 @@ public class RoomGenerator : MonoBehaviour
 
     public void GenerateRoom(Transform roomRootTransform, Vector3 center, int x, int z)
     {
-        var delta = 1.0f;
         // GameObject roomRoot = new GameObject("Room " + (int)center.x + " " + (int)center.y + " " + (int)center.z);
         // Transform roomRootTransform = roomRoot.GetComponent<Transform>();
         for (float i = - x + 1.5f; i < x - 1; i++)

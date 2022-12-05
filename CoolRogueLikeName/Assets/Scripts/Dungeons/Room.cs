@@ -97,11 +97,9 @@ public class Room
 
     public Vector2 GenerateDoorLocation(Wall wall, Room other)
     {
-        // todo should this method guarantee padding?
+
         int x = 0;
         int y = 0;
-        int xdelta = 0;
-        int ydelta = 0;
         var overlap = Overlap(wall, other);
         int pos = Random.Range(overlap.min + doorWidth, overlap.max - doorWidth);
 
@@ -110,22 +108,22 @@ public class Room
             case Wall.North:
                 x = pos;
                 y = this.y + this.size;
-                ydelta = -1;
+                // ydelta = -1;
                 break;
             case Wall.East:
                 x = this.x + this.size;
                 y = pos;
-                xdelta = 1;
+                // xdelta = 1;
                 break;
             case Wall.South:
                 x = pos;
                 y = this.y - this.size;
-                ydelta = 1;
+                // ydelta = 1;
                 break;
             case Wall.West:
                 x = this.x - this.size;
                 y = pos;
-                xdelta = -1;
+                // xdelta = -1;
                 break;
         }
 
@@ -245,8 +243,13 @@ public class Room
 
     public Vector2 RandomLocation()
     {
-        int x = Random.Range(this.x - size + 1, this.x + size - 1);
-        int y = Random.Range(this.y - size + 1, this.y + size - 1);
+        int x = Random.Range(this.x - size + 2, this.x + size - 2);
+        int y = Random.Range(this.y - size + 2, this.y + size - 2);
         return new Vector2(x, y);
+    }
+
+    public Vector3 RandomLocation(float y) {
+        Vector2 loc = RandomLocation();
+        return new Vector3(loc.x, y, loc.y);
     }
 }

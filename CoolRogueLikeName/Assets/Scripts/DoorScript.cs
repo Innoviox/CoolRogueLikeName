@@ -13,9 +13,9 @@ public class DoorScript : MonoBehaviour
     public Transform player;
     public RoomScript roomThisDoorLeadsFrom;
 
-    private Renderer renderer;
+    private new Renderer renderer;
 
-    private Collider collider;
+    private new Collider collider;
 
     private bool locked = true;
 

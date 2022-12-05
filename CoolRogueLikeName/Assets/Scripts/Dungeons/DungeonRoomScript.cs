@@ -8,9 +8,10 @@ public class DungeonRoomScript : MonoBehaviour
     public Transform player;
     public Room room;
     public bool generateEnemies = true; // todo make private with getter/setter
-    public Camera camera;
+    public new Camera camera;
+
     public Dictionary<string, Transform> blocksDict;
-    private int nEnemies;
+    private int nEnemies = 2; // todo
     private List<DungeonDoorScript> doors;
 
     private Transform roomTransform;
@@ -21,6 +22,8 @@ public class DungeonRoomScript : MonoBehaviour
     private bool roomDone = false;
     private bool enemiesActivated = false;
     private Vector3 cameraPosition; // todo set camera rotation as well
+
+    private EnemyCreator enemyCreator;
 
     /* These members are used for sending messages to the HUD */
     public GameObject killedEnemiesScore;
@@ -35,6 +38,7 @@ public class DungeonRoomScript : MonoBehaviour
     void Start()
     {
         roomTransform = GetComponent<Transform>();
+        enemyCreator = GetComponent<EnemyCreator>();
 
         doors = new List<DungeonDoorScript>();
 
@@ -77,12 +81,12 @@ public class DungeonRoomScript : MonoBehaviour
     {
         nEnemies--;
         Debug.Log($"destroyed enemy: {nEnemies} enemies");
-        killedEnemiesScore.SendMessage("Increment"); // increases the enemies killed score
+        // killedEnemiesScore.SendMessage("Increment"); // increases the enemies killed score
 
         if (nEnemies == 0)
         {
             RoomFinished();
-            clearedRoomsScore.SendMessage("Increment"); // increases the rooms cleared score
+            // clearedRoomsScore.SendMessage("Increment"); // increases the rooms cleared score
         }
     }
 
@@ -132,15 +136,8 @@ public class DungeonRoomScript : MonoBehaviour
             return;
         }
 
-        Transform enemy;
-        int n = 1;
-
-        while ((enemy = transform.Find($"Enemy{n}")) != null)
-        {
-            nEnemies++;
-            n++;
-
-            enemy.SendMessage("CreateEnemy", player);
+        for (int i = 0; i < nEnemies; i++) {
+            enemyCreator.CreateEnemy(player, room.RandomLocation(2.0f));
         }
 
         enemiesActivated = true;

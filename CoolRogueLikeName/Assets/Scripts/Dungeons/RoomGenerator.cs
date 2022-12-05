@@ -34,17 +34,9 @@ public class RoomGenerator : MonoBehaviour
         Instantiate(corner, new Vector3(center.x + x + 0.5f - 1.5f, center.y, center.z - z - 0.5f + 1.5f), Quaternion.Euler(0, 0, 0), roomRootTransform);
 
         BoxCollider floorCollider = roomRootTransform.gameObject.AddComponent<BoxCollider>();
-        floorCollider.size = new Vector3(2 * x + 2, 1, 2 * z + 2);
-        floorCollider.center = new Vector3(center.x, center.y - 0.5f, center.z);
+        floorCollider.size = new Vector3(2 * x + 0, 1, 2 * z + 0);
+        floorCollider.center = new Vector3(0, center.y - 0.5f, 0);
 
         // return roomRoot;
     }
-
-    // void Update()
-    // {
-    //     if (Input.GetKeyDown("a"))
-    //     {
-    //         GenerateRoom(new Vector3(0f, 0f, 0f), 5, 5);
-    //     }
-    // }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorScript : MonoBehaviour
+public class DungeonDoorScript : MonoBehaviour
 {
     public Material doorClosedMaterial;
     public Material doorUnlockedMaterial;
@@ -11,7 +11,7 @@ public class DoorScript : MonoBehaviour
     public float maxSwingAngle = 90.0f;
     public Transform[] roomPrefabs;
     public Transform player;
-    public RoomScript roomThisDoorLeadsFrom;
+    public DungeonRoomScript roomThisDoorLeadsFrom;
 
     private new Renderer renderer;
 
@@ -21,7 +21,7 @@ public class DoorScript : MonoBehaviour
 
     private bool open = false;
 
-    private RoomScript roomThisDoorLeadsTo = null;
+    public DungeonRoomScript roomThisDoorLeadsTo = null;
     private bool swungOpen = false;
     private Vector3 rotationPoint;
 
@@ -79,12 +79,14 @@ public class DoorScript : MonoBehaviour
 
     private IEnumerator WaitUntilDoorWalkedThrough(bool inRoom)
     {
+        Debug.Log($"waiting until door walked through {roomThisDoorLeadsTo.PlayerInRoom()} {inRoom}");
         // door walked through <=> inRoom status changes
         while (roomThisDoorLeadsTo.PlayerInRoom() == inRoom)
         {
             yield return null;
         }
 
+        Debug.Log("door walked through");
         DoorWalkedThrough(inRoom);
     }
 
@@ -142,7 +144,7 @@ public class DoorScript : MonoBehaviour
     {
         // make new room and set its position
         var newRoom = Instantiate(roomPrefabs[Random.Range(0, roomPrefabs.Length)], new Vector3(0, 0, 0), transform.rotation);
-        roomThisDoorLeadsTo = newRoom.gameObject.GetComponent<RoomScript>();
+        roomThisDoorLeadsTo = newRoom.gameObject.GetComponent<DungeonRoomScript>();
         roomThisDoorLeadsTo.player = player;
 
         var entrancePosition = newRoom.Find("Entrance").position;
@@ -159,6 +161,11 @@ public class DoorScript : MonoBehaviour
 
     public void Unlock()
     {
+        if (renderer == null)
+        {
+            Start(); // i literally have no idea how this method could get called before start but it does sometimes so here we are
+        }
+
         if (roomThisDoorLeadsTo != null)
         {
             // set material to open
@@ -166,7 +173,6 @@ public class DoorScript : MonoBehaviour
 
             // set collider to trigger
             // collider.isTrigger = true;
-
             locked = false;
         }
     }

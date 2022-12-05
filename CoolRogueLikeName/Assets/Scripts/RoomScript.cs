@@ -11,7 +11,7 @@ public class RoomScript : MonoBehaviour
 
 
     public bool generateEnemies = true; // todo make private with getter/setter
-    public Camera camera;
+    public new Camera camera;
     private int nEnemies;
     private List<DoorScript> doors;
 

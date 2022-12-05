@@ -17,8 +17,15 @@ public class DungeonGenerator : MonoBehaviour
     private Dictionary<string, Transform> blocksDict;
     public List<Room> rooms;
     public List<int> expandableRooms;
+    public new Camera camera;
+    public Transform playerPrefab;
+    private Transform player;
     private int expands;
     private List<Transform> roomBlocks;
+    private List<Transform> dungeonRooms;
+    private List<Door> globalDoorLocations;
+    private bool started = false;
+    private RoomGenerator roomGenerator;
 
     // Start is called before the first frame update
     void Start()
@@ -28,16 +35,25 @@ public class DungeonGenerator : MonoBehaviour
         {
             blocksDict.Add(block.name, block);
         }
+        player = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
         roomBlocks = new List<Transform>();
-
         rooms = new List<Room>();
-        rooms.Add(new Room(0, 0, baseRoomSize, 0)); // base room
+        globalDoorLocations = new List<Door>();
+        dungeonRooms = new List<Transform>();
 
-        expandableRooms = new List<int>();
-        expandableRooms.Add(0); // base room is expandable
+        roomGenerator = GetComponent<RoomGenerator>();
 
-        expands = nRooms - 3;
+        Teleport();
+    }
+
+    Room MakeRoom(int x, int y, int size, int depth)
+    {
+        var room = new Room(x, y, size, depth);
+        rooms.Add(room);
+        expandableRooms.Add(rooms.Count - 1);
+
+        return room;
     }
 
     void ExpandN(int n)
@@ -119,17 +135,14 @@ public class DungeonGenerator : MonoBehaviour
                 break;
         }
 
-        Room newRoom = new Room(newRoomX, newRoomY, newRoomSize, rooms.Count);
+        Room newRoom = MakeRoom(newRoomX, newRoomY, newRoomSize, rooms.Count);
         newRoom.expandableWalls.Remove(oppositeWall); // can't expand into the room we just came from
         newRoom.expandableWalls.Remove(unGuaranteeableWall); // a room could generate at this wall, don't expand into it
-
-        rooms.Add(newRoom);
-        expandableRooms.Add(rooms.Count - 1);
 
         // remove wall from expandable walls
         room.expandableWalls.Remove(wallToExpand);
 
-        // Debug.Log($"Made room {newRoom.id} size {room.size} offset {roomOffset}");
+        // Debug.Log($"Made room {newRoom.id} size {newRoom.size} offset {roomOffset}");
 
         return true;
     }
@@ -230,7 +243,9 @@ public class DungeonGenerator : MonoBehaviour
                 if (wall == Wall.None) continue;
                 if (doors.ContainsKey(room2.id) && doors[room2.id].Contains(wall.Opposite())) continue;
 
-                room1.AddDoor(room1.GenerateDoorLocation(wall, room2), blocksDict);
+                // room1.AddDoor(room1.GenerateDoorLocation(wall, room2));
+                var location = room1.GenerateDoorLocation(wall, room2);
+                globalDoorLocations.Add(new Door((int)location.x, (int)location.y, room1.id, room2.id));
 
                 if (doors.ContainsKey(room1.id))
                 {
@@ -244,44 +259,146 @@ public class DungeonGenerator : MonoBehaviour
                 // Debug.Log($"Door on wall {wall} of room {room1.id} going to {room2.id}");
             }
         }
+
+        foreach (Room room in rooms)
+        {
+            room.doorLocations = globalDoorLocations;
+        }
+    }
+
+    void GenerateDungeon()
+    {
+        ExpandN(expands);
+        Expand(true); // expand the boss room
+        GenerateDoors();
     }
 
     void MakeDungeon()
     {
         foreach (Room room in rooms)
         {
-            roomBlocks.AddRange(room.MakeRoom(blocksDict));
+            Transform drt = room.MakeRoom(blocksDict, player, camera);
+            roomGenerator.GenerateRoom(drt, new Vector3(room.x, 0, room.y), room.size, room.size);
+
+            drt.parent = GetComponent<Transform>();
+
+            foreach (Door door in globalDoorLocations)
+            {
+                drt.GetComponent<DungeonRoomScript>().AddDelegates(door);
+            }
+
+            dungeonRooms.Add(drt);
         }
 
-        GenerateDoors();
+        MakeDoors();
+        MakeTeleporter();
+    }
+
+    void MakeDoors()
+    {
+        foreach (Door door in globalDoorLocations)
+        {
+            Transform prefab = blocksDict["Door"];
+            Transform doorTransform = GameObject.Instantiate(prefab, new Vector3(door.x, 0, door.y), Quaternion.identity);
+            doorTransform.name = $"Door ({door.x}, {door.y})";
+
+            var drs = doorTransform.GetComponent<DungeonDoorScript>();
+            drs.player = player;
+            drs.roomThisDoorLeadsFrom = dungeonRooms[door.room1].GetComponent<DungeonRoomScript>();
+            drs.roomThisDoorLeadsTo = dungeonRooms[door.room2].GetComponent<DungeonRoomScript>();
+
+            door.doorTransform = doorTransform;
+        }
+    }
+
+    void MakeTeleporter()
+    {
+        Vector3 loc = rooms[rooms.Count - 1].RandomLocation(2.0f);
+        Transform prefab = blocksDict["Teleporter"];
+        Transform teleporterTransform = GameObject.Instantiate(prefab, loc, Quaternion.identity);
+        teleporterTransform.name = "Teleporter";
+
+        var dts = teleporterTransform.GetComponent<DungeonTeleporterScript>();
+        dts.teleport += Teleport;
+        dts.player = player;
+    }
+
+    void Teleport()
+    {
+        // todo clean this a bit
+        ClearDungeon();
+        rooms = new List<Room>();
+        roomBlocks = new List<Transform>();
+        dungeonRooms = new List<Transform>();
+        globalDoorLocations = new List<Door>();
+        expandableRooms = new List<int>();
+
+        MakeRoom(0, 0, baseRoomSize, 0); // base room
+
+        expandableRooms.Add(0); // base room is expandable
+
+        expands = nRooms - 3;
+
+        camera.transform.position = rooms[0].CameraPosition();
+
+        player.transform.position = rooms[0].PlayerPosition();
+
+        GenerateDungeon();
+        MakeDungeon();
+        // StartDungeon();
+    }
+
+    void StartDungeon()
+    {
+        if (started) return;
+        started = true;
+        foreach (Transform r in dungeonRooms)
+        {
+            r.GetComponent<DungeonRoomScript>().StartRoom();
+        }
+
+        dungeonRooms[0].GetComponent<DungeonRoomScript>().ShowRoom(true); // show doors
     }
 
     void ClearDungeon()
     {
-        foreach (Transform block in roomBlocks)
-        {
-            Destroy(block.gameObject);
+        // foreach (Transform block in roomBlocks)
+        // {
+        //     Destroy(block.gameObject);
+        // }
+        foreach (Transform room in dungeonRooms) {
+            Destroy(room.gameObject);
         }
-        foreach (Room room in rooms)
+        foreach (Door door in globalDoorLocations)
         {
-            room.ClearDoors();
+            Destroy(door.doorTransform.gameObject);
         }
+        // todo destroy old teleporter
         roomBlocks.Clear();
+        started = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // for (int i = 0; i < keyCodes.Length; i++)
+        // {
+        //     if (Input.GetKeyDown(keyCodes[i]))
+        //     {
+        //         int numberPressed = i + 1;
+        //         foreach (Room room in rooms)
+        //         {
+        //             if (room.id == numberPressed)
+        //             {
+        //                 camera.transform.position = room.CameraPosition();
+        //             }
+        //         }
+        //     }
+        // }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ClearLog();
-            ClearDungeon();
-            Start();
-
-            ExpandN(expands);
-            Expand(true); // expand the boss room
-
-            MakeDungeon();
+            StartDungeon();
         }
     }
 
@@ -293,4 +410,16 @@ public class DungeonGenerator : MonoBehaviour
         var method = type.GetMethod("Clear");
         method.Invoke(new object(), null);
     }
+
+    private KeyCode[] keyCodes = {
+         KeyCode.Alpha1,
+         KeyCode.Alpha2,
+         KeyCode.Alpha3,
+         KeyCode.Alpha4,
+         KeyCode.Alpha5,
+         KeyCode.Alpha6,
+         KeyCode.Alpha7,
+         KeyCode.Alpha8,
+         KeyCode.Alpha9,
+     };
 }

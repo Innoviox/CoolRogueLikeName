@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,7 +67,7 @@ public class DungeonGenerator : MonoBehaviour
 
     void Expand(bool bossRoom)
     {
-        int roomToExpand = expandableRooms[Random.Range(0, expandableRooms.Count)];
+        int roomToExpand = expandableRooms[UnityEngine.Random.Range(0, expandableRooms.Count)];
         Room room = rooms[roomToExpand];
 
         if (roomToExpand == 0) // choose every wall in base room
@@ -78,13 +79,13 @@ public class DungeonGenerator : MonoBehaviour
         }
         else
         {
-            Wall wallToExpand = room.expandableWalls[Random.Range(0, room.expandableWalls.Count)];
+            Wall wallToExpand = room.expandableWalls[UnityEngine.Random.Range(0, room.expandableWalls.Count)];
             int tries = 0, maxTries = bossRoom ? 100 : 10; // we really wanna generate the boss room
             while (!ExpandWall(room, wallToExpand, bossRoom) && tries < maxTries)
             {
-                roomToExpand = expandableRooms[Random.Range(0, expandableRooms.Count)];
+                roomToExpand = expandableRooms[UnityEngine.Random.Range(0, expandableRooms.Count)];
                 room = rooms[roomToExpand];
-                wallToExpand = room.expandableWalls[Random.Range(0, room.expandableWalls.Count)];
+                wallToExpand = room.expandableWalls[UnityEngine.Random.Range(0, room.expandableWalls.Count)];
                 tries++;
             }
         }
@@ -175,7 +176,7 @@ public class DungeonGenerator : MonoBehaviour
 
     int GenerateRoomSize(int maxSize)
     {
-        return (int)Random.Range(minRoomSize, maxSize);
+        return (int)UnityEngine.Random.Range(minRoomSize, maxSize);
     }
 
     bool InOtherRoom(Room room, Wall wallToExpand, int size)
@@ -227,7 +228,7 @@ public class DungeonGenerator : MonoBehaviour
     {
         int max1 = newRoomSize + oldRoomSize - doorSize * 2;
         int max2 = 2 * maxSize - newRoomSize - oldRoomSize;
-        return (int)Random.Range(newRoomSize - oldRoomSize, Mathf.Min(max1, max2));
+        return (int)UnityEngine.Random.Range(newRoomSize - oldRoomSize, Mathf.Min(max1, max2));
     }
 
     void GenerateDoors()
@@ -268,9 +269,15 @@ public class DungeonGenerator : MonoBehaviour
 
     void GenerateDungeon()
     {
-        ExpandN(expands);
-        Expand(true); // expand the boss room
-        GenerateDoors();
+        try {
+            ExpandN(expands);
+            Expand(true); // expand the boss room
+            GenerateDoors();
+        } catch (Exception e) {
+            Debug.Log($"dungeon failed, retrying {e}");
+            Reset();
+            GenerateDungeon();
+        }
     }
 
     void MakeDungeon()
@@ -326,16 +333,7 @@ public class DungeonGenerator : MonoBehaviour
     void Teleport()
     {
         // todo clean this a bit
-        ClearDungeon();
-        rooms = new List<Room>();
-        roomBlocks = new List<Transform>();
-        dungeonRooms = new List<Transform>();
-        globalDoorLocations = new List<Door>();
-        expandableRooms = new List<int>();
-
-        MakeRoom(0, 0, baseRoomSize, 0); // base room
-
-        expandableRooms.Add(0); // base room is expandable
+        Reset();
 
         expands = nRooms - 3;
 
@@ -346,6 +344,19 @@ public class DungeonGenerator : MonoBehaviour
         GenerateDungeon();
         MakeDungeon();
         // StartDungeon();
+    }
+
+    void Reset() {
+        ClearDungeon();
+        rooms = new List<Room>();
+        roomBlocks = new List<Transform>();
+        dungeonRooms = new List<Transform>();
+        globalDoorLocations = new List<Door>();
+        expandableRooms = new List<int>();
+
+        MakeRoom(0, 0, baseRoomSize, 0); // base room
+
+        expandableRooms.Add(0); // base room is expandable
     }
 
     void StartDungeon()

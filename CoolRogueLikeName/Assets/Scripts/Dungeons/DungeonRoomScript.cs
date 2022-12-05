@@ -34,26 +34,19 @@ public class DungeonRoomScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Debug.Log("starting");
         roomTransform = GetComponent<Transform>();
 
         doors = new List<DungeonDoorScript>();
 
-        room.MakeRoomBlocks(this);
-        renderers = GetComponentsInChildren<Renderer>();
-
         cameraPosition = room.CameraPosition();
 
         bounds = room.GetBounds();
-        // Debug.Log(bounds.ToString());
         playerBounds = player.GetComponent<Collider>().bounds;
-
-        // boxCollider.center = bounds.center - transform.position;
-        // boxCollider.size = bounds.size;
     }
 
     public void StartRoom()
     {
+        renderers = GetComponentsInChildren<Renderer>();
         if (generateEnemies)
         {
             WalkedInto();

@@ -9,10 +9,10 @@ public class RoomGenerator : MonoBehaviour
     public GameObject corner;
     public GameObject door;
 
-    public GameObject GenerateRoom(Vector3 center, int x, int z)
+    public void GenerateRoom(Transform roomRootTransform, Vector3 center, int x, int z)
     {
-        GameObject roomRoot = new GameObject("Room " + (int)center.x + " " + (int)center.y + " " + (int)center.z);
-        Transform roomRootTransform = roomRoot.GetComponent<Transform>();
+        // GameObject roomRoot = new GameObject("Room " + (int)center.x + " " + (int)center.y + " " + (int)center.z);
+        // Transform roomRootTransform = roomRoot.GetComponent<Transform>();
         for (float i = - x + 0.5f; i < x; i++)
         {
             Instantiate(side, new Vector3(center.x + i, center.y, center.z - z - 0.5f), Quaternion.identity, roomRootTransform);
@@ -32,18 +32,18 @@ public class RoomGenerator : MonoBehaviour
         Instantiate(corner, new Vector3(center.x - x - 0.5f, center.y, center.z - z - 0.5f), Quaternion.Euler(0, 90, 0), roomRootTransform);
         Instantiate(corner, new Vector3(center.x + x + 0.5f, center.y, center.z - z - 0.5f), Quaternion.Euler(0, 0, 0), roomRootTransform);
 
-        BoxCollider floorCollider = roomRoot.AddComponent<BoxCollider>();
+        BoxCollider floorCollider = roomRootTransform.gameObject.AddComponent<BoxCollider>();
         floorCollider.size = new Vector3(2 * x + 2, 1, 2 * z + 2);
         floorCollider.center = new Vector3(center.x, center.y - 0.5f, center.z);
 
-        return roomRoot;
+        // return roomRoot;
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown("a"))
-        {
-            GenerateRoom(new Vector3(0f, 0f, 0f), 5, 5);
-        }
-    }
+    // void Update()
+    // {
+    //     if (Input.GetKeyDown("a"))
+    //     {
+    //         GenerateRoom(new Vector3(0f, 0f, 0f), 5, 5);
+    //     }
+    // }
 }

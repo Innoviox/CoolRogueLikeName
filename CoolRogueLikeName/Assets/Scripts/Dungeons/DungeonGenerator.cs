@@ -25,6 +25,7 @@ public class DungeonGenerator : MonoBehaviour
     private List<Transform> dungeonRooms;
     private List<Door> globalDoorLocations;
     private bool started = false;
+    private RoomGenerator roomGenerator;
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +40,8 @@ public class DungeonGenerator : MonoBehaviour
         roomBlocks = new List<Transform>();
         rooms = new List<Room>();
         globalDoorLocations = new List<Door>();
+
+        roomGenerator = GetComponent<RoomGenerator>();
 
         Teleport();
     }
@@ -274,6 +277,8 @@ public class DungeonGenerator : MonoBehaviour
         foreach (Room room in rooms)
         {
             Transform drt = room.MakeRoom(blocksDict, player, camera);
+            roomGenerator.GenerateRoom(drt, new Vector3(room.x, 0, room.y), room.size, room.size);
+
             drt.parent = GetComponent<Transform>();
 
             foreach (Door door in globalDoorLocations)

@@ -18,7 +18,7 @@ public class DungeonTeleporterScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(Vector3.Distance(transform.position, player.position));
+        // Debug.Log(Vector3.Distance(transform.position, player.position));
         if (Vector3.Distance(transform.position, player.position) < 2)
         {
             teleport();

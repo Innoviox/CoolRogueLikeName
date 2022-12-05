@@ -247,7 +247,7 @@ public class DungeonGenerator : MonoBehaviour
 
                 // room1.AddDoor(room1.GenerateDoorLocation(wall, room2));
                 var location = room1.GenerateDoorLocation(wall, room2);
-                globalDoorLocations.Add(new Door((int)location.x, (int)location.y, room1.id, room2.id));
+                globalDoorLocations.Add(new Door((int)location.x, (int)location.y, room1.id, room2.id, wall));
 
                 if (doors.ContainsKey(room1.id))
                 {

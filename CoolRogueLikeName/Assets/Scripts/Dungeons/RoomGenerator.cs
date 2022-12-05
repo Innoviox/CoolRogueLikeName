@@ -49,10 +49,14 @@ public class RoomGenerator : MonoBehaviour
 
     void SideInstantiate(GameObject side, Vector3 pos, Quaternion rot, Transform roomRootTransform)
     {
-        if (sideLocations.Contains(pos) || doorLocations.Contains(pos))
-        {
-            return;
+        foreach (Vector3 doorPos in doorLocations) {
+            if (Vector3.Distance(doorPos, pos) <= 1.0f)
+            {
+                Debug.Log($"Close to doorPos {doorPos} at {pos}");
+                return;
+            }
         }
+
         sideLocations.Add(pos);
         Instantiate(side, pos, rot, roomRootTransform);
     }

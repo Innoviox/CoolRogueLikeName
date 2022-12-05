@@ -50,6 +50,7 @@ public class DungeonRoomScript : MonoBehaviour
 
     public void StartRoom()
     {
+        playerBounds = player.GetComponent<Collider>().bounds;
         renderers = GetComponentsInChildren<Renderer>();
         if (generateEnemies)
         {

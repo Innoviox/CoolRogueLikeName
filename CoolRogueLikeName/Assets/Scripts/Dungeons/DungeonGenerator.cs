@@ -44,6 +44,7 @@ public class DungeonGenerator : MonoBehaviour
         dungeonRooms = new List<Transform>();
 
         roomGenerator = GetComponent<RoomGenerator>();
+        roomGenerator.Setup();
 
         Teleport();
     }
@@ -285,7 +286,7 @@ public class DungeonGenerator : MonoBehaviour
         foreach (Room room in rooms)
         {
             Transform drt = room.MakeRoom(blocksDict, player, camera);
-            roomGenerator.GenerateRoom(drt, new Vector3(room.x, 0, room.y), room.size, room.size);
+            roomGenerator.GenerateRoom(drt, new Vector3(room.x, 0, room.y), room.size, room.size, globalDoorLocations);
 
             drt.parent = GetComponent<Transform>();
 

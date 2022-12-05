@@ -15,11 +15,11 @@ MonoBehaviour:
   enemyMoveSpeedFactor: 1
   enemyHealthFactor: 1
   enemyDamageFactor: 1
-  playerMoveSpeedFactor: 1
+  playerMoveSpeedFactor: 0.3
   playerHealthFactor: 1
   playerDamageFactor: 1
   playerReloadSpeedFactor: 1
-  bulletSpeedFactor: 1
+  bulletSpeedFactor: 4.24
   playerBulletRangeFactor: 1
   enemySpawnFactor: 0.5
   acquiredPowerups: []

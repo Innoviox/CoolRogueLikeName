@@ -32,13 +32,14 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!dashLock && !jumpLock) {
-            Debug.Log("Fixed Frame.");
+        if (!dashLock && !jumpLock)
+        {
             float hInput = Input.GetAxis("Horizontal"); // Keeps track of left and right movement 
             float vInput = Input.GetAxis("Vertical");   // Keeps track of forward and backwards movement
 
             Vector3 accelerationDirection = new Vector3(hInput, 0, vInput).normalized; // This holds the direction the player is moving
-            if (Input.GetKeyDown(dashKey)){
+            if (Input.GetKeyDown(dashKey))
+            {
                 StartCoroutine(Dash(accelerationDirection));
                 rb.velocity = Vector3.zero;
                 return;
@@ -68,14 +69,14 @@ public class Movement : MonoBehaviour
         dashLock = false;
         yield break;
         //while(true)
-       // {
-            //rb.position += direction * (dashDistance * Time.fixedDeltaTime / dashTime);
-            //if(Vector3.Distance(currentPosition, rb.position) > dashDistance)
-            //{
-            //    dashLock = false;
-            //    yield break;
-            //}
-            //yield return null;
+        // {
+        //rb.position += direction * (dashDistance * Time.fixedDeltaTime / dashTime);
+        //if(Vector3.Distance(currentPosition, rb.position) > dashDistance)
+        //{
+        //    dashLock = false;
+        //    yield break;
+        //}
+        //yield return null;
         //}
     }
 

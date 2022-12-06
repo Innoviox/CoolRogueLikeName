@@ -4,25 +4,25 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
-    float health;            
-    float maxHealth = 5.0f; 
+    float health;
+    float maxHealth = 5.0f;
 
     GameObject healthBar;
-    public Transform player;   
+    public Transform player;
 
     void Start()
     {
         healthBar = transform.parent.Find("HealthBar").gameObject;
         health = maxHealth;
     }
-    
+
     void Update()
     {
         // The enemy will constantly look at the player.
         transform.LookAt(player);
         // Make the enemy health bar follow the enemy as they move around. 
-        healthBar.transform.position = new Vector3(transform.position.x, 
-                                                   healthBar.transform.position.y, 
+        healthBar.transform.position = new Vector3(transform.position.x,
+                                                   healthBar.transform.position.y,
                                                    transform.position.z);
     }
 
@@ -34,14 +34,15 @@ public class EnemyScript : MonoBehaviour
         if (collision.transform.gameObject.name == "Bullet(Clone)")
         {
             // Get the projectiles damage
-            int damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
+            float damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
 
             health -= damageTaken;
 
             healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
-        } else if (collision.transform.gameObject.name == "Rocket(Clone)") 
+        }
+        else if (collision.transform.gameObject.name == "Rocket(Clone)")
         {
-             int damageTaken = collision.transform.gameObject.GetComponent<RocketProjectile>().Damage;
+            float damageTaken = collision.transform.gameObject.GetComponent<RocketProjectile>().Damage;
 
             health -= damageTaken;
 
@@ -63,21 +64,23 @@ public class EnemyScript : MonoBehaviour
         if (collision.transform.gameObject.name == "SwordHitbox(Clone)")
         {
             // Get the projectiles damage
-            int damageTaken = collision.transform.gameObject.GetComponent<SwordDamage>().Damage;
+            float damageTaken = collision.transform.gameObject.GetComponent<SwordDamage>().Damage;
 
             health -= damageTaken;
 
             healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
-        } else if (collision.transform.gameObject.name == "LaserBolt(Clone)")
+        }
+        else if (collision.transform.gameObject.name == "LaserBolt(Clone)")
         {
-            int damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
+            float damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
 
             health -= damageTaken;
 
             healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
-        } else if (collision.transform.gameObject.name == "Explosion(Clone)")
+        }
+        else if (collision.transform.gameObject.name == "Explosion(Clone)")
         {
-            int damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
+            float damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
 
             health -= damageTaken;
 

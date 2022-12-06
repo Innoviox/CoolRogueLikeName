@@ -84,7 +84,7 @@ public class Boss1Script : MonoBehaviour
             {
                 // Only aim at player if boss is not already aiming at player
                 if (move.aimCo == null)
-                    move.StartAim(player);
+                    move.StartAim(player.position);
 
                 attackCo = StartCoroutine(attack.NormalAttacks());
                 moveCo = StartCoroutine(move.MoveToPlayer());
@@ -103,7 +103,7 @@ public class Boss1Script : MonoBehaviour
         while (true)
         {
             // Wait for boss to finish its current state
-            if (bState == bossState.wait) { } 
+            if (bState == bossState.wait) { }
             else if (HpThreshold())
             {
                 bState = bossState.waveStart;
@@ -182,5 +182,10 @@ public class Boss1Script : MonoBehaviour
 
             // or Destroy(transform.root.gameObject); 
         }
+    }
+
+    public void SetPlayer(Transform player)
+    {
+        this.player = player;
     }
 }

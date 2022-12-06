@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyCreator : MonoBehaviour
 {
     public Transform[] enemyPrefabs;
+    public Transform bossPrefab;
 
     public void CreateEnemy(Transform player, Vector3 position)
     {
@@ -16,5 +17,16 @@ public class EnemyCreator : MonoBehaviour
         capsule.GetComponent<EnemyScript>().player = player;
         capsule.GetComponent<EnemyMovement>().player = player;
         capsule.GetComponent<EnemyAttack>().player = player;
+    }
+
+    public Transform CreateBoss(Transform player, Vector3 position)
+    {
+        // create boss
+        var boss = Instantiate(bossPrefab, position, new Quaternion());
+        boss.parent = transform;
+        boss.BroadcastMessage("SetPlayer", player);
+        boss.BroadcastMessage("SetCenter", position);
+
+        return boss;
     }
 }

@@ -35,8 +35,8 @@ public class BossChargeShot : MonoBehaviour
         if (other.transform.parent != null && other.transform.parent.transform.name == "Walls")
         {
             // Get bullets direction
-            Vector3 currDir; 
- 
+            Vector3 currDir;
+
             // We want the vector normal to the surface of the wall pointing towards the inside of the room
             if (Vector3.Dot(body.velocity, other.transform.forward) < 0)
                 currDir = other.transform.forward;
@@ -51,7 +51,7 @@ public class BossChargeShot : MonoBehaviour
             GameObject bullet;
 
             // Spawn 3 bullets 45 degrees from each other. 
-            for (int i = 0; i < numBulletsPerRow; i ++)
+            for (int i = 0; i < numBulletsPerRow; i++)
             {
                 // Number of bullets per column on explosion
                 for (int j = 1; j <= numBulletsPerCol; j++)

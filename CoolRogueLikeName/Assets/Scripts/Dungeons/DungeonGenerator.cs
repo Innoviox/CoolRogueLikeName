@@ -10,10 +10,10 @@ public class DungeonGenerator : MonoBehaviour
 {
     public int baseRoomSize = 10;
     public int minRoomSize = 5;
-    public int maxRoomSize = 15;
+    public int maxRoomSize = 12;
     public int doorSize = 1;
     public int nRooms = 10;
-    public int bossSize = 20;
+    public int bossSize = 15;
     public List<Transform> blocks; // id prefer this to be a dict but unity doesnt do dicts in the inspector
     private Dictionary<string, Transform> blocksDict;
     public List<Room> rooms;

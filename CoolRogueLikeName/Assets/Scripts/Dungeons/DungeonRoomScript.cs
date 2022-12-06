@@ -39,6 +39,7 @@ public class DungeonRoomScript : MonoBehaviour
     DoorToggleDelegate lockDoors;
     private bool started = false;
     private int nEnemies;
+    private Transform boss;
 
     // Start is called before the first frame update
     void Start()
@@ -166,12 +167,19 @@ public class DungeonRoomScript : MonoBehaviour
             return;
         }
 
-        var enemyScaling = player.GetComponent<PlayerMovement>().stats.enemySpawnFactor;
-        nEnemies = 0;
-        for (int i = 0; i < nEnemiesBase * enemyScaling; i++)
+        if (room.isBossRoom)
         {
-            enemyCreator.CreateEnemy(player, room.RandomLocation(2.0f));
-            nEnemies++;
+            boss = enemyCreator.CreateBoss(player, room.Center(0.64f));
+        }
+        else
+        {
+            var enemyScaling = player.GetComponent<PlayerMovement>().stats.enemySpawnFactor;
+            nEnemies = 0;
+            for (int i = 0; i < nEnemiesBase * enemyScaling; i++)
+            {
+                enemyCreator.CreateEnemy(player, room.RandomLocation(2.0f));
+                nEnemies++;
+            }
         }
 
         enemiesActivated = true;

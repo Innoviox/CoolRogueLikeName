@@ -348,7 +348,7 @@ public class DungeonGenerator : MonoBehaviour
 
         GenerateDungeon();
         MakeDungeon();
-        // StartDungeon();
+        StartCoroutine(StartDungeon());
     }
 
     void Reset()
@@ -365,9 +365,12 @@ public class DungeonGenerator : MonoBehaviour
         expandableRooms.Add(0); // base room is expandable
     }
 
-    void StartDungeon()
+    IEnumerator StartDungeon()
     {
-        if (started) return;
+        yield return new WaitForSeconds(0.01f);
+        Debug.Log("starting dungeon");
+
+        if (started) yield break;
         started = true;
         foreach (Transform r in dungeonRooms)
         {
@@ -375,6 +378,7 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         dungeonRooms[0].GetComponent<DungeonRoomScript>().ShowRoom(true); // show doors
+        yield break;
     }
 
     void ClearDungeon()
@@ -405,45 +409,5 @@ public class DungeonGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // for (int i = 0; i < keyCodes.Length; i++)
-        // {
-        //     if (Input.GetKeyDown(keyCodes[i]))
-        //     {
-        //         int numberPressed = i + 1;
-        //         foreach (Room room in rooms)
-        //         {
-        //             if (room.id == numberPressed)
-        //             {
-        //                 camera.transform.position = room.CameraPosition();
-        //             }
-        //         }
-        //     }
-        // }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            StartDungeon();
-        }
     }
-
-    // https://stackoverflow.com/questions/40577412/clear-editor-console-logs-from-script
-    public void ClearLog()
-    {
-        var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
-        var type = assembly.GetType("UnityEditor.LogEntries");
-        var method = type.GetMethod("Clear");
-        method.Invoke(new object(), null);
-    }
-
-    private KeyCode[] keyCodes = {
-         KeyCode.Alpha1,
-         KeyCode.Alpha2,
-         KeyCode.Alpha3,
-         KeyCode.Alpha4,
-         KeyCode.Alpha5,
-         KeyCode.Alpha6,
-         KeyCode.Alpha7,
-         KeyCode.Alpha8,
-         KeyCode.Alpha9,
-     };
 }

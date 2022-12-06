@@ -55,6 +55,8 @@ public class DungeonRoomScript : MonoBehaviour
 
         willSpawnPowerups = Random.Range(0.0f, 1.0f) < 0.25;
         willSpawnWeapon = (!willSpawnPowerups) && Random.Range(0.0f, 1.0f) < 0.25;
+
+        Debug.Log("room start() finished");
     }
 
     public void StartRoom()

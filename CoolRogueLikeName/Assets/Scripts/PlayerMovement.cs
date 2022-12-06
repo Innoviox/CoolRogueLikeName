@@ -43,4 +43,10 @@ public class PlayerMovement : MonoBehaviour
                                               playerBody.velocity.z);
         }
     }
+
+    // Testing
+    public void OnTriggerEnter(Collider other)
+    {
+        //Debug.Log("Entered Trigger");
+    }
 }

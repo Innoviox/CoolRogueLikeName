@@ -16,12 +16,12 @@ public class EnemyAttack : MonoBehaviour
         GameObject bullet = Instantiate(enemyProjectile, spawnPoint.position, spawnPoint.rotation);
 
         // Set projectiles damage
-        bullet.GetComponent<Projectile>().Damage = baseDamage;
+        bullet.GetComponent<EnemyProjectile>().Damage = baseDamage;
 
         // Set its velocity to go forward by projectileSpeed
         bullet.GetComponent<Rigidbody>().velocity = spawnPoint.forward * projectileSpeed;
     }
-
+    
     /// <summary>
     /// Sets the trigger for normal attack
     /// </summary>

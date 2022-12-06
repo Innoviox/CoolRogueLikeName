@@ -16,7 +16,7 @@ public class DungeonRoomScript : MonoBehaviour
     public GameObject powerupPedestal;
 
     public Dictionary<string, Transform> blocksDict;
-    private int nEnemies = 2; // todo
+    public int nEnemiesBase = 2; // todo
     private List<DungeonDoorScript> doors;
 
     private Transform roomTransform;
@@ -34,10 +34,11 @@ public class DungeonRoomScript : MonoBehaviour
     public GameObject killedEnemiesScore;
     public GameObject clearedRoomsScore;
 
-    delegate void DoorVisibleDelegate(bool visible, int roomId);
-    DoorVisibleDelegate doorsTouchingShow;
-    delegate void DoorsTouchingUnlock(int roomId);
-    DoorsTouchingUnlock doorsTouchingUnlock;
+    delegate void DoorToggleDelegate(bool on, int roomId);
+    DoorToggleDelegate showDoors;
+    DoorToggleDelegate lockDoors;
+    private bool started = false;
+    private int nEnemies;
 
     // Start is called before the first frame update
     void Start()
@@ -54,6 +55,8 @@ public class DungeonRoomScript : MonoBehaviour
 
         willSpawnPowerups = Random.Range(0.0f, 1.0f) < 0.25;
         willSpawnWeapon = (!willSpawnPowerups) && Random.Range(0.0f, 1.0f) < 0.25;
+
+        Debug.Log("room start() finished");
     }
 
     public void StartRoom()
@@ -68,12 +71,14 @@ public class DungeonRoomScript : MonoBehaviour
         {
             ShowRoom(false);
         }
+
+        started = true;
     }
 
     public void AddDelegates(Door door)
     {
-        doorsTouchingShow += door.DoorVisibleDelegate;
-        doorsTouchingUnlock += door.Unlock;
+        showDoors += door.Show;
+        lockDoors += door.Lock;
     }
 
     // Update is called once per frame
@@ -84,6 +89,15 @@ public class DungeonRoomScript : MonoBehaviour
         // {
         //     camera.transform.position = cameraPosition;
         // }
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (started && other.transform == player)
+        {
+            Debug.Log($"Room {room.id} saw player enter");
+            WalkedInto();
+        }
     }
 
     private void EnemyDestroyed()
@@ -106,11 +120,7 @@ public class DungeonRoomScript : MonoBehaviour
         roomDone = true;
 
         // open all doors
-        // foreach (var door in doors)
-        // {
-        //     door.Unlock();
-        // }
-        doorsTouchingUnlock(room.id);
+        lockDoors(false, room.id);
 
         if (entryPoint != null)
         {
@@ -120,10 +130,13 @@ public class DungeonRoomScript : MonoBehaviour
         if (willSpawnPowerups)
         {
             SpawnPowerups();
-        } else if (willSpawnWeapon)
+        }
+        else if (willSpawnWeapon)
         {
             SpawnWeaponChest();
         }
+
+        // player.GetComponent<PlayerMovement>().stats.enemySpawnFactor += 1;
     }
 
     public void WalkedInto()
@@ -143,7 +156,7 @@ public class DungeonRoomScript : MonoBehaviour
             r.enabled = visible;
         }
 
-        doorsTouchingShow(visible, room.id);
+        showDoors(visible, room.id);
     }
 
     public void ActivateEnemies()
@@ -153,8 +166,12 @@ public class DungeonRoomScript : MonoBehaviour
             return;
         }
 
-        for (int i = 0; i < nEnemies; i++) {
+        var enemyScaling = player.GetComponent<PlayerMovement>().stats.enemySpawnFactor;
+        nEnemies = 0;
+        for (int i = 0; i < nEnemiesBase * enemyScaling; i++)
+        {
             enemyCreator.CreateEnemy(player, room.RandomLocation(2.0f));
+            nEnemies++;
         }
 
         enemiesActivated = true;
@@ -162,6 +179,10 @@ public class DungeonRoomScript : MonoBehaviour
         if (nEnemies == 0)
         {
             RoomFinished();
+        }
+        else
+        {
+            lockDoors(true, room.id);
         }
     }
 

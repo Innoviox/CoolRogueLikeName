@@ -27,6 +27,7 @@ public class DungeonGenerator : MonoBehaviour
     private List<Door> globalDoorLocations;
     private bool started = false;
     private RoomGenerator roomGenerator;
+    private Transform teleporter = null;
 
     // Start is called before the first frame update
     void Start()
@@ -70,25 +71,15 @@ public class DungeonGenerator : MonoBehaviour
     {
         int roomToExpand = expandableRooms[UnityEngine.Random.Range(0, expandableRooms.Count)];
         Room room = rooms[roomToExpand];
+        Wall wallToExpand = room.expandableWalls[UnityEngine.Random.Range(0, room.expandableWalls.Count)];
 
-        if (roomToExpand == 0) // choose every wall in base room
+        int tries = 0, maxTries = bossRoom ? 100 : 10; // we really wanna generate the boss room
+        while (!ExpandWall(room, wallToExpand, bossRoom) && tries < maxTries)
         {
-            foreach (Wall wallToExpand in new List<Wall>(room.expandableWalls))
-            {
-                ExpandWall(room, wallToExpand, bossRoom); // this should always work
-            }
-        }
-        else
-        {
-            Wall wallToExpand = room.expandableWalls[UnityEngine.Random.Range(0, room.expandableWalls.Count)];
-            int tries = 0, maxTries = bossRoom ? 100 : 10; // we really wanna generate the boss room
-            while (!ExpandWall(room, wallToExpand, bossRoom) && tries < maxTries)
-            {
-                roomToExpand = expandableRooms[UnityEngine.Random.Range(0, expandableRooms.Count)];
-                room = rooms[roomToExpand];
-                wallToExpand = room.expandableWalls[UnityEngine.Random.Range(0, room.expandableWalls.Count)];
-                tries++;
-            }
+            roomToExpand = expandableRooms[UnityEngine.Random.Range(0, expandableRooms.Count)];
+            room = rooms[roomToExpand];
+            wallToExpand = room.expandableWalls[UnityEngine.Random.Range(0, room.expandableWalls.Count)];
+            tries++;
         }
 
         if (room.expandableWalls.Count == 0)
@@ -270,11 +261,14 @@ public class DungeonGenerator : MonoBehaviour
 
     void GenerateDungeon()
     {
-        try {
+        try
+        {
             ExpandN(expands);
             Expand(true); // expand the boss room
             GenerateDoors();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Debug.Log($"dungeon failed, retrying {e}");
             Reset();
             GenerateDungeon();
@@ -323,10 +317,10 @@ public class DungeonGenerator : MonoBehaviour
     {
         Vector3 loc = rooms[rooms.Count - 1].RandomLocation(2.0f);
         Transform prefab = blocksDict["Teleporter"];
-        Transform teleporterTransform = GameObject.Instantiate(prefab, loc, Quaternion.identity);
-        teleporterTransform.name = "Teleporter";
+        teleporter = GameObject.Instantiate(prefab, loc, Quaternion.identity);
+        teleporter.name = "Teleporter";
 
-        var dts = teleporterTransform.GetComponent<DungeonTeleporterScript>();
+        var dts = teleporter.GetComponent<DungeonTeleporterScript>();
         dts.teleport += Teleport;
         dts.player = player;
     }
@@ -336,7 +330,7 @@ public class DungeonGenerator : MonoBehaviour
         // todo clean this a bit
         Reset();
 
-        expands = nRooms - 3;
+        expands = nRooms - 1;
 
         camera.transform.position = rooms[0].CameraPosition();
 
@@ -344,10 +338,11 @@ public class DungeonGenerator : MonoBehaviour
 
         GenerateDungeon();
         MakeDungeon();
-        // StartDungeon();
+        StartCoroutine(StartDungeon());
     }
 
-    void Reset() {
+    void Reset()
+    {
         ClearDungeon();
         rooms = new List<Room>();
         roomBlocks = new List<Transform>();
@@ -360,9 +355,12 @@ public class DungeonGenerator : MonoBehaviour
         expandableRooms.Add(0); // base room is expandable
     }
 
-    void StartDungeon()
+    IEnumerator StartDungeon()
     {
-        if (started) return;
+        yield return new WaitForSeconds(0.01f);
+        Debug.Log("starting dungeon");
+
+        if (started) yield break;
         started = true;
         foreach (Transform r in dungeonRooms)
         {
@@ -370,6 +368,7 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         dungeonRooms[0].GetComponent<DungeonRoomScript>().ShowRoom(true); // show doors
+        yield break;
     }
 
     void ClearDungeon()
@@ -378,13 +377,20 @@ public class DungeonGenerator : MonoBehaviour
         // {
         //     Destroy(block.gameObject);
         // }
-        foreach (Transform room in dungeonRooms) {
+        foreach (Transform room in dungeonRooms)
+        {
             Destroy(room.gameObject);
         }
         foreach (Door door in globalDoorLocations)
         {
             Destroy(door.doorTransform.gameObject);
         }
+
+        if (teleporter != null)
+        {
+            Destroy(teleporter.gameObject);
+        }
+
         // todo destroy old teleporter
         roomBlocks.Clear();
         started = false;
@@ -393,45 +399,5 @@ public class DungeonGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // for (int i = 0; i < keyCodes.Length; i++)
-        // {
-        //     if (Input.GetKeyDown(keyCodes[i]))
-        //     {
-        //         int numberPressed = i + 1;
-        //         foreach (Room room in rooms)
-        //         {
-        //             if (room.id == numberPressed)
-        //             {
-        //                 camera.transform.position = room.CameraPosition();
-        //             }
-        //         }
-        //     }
-        // }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            StartDungeon();
-        }
     }
-
-    // https://stackoverflow.com/questions/40577412/clear-editor-console-logs-from-script
-    public void ClearLog()
-    {
-        var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
-        var type = assembly.GetType("UnityEditor.LogEntries");
-        var method = type.GetMethod("Clear");
-        method.Invoke(new object(), null);
-    }
-
-    private KeyCode[] keyCodes = {
-         KeyCode.Alpha1,
-         KeyCode.Alpha2,
-         KeyCode.Alpha3,
-         KeyCode.Alpha4,
-         KeyCode.Alpha5,
-         KeyCode.Alpha6,
-         KeyCode.Alpha7,
-         KeyCode.Alpha8,
-         KeyCode.Alpha9,
-     };
 }

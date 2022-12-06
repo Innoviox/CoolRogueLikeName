@@ -71,25 +71,15 @@ public class DungeonGenerator : MonoBehaviour
     {
         int roomToExpand = expandableRooms[UnityEngine.Random.Range(0, expandableRooms.Count)];
         Room room = rooms[roomToExpand];
+        Wall wallToExpand = room.expandableWalls[UnityEngine.Random.Range(0, room.expandableWalls.Count)];
 
-        if (roomToExpand == 0) // choose every wall in base room
+        int tries = 0, maxTries = bossRoom ? 100 : 10; // we really wanna generate the boss room
+        while (!ExpandWall(room, wallToExpand, bossRoom) && tries < maxTries)
         {
-            foreach (Wall wallToExpand in new List<Wall>(room.expandableWalls))
-            {
-                ExpandWall(room, wallToExpand, bossRoom); // this should always work
-            }
-        }
-        else
-        {
-            Wall wallToExpand = room.expandableWalls[UnityEngine.Random.Range(0, room.expandableWalls.Count)];
-            int tries = 0, maxTries = bossRoom ? 100 : 10; // we really wanna generate the boss room
-            while (!ExpandWall(room, wallToExpand, bossRoom) && tries < maxTries)
-            {
-                roomToExpand = expandableRooms[UnityEngine.Random.Range(0, expandableRooms.Count)];
-                room = rooms[roomToExpand];
-                wallToExpand = room.expandableWalls[UnityEngine.Random.Range(0, room.expandableWalls.Count)];
-                tries++;
-            }
+            roomToExpand = expandableRooms[UnityEngine.Random.Range(0, expandableRooms.Count)];
+            room = rooms[roomToExpand];
+            wallToExpand = room.expandableWalls[UnityEngine.Random.Range(0, room.expandableWalls.Count)];
+            tries++;
         }
 
         if (room.expandableWalls.Count == 0)
@@ -340,7 +330,7 @@ public class DungeonGenerator : MonoBehaviour
         // todo clean this a bit
         Reset();
 
-        expands = nRooms - 3;
+        expands = nRooms - 1;
 
         camera.transform.position = rooms[0].CameraPosition();
 

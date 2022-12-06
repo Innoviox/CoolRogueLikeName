@@ -61,11 +61,11 @@ public class RoomGenerator : MonoBehaviour
             // if (Vector3.Distance(doorPos, pos) <= 1.0f)
             if (Vector3.Distance(doorPos, pos) <= 2.0f)
             {
+                Instantiate(floor, pos, rot, roomRootTransform);
                 return;
             }
         }
 
-        sideLocations.Add(pos);
         Instantiate(side, pos, rot, roomRootTransform);
     }
 

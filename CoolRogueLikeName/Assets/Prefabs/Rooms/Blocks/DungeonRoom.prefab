@@ -48,7 +48,10 @@ MonoBehaviour:
   player: {fileID: 0}
   generateEnemies: 1
   camera: {fileID: 0}
-  enemyGenerator: {fileID: 0}
+  willSpawnPowerups: 0
+  willSpawnWeapon: 0
+  weaponChest: {fileID: 164837843160075365, guid: 703ea8129a09fc74f96ed060d7cc005f, type: 3}
+  powerupPedestal: {fileID: 0}
   killedEnemiesScore: {fileID: 0}
   clearedRoomsScore: {fileID: 0}
 --- !u!114 &6286752484733900047

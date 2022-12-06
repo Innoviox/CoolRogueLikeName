@@ -4,32 +4,29 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
-    private float health;
-    private float maxHealth;
-    protected bool inDistance;
+    float health;            
+    float maxHealth = 5.0f; 
 
     GameObject healthBar;
-    public Transform player;
+    public Transform player;   
 
-    // Called before Start to initialize 
-    private void Awake()
+    void Start()
     {
         healthBar = transform.parent.Find("HealthBar").gameObject;
-        health = maxHealth = 5.0f;
-        inDistance = false;
+        health = maxHealth;
     }
-
+    
     void Update()
     {
+        // The enemy will constantly look at the player.
+        transform.LookAt(player);
         // Make the enemy health bar follow the enemy as they move around. 
-        healthBar.transform.position = new Vector3(transform.position.x,
-                                                   healthBar.transform.position.y,
+        healthBar.transform.position = new Vector3(transform.position.x, 
+                                                   healthBar.transform.position.y, 
                                                    transform.position.z);
     }
 
-    /// <summary>
-    /// Take damage on colliding with projectile
-    /// </summary>
+    // Take damage on colliding with projectile
     private void OnCollisionEnter(Collision collision)
     {
         // Check collision occured with a bullet
@@ -37,7 +34,14 @@ public class EnemyScript : MonoBehaviour
         if (collision.transform.gameObject.name == "Bullet(Clone)")
         {
             // Get the projectiles damage
-            float damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
+            int damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
+
+            health -= damageTaken;
+
+            healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
+        } else if (collision.transform.gameObject.name == "Rocket(Clone)") 
+        {
+             int damageTaken = collision.transform.gameObject.GetComponent<RocketProjectile>().Damage;
 
             health -= damageTaken;
 
@@ -46,9 +50,42 @@ public class EnemyScript : MonoBehaviour
 
         if (health <= 0.0f)
         {
-            Debug.Log("destroyed");
-            Debug.Log(transform.parent);
-            Debug.Log(transform.parent.parent);
+            transform.parent.parent.SendMessage("EnemyDestroyed");
+            Destroy(transform.parent.gameObject);
+        }
+    }
+
+    // take damage on being in sword hitbox
+    private void OnTriggerEnter(Collider collision)
+    {
+        // Check collision occured with a bullet
+        // Since bullet is a prefab its gameobject name gets set to Bullet(Clone)
+        if (collision.transform.gameObject.name == "SwordHitbox(Clone)")
+        {
+            // Get the projectiles damage
+            int damageTaken = collision.transform.gameObject.GetComponent<SwordDamage>().Damage;
+
+            health -= damageTaken;
+
+            healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
+        } else if (collision.transform.gameObject.name == "LaserBolt(Clone)")
+        {
+            int damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
+
+            health -= damageTaken;
+
+            healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
+        } else if (collision.transform.gameObject.name == "Explosion(Clone)")
+        {
+            int damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
+
+            health -= damageTaken;
+
+            healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
+        }
+
+        if (health <= 0.0f)
+        {
             transform.parent.parent.SendMessage("EnemyDestroyed");
             Destroy(transform.parent.gameObject);
         }

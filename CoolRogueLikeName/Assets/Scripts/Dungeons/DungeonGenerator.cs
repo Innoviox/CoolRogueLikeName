@@ -27,6 +27,7 @@ public class DungeonGenerator : MonoBehaviour
     private List<Door> globalDoorLocations;
     private bool started = false;
     private RoomGenerator roomGenerator;
+    private Transform teleporter = null;
 
     // Start is called before the first frame update
     void Start()
@@ -270,11 +271,14 @@ public class DungeonGenerator : MonoBehaviour
 
     void GenerateDungeon()
     {
-        try {
+        try
+        {
             ExpandN(expands);
             Expand(true); // expand the boss room
             GenerateDoors();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Debug.Log($"dungeon failed, retrying {e}");
             Reset();
             GenerateDungeon();
@@ -323,10 +327,10 @@ public class DungeonGenerator : MonoBehaviour
     {
         Vector3 loc = rooms[rooms.Count - 1].RandomLocation(2.0f);
         Transform prefab = blocksDict["Teleporter"];
-        Transform teleporterTransform = GameObject.Instantiate(prefab, loc, Quaternion.identity);
-        teleporterTransform.name = "Teleporter";
+        teleporter = GameObject.Instantiate(prefab, loc, Quaternion.identity);
+        teleporter.name = "Teleporter";
 
-        var dts = teleporterTransform.GetComponent<DungeonTeleporterScript>();
+        var dts = teleporter.GetComponent<DungeonTeleporterScript>();
         dts.teleport += Teleport;
         dts.player = player;
     }
@@ -347,7 +351,8 @@ public class DungeonGenerator : MonoBehaviour
         // StartDungeon();
     }
 
-    void Reset() {
+    void Reset()
+    {
         ClearDungeon();
         rooms = new List<Room>();
         roomBlocks = new List<Transform>();
@@ -378,13 +383,20 @@ public class DungeonGenerator : MonoBehaviour
         // {
         //     Destroy(block.gameObject);
         // }
-        foreach (Transform room in dungeonRooms) {
+        foreach (Transform room in dungeonRooms)
+        {
             Destroy(room.gameObject);
         }
         foreach (Door door in globalDoorLocations)
         {
             Destroy(door.doorTransform.gameObject);
         }
+
+        if (teleporter != null)
+        {
+            Destroy(teleporter.gameObject);
+        }
+
         // todo destroy old teleporter
         roomBlocks.Clear();
         started = false;

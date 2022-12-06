@@ -46,6 +46,9 @@ public class EnemyScript : MonoBehaviour
 
         if (health <= 0.0f)
         {
+            Debug.Log("destroyed");
+            Debug.Log(transform.parent);
+            Debug.Log(transform.parent.parent);
             transform.parent.parent.SendMessage("EnemyDestroyed");
             Destroy(transform.parent.gameObject);
         }

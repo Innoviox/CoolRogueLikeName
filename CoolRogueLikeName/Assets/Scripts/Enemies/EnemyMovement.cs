@@ -9,13 +9,15 @@ public class EnemyMovement : MonoBehaviour
     public Transform leftSide;      // from the enemy to the room
 
     public Rigidbody enemyBody;
-    public float enemySpeed = 2.5f; // Walking speed of enemy
+    public float baseEnemySpeed = 2.5f; // Walking speed of enemy
     public float dodgeSpeed = 3;    // How fast the enemy moves when it dodges.
 
     protected int allowedDistance;  // How close enemy can be to an object before changing directions (left/right) when dodging player bullets.
     protected bool moveRight;       // Enemy moves right to dodge player bullets by default
 
     public float walkRate;          // How often the enemy will walk towards the player based on their distance. 
+
+    public PowerupManager stats;
 
     /// <summary>
     /// If the player is too far from the enemy on the x-z plane
@@ -28,7 +30,7 @@ public class EnemyMovement : MonoBehaviour
         if (tooFar)
         {
             // The enemy walks forward in the direction they are facing
-            enemyBody.velocity = new Vector3(transform.forward.x * enemySpeed, 0, transform.forward.z * enemySpeed);
+            enemyBody.velocity = new Vector3(transform.forward.x * baseEnemySpeed * stats.enemyMoveSpeedFactor, 0, transform.forward.z * baseEnemySpeed * stats.enemyMoveSpeedFactor);
         }
         return tooFar;
     }

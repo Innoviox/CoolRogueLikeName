@@ -491,6 +491,7 @@ MonoBehaviour:
   rightSide: {fileID: 4093053622525522793}
   leftSide: {fileID: 4093053621274986066}
   enemyBody: {fileID: 0}
-  enemySpeed: 2.5
+  baseEnemySpeed: 2.5
   dodgeSpeed: 3
   walkRate: 0
+  stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}

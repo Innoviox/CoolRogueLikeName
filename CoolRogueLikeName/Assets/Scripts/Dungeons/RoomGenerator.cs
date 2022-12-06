@@ -43,7 +43,10 @@ public class RoomGenerator : MonoBehaviour
         BoxCollider floorCollider = roomRootTransform.gameObject.AddComponent<BoxCollider>();
         floorCollider.size = new Vector3(2 * x + 0, 1, 2 * z + 0);
         floorCollider.center = new Vector3(0, center.y - 0.5f, 0);
-
+        BoxCollider roomTrigger = roomRootTransform.gameObject.AddComponent<BoxCollider>();
+        roomTrigger.size = new Vector3(2 * x - 1, 4, 2 * z -1);
+        roomTrigger.center = new Vector3(0, 2, 0);
+        roomTrigger.isTrigger = true;
         // return roomRoot;
     }
 

@@ -2,20 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class RocketProjectile : MonoBehaviour
 {
     public int Damage;
-    public int collisionCount;
+    public int Explosion;
+    public GameObject explosionRadius;
+    public float explosionTime;
     // Projectile ends its life when colliding with a wall
     // or an enemy. 
+    // Spawns explosion radius and slight VFX to convey an explosion.
     private void OnCollisionEnter(Collision collision)
     {
         // Don't destroy myself if I collide with other bullets
-        if (collision.transform.gameObject.name != "Bullet(Clone)")
+        if (collision.transform.gameObject.name != "RocketProj(Clone)")
         {
-            
+            GameObject explosion = Instantiate(explosionRadius, collision.contacts[0].point, explosionRadius.transform.rotation);
             // Destroy myself :(
             Destroy(gameObject);
+            Destroy(explosion,explosionTime);
         }
 
     }

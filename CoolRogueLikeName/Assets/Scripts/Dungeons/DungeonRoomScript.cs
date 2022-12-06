@@ -10,6 +10,11 @@ public class DungeonRoomScript : MonoBehaviour
     public bool generateEnemies = true; // todo make private with getter/setter
     public new Camera camera;
 
+    public bool willSpawnPowerups;
+    public bool willSpawnWeapon;
+    public GameObject weaponChest;
+    public GameObject powerupPedestal;
+
     public Dictionary<string, Transform> blocksDict;
     private int nEnemies = 2; // todo
     private List<DungeonDoorScript> doors;
@@ -46,6 +51,9 @@ public class DungeonRoomScript : MonoBehaviour
 
         bounds = room.GetBounds();
         playerBounds = player.GetComponent<Collider>().bounds;
+
+        willSpawnPowerups = Random.Range(0.0f, 1.0f) < 0.25;
+        willSpawnWeapon = (!willSpawnPowerups) && Random.Range(0.0f, 1.0f) < 0.25;
     }
 
     public void StartRoom()
@@ -107,6 +115,14 @@ public class DungeonRoomScript : MonoBehaviour
         if (entryPoint != null)
         {
             entryPoint.Unlock();
+        }
+
+        if (willSpawnPowerups)
+        {
+            SpawnPowerups();
+        } else if (willSpawnWeapon)
+        {
+            SpawnWeaponChest();
         }
     }
 
@@ -196,5 +212,18 @@ public class DungeonRoomScript : MonoBehaviour
     public Transform Parent()
     {
         return roomTransform;
+    }
+
+    public void SpawnWeaponChest()
+    {
+        GameObject wc = Instantiate(weaponChest);
+        Transform wct = wc.GetComponent<Transform>();
+        wct.parent = transform;
+        wct.position = new Vector3(0, 1, 0);
+    }
+
+    public void SpawnPowerups()
+    {
+        // todo: make powerup pedestal prefab, spawn em
     }
 }

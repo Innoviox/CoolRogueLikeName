@@ -47,7 +47,7 @@ public class RoomGenerator : MonoBehaviour
         GameObject triggerHolder = new GameObject("Room " + (int)center.x + " " + (int)center.y + " " + (int)center.z);
         triggerHolder.GetComponent<Transform>().parent = roomRootTransform;
         BoxCollider roomTrigger = triggerHolder.AddComponent<BoxCollider>();
-        roomTrigger.size = new Vector3(2 * x - 1, 4, 2 * z - 1);
+        roomTrigger.size = new Vector3(2 * x - 3, 4, 2 * z - 3);
         roomTrigger.center = new Vector3(center.x, 2, center.z);
         roomTrigger.isTrigger = true;
         TriggerHandler triggerHandler = triggerHolder.AddComponent<TriggerHandler>();

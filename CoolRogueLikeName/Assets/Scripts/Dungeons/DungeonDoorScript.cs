@@ -74,6 +74,7 @@ public class DungeonDoorScript : MonoBehaviour
             position.y = player.position.y;
             if (Vector3.Distance(position, player.position) < playerUnlockDistance)
             {
+                roomThisDoorLeadsFrom.ShowRoom(true);
                 roomThisDoorLeadsTo.ShowRoom(true);
                 // StartCoroutine(SwingDoor(true, roomThisDoorLeadsTo.PlayerInRoom()));
                 opening_direction = -1;

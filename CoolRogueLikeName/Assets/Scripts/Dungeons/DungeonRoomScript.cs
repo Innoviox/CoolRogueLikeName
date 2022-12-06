@@ -16,7 +16,7 @@ public class DungeonRoomScript : MonoBehaviour
     public GameObject powerupPedestal;
 
     public Dictionary<string, Transform> blocksDict;
-    public int nEnemies = 2; // todo
+    public int nEnemiesBase = 2; // todo
     private List<DungeonDoorScript> doors;
 
     private Transform roomTransform;
@@ -38,6 +38,7 @@ public class DungeonRoomScript : MonoBehaviour
     DoorToggleDelegate showDoors;
     DoorToggleDelegate lockDoors;
     private bool started = false;
+    private int nEnemies;
 
     // Start is called before the first frame update
     void Start()
@@ -132,6 +133,8 @@ public class DungeonRoomScript : MonoBehaviour
         {
             SpawnWeaponChest();
         }
+
+        // player.GetComponent<PlayerMovement>().stats.enemySpawnFactor += 1;
     }
 
     public void WalkedInto()
@@ -161,9 +164,12 @@ public class DungeonRoomScript : MonoBehaviour
             return;
         }
 
-        for (int i = 0; i < nEnemies; i++)
+        var enemyScaling = player.GetComponent<PlayerMovement>().stats.enemySpawnFactor;
+        nEnemies = 0;
+        for (int i = 0; i < nEnemiesBase * enemyScaling; i++)
         {
             enemyCreator.CreateEnemy(player, room.RandomLocation(2.0f));
+            nEnemies++;
         }
 
         enemiesActivated = true;

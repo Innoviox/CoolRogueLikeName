@@ -77,7 +77,7 @@ public class Room
         drs.player = player;
         drs.camera = camera;
         drs.generateEnemies = id == 0; // only first room is shown at first
-        drs.nEnemies = id == 0 ? 0 : 2;
+        drs.nEnemiesBase = id == 0 ? 0 : 2;
 
         return dungeonRoom;
     }

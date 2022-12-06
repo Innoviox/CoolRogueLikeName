@@ -77,6 +77,7 @@ public class Room
         drs.player = player;
         drs.camera = camera;
         drs.generateEnemies = id == 0; // only first room is shown at first
+        drs.nEnemies = id == 0 ? 0 : 2;
 
         return dungeonRoom;
     }
@@ -248,7 +249,8 @@ public class Room
         return new Vector2(x, y);
     }
 
-    public Vector3 RandomLocation(float y) {
+    public Vector3 RandomLocation(float y)
+    {
         Vector2 loc = RandomLocation();
         return new Vector3(loc.x, y, loc.y);
     }

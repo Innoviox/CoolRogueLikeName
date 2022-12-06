@@ -17,11 +17,14 @@ public class Door
         this.x = x; // - 0.5f;
         this.y = y; // - 0.5f;
 
-        switch (onWall) {
-            case Wall.North: case Wall.South:
+        switch (onWall)
+        {
+            case Wall.North:
+            case Wall.South:
                 this.x += 0.5f;
                 break;
-            case Wall.East: case Wall.West:
+            case Wall.East:
+            case Wall.West:
                 this.y += 0.5f;
                 break;
         }
@@ -30,7 +33,7 @@ public class Door
         this.room2 = room2;
     }
 
-    public void DoorVisibleDelegate(bool visible, int roomId)
+    public void Show(bool visible, int roomId)
     {
         if (roomId != room1 && roomId != room2)
         {
@@ -40,12 +43,20 @@ public class Door
         doorTransform.GetComponent<Renderer>().enabled = visible;
     }
 
-    public void Unlock(int roomId)
+    public void Lock(bool lockDoors, int roomId)
     {
         if (roomId != room1 && roomId != room2)
         {
             return;
         }
-        doorTransform.GetComponent<DungeonDoorScript>().Unlock();
+
+        if (lockDoors)
+        {
+            doorTransform.GetComponent<DungeonDoorScript>().Lock();
+        }
+        else
+        {
+            doorTransform.GetComponent<DungeonDoorScript>().Unlock();
+        }
     }
 }

@@ -25,6 +25,11 @@ public class DungeonDoorScript : MonoBehaviour
     private bool swungOpen = false;
     private Vector3 rotationPoint;
 
+    private int opening_direction; // 0 => none, -1 => down, 1 => up
+    private float opening_speed = 0.1f;
+    private int min_y;
+    private int max_y;
+
 
     // Start is called before the first frame update
     void Start()
@@ -54,18 +59,46 @@ public class DungeonDoorScript : MonoBehaviour
                 rotationPoint.x += transform.localScale.x / 2;
                 break;
         }
+
+        opening_direction = 0;
+        min_y = -2;
+        max_y = (int)transform.position.y;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!locked)
+        if (!locked && opening_direction == 0)
         {
-            if (Input.GetKey(KeyCode.E) && collider.bounds.SqrDistance(player.position) < playerUnlockDistance)
+            Vector3 position = transform.position;
+            position.y = player.position.y;
+            if (Vector3.Distance(position, player.position) < playerUnlockDistance)
             {
                 roomThisDoorLeadsTo.ShowRoom(true);
-                StartCoroutine(SwingDoor(true, roomThisDoorLeadsTo.PlayerInRoom()));
+                // StartCoroutine(SwingDoor(true, roomThisDoorLeadsTo.PlayerInRoom()));
+                opening_direction = -1;
             }
+            else
+            {
+                opening_direction = 1;
+            }
+        }
+
+        if (opening_direction != 0)
+        {
+            Vector3 position = transform.position;
+            position.y += opening_direction * opening_speed;
+            if (position.y < min_y)
+            {
+                position.y = min_y;
+                opening_direction = 0;
+            }
+            else if (position.y > max_y)
+            {
+                position.y = max_y;
+                opening_direction = 0;
+            }
+            transform.position = position;
         }
     }
 
@@ -75,88 +108,6 @@ public class DungeonDoorScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-    }
-
-    private IEnumerator WaitUntilDoorWalkedThrough(bool inRoom)
-    {
-        Debug.Log($"waiting until door walked through {roomThisDoorLeadsTo.PlayerInRoom()} {inRoom}");
-        // door walked through <=> inRoom status changes
-        while (roomThisDoorLeadsTo.PlayerInRoom() == inRoom)
-        {
-            yield return null;
-        }
-
-        Debug.Log("door walked through");
-        DoorWalkedThrough(inRoom);
-    }
-
-    private IEnumerator SwingDoor(bool open, bool inRoom)
-    {
-        if (open == swungOpen)
-        {
-            yield break; // only run one instance of swing at a time to prevent shenanigans (dancing door)
-        }
-
-        swungOpen = open;
-        collider.isTrigger = true;
-
-        int mul = open ? -1 : 1;
-        mul *= inRoom ? -1 : 1; // if player is in room, swing door the other way
-
-        float time = 0;
-        while (time < 1)
-        {
-            time += Time.deltaTime;
-            transform.RotateAround(rotationPoint, Vector3.up, mul * maxSwingAngle * Time.deltaTime);
-            yield return null;
-        }
-
-        collider.isTrigger = false;
-
-        if (open)
-        {
-            StartCoroutine(WaitUntilDoorWalkedThrough(inRoom));
-        }
-    }
-
-    void DoorWalkedThrough(bool wasOriginallyinRoom)
-    {
-        StartCoroutine(SwingDoor(false, wasOriginallyinRoom));
-
-
-        if (!wasOriginallyinRoom)
-        {
-            roomThisDoorLeadsTo.WalkedInto();
-        }
-        else
-        {
-            roomThisDoorLeadsFrom.WalkedInto();
-        }
-
-
-        if (!roomThisDoorLeadsTo.RoomDone())
-        {
-            Lock();
-        }
-    }
-
-    public Transform GenerateRoom(Transform player)
-    {
-        // make new room and set its position
-        var newRoom = Instantiate(roomPrefabs[Random.Range(0, roomPrefabs.Length)], new Vector3(0, 0, 0), transform.rotation);
-        roomThisDoorLeadsTo = newRoom.gameObject.GetComponent<DungeonRoomScript>();
-        roomThisDoorLeadsTo.player = player;
-
-        var entrancePosition = newRoom.Find("Entrance").position;
-        var newRoomPosition = transform.position - entrancePosition;
-
-        newRoom.position = newRoomPosition;
-
-        renderer.material = doorClosedMaterial;
-
-        roomThisDoorLeadsTo.SetEntryPoint(this);
-
-        return newRoom;
     }
 
     public void Unlock()
@@ -189,5 +140,6 @@ public class DungeonDoorScript : MonoBehaviour
         locked = true;
         renderer.material = doorClosedMaterial;
         renderer.enabled = true;
+        opening_direction = 1; // instantly start locking door
     }
 }

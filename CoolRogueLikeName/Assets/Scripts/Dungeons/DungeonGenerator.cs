@@ -339,6 +339,8 @@ public class DungeonGenerator : MonoBehaviour
         GenerateDungeon();
         MakeDungeon();
         StartCoroutine(StartDungeon());
+
+        GetComponent<Tutorial>().MakeText(-8, 5, "Use the WASD keys to move");
     }
 
     void Reset()

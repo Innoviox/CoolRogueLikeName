@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDirection : MonoBehaviour
+public class PlayerAiming : MonoBehaviour
 {
     //0.7 is approximately the height of the player's weapon when the player is on the floor, but 0.5 sorta feels better
     public float staticAimPlaneHeight = 0.5f;

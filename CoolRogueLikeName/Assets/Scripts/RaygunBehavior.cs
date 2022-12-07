@@ -21,7 +21,7 @@ public class RaygunBehavior : MonoBehaviour
         {   
             nextAttack = Time.time + cooldown;
             // Create a bullet from the prefab 
-            GameObject bullet = Instantiate(projectile, spawnPoint.position, projectile.transform.rotation);
+            GameObject bullet = Instantiate(projectile, spawnPoint.position, transform.rotation);
 
             // Set projectiles damage
             bullet.GetComponent<Projectile>().Damage = baseDamage;

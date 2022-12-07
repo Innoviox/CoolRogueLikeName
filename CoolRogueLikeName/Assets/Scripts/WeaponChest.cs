@@ -5,11 +5,13 @@ using UnityEngine;
 public class WeaponChest : MonoBehaviour
 {
     public List<GameObject> WeaponList;
+    public Vector3 weaponFloatPosition;
     public Transform hinge;
     public string openKey;
     public float openDuration;
 
-    public GameObject availableWeapon;
+    public Transform availableWeaponTransform;
+    public float rotateSpeed;
 
     bool opened = false;
     bool weaponReady = false;
@@ -18,6 +20,14 @@ public class WeaponChest : MonoBehaviour
     void Start()
     {
         
+    }
+
+    void FixedUpdate()
+    {
+        if (weaponReady)
+        {
+            availableWeaponTransform.RotateAround(transform.position, Vector3.up, rotateSpeed);
+        }
     }
 
     // Update is called once per frame
@@ -31,9 +41,8 @@ public class WeaponChest : MonoBehaviour
                 {
                     if (Input.GetKeyDown(openKey))
                     {
-                        // TODO: swap out weapons on player
-                        // be sure to enable/disable the weapon scripts
-                        Debug.Log("swapping weapons (unimplemented)");
+                        PlayerWeaponHolder holder = other.gameObject.GetComponent<PlayerWeaponHolder>();
+                        availableWeaponTransform = holder.SwapWeapons(availableWeaponTransform);
                     }
                 }
             }
@@ -50,21 +59,21 @@ public class WeaponChest : MonoBehaviour
 
     IEnumerator OpenChest()
     {
+        int weaponIndex = Random.Range(0, WeaponList.Count);
+
         Quaternion openQ = Quaternion.Euler(-30, 90, 90);
         Quaternion startQ = hinge.rotation;
         float timeTaken = 0;
-        while (hinge.rotation != openQ)
+        while (timeTaken < openDuration)
         {
             hinge.rotation = Quaternion.Lerp(startQ, openQ, timeTaken / openDuration);
             timeTaken += Time.deltaTime;
             yield return null;
         }
-
-        //availableWeapon = Instantiate(WeaponList[Random.Range(0, WeaponList.Count)]);
-        availableWeapon = Instantiate(WeaponList[0]);
-        Transform weaponTransform = availableWeapon.GetComponent<Transform>();
-        weaponTransform.parent = transform;
-        weaponTransform.position = new Vector3(0, 0.5f, 0);
+        hinge.rotation = openQ;
+        availableWeaponTransform = GameObject.Instantiate(WeaponList[weaponIndex]).GetComponent<Transform>();
+        availableWeaponTransform.parent = transform;
+        availableWeaponTransform.SetLocalPositionAndRotation(weaponFloatPosition, Quaternion.identity);
         weaponReady = true;
     }
 }

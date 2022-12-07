@@ -2,7 +2,7 @@
   - [ ] add boss to boss room
   - [ ] add room.centerposition method and make boss & teleporter spawn there
   - [ ] make it so teleporter spawns on boss death
-  - [ ] fix camera position
+  - [x] fix camera position
 - [ ] models
   - [ ] doors
     - [ ] make model

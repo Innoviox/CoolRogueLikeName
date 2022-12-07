@@ -11,13 +11,13 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Wall
+  - PlayerBody
+  - EnemyBody
+  - PlayerProjectile
+  - EnemyProjectile
+  - Door
+  - Floor
   - 
   - 
   - 

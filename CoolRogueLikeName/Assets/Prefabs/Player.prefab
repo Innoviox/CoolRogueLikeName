@@ -114,10 +114,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 3737592449937902101}
   projectile: {fileID: 164837843160075365, guid: 703ea8129a09fc74f96ed060d7cc005f, type: 3}
-  baseProjectileSpeed: 5
+  projectileSpeed: 5
   baseDamage: 1
-  baseCooldown: 0.5
-  stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
 --- !u!1 &3737592448777623370
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,7 +131,7 @@ GameObject:
   - component: {fileID: 3737592448777623364}
   - component: {fileID: 3737592448777623365}
   - component: {fileID: 3737592448777623363}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}

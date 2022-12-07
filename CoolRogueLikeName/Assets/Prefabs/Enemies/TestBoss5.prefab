@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6970292505989456408}
   - component: {fileID: 2516773780319354918}
   - component: {fileID: 7580483851532960033}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Torso
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,9 +157,10 @@ MonoBehaviour:
   rightSide: {fileID: 0}
   leftSide: {fileID: 0}
   enemyBody: {fileID: 0}
-  enemySpeed: 2.5
+  baseEnemySpeed: 2.5
   dodgeSpeed: 3
   walkRate: 0
+  stats: {fileID: 0}
   center: {fileID: 0}
 --- !u!114 &7580483851532960033
 MonoBehaviour:

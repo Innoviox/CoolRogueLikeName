@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1218989748667217098}
   - component: {fileID: 3495533261702867643}
   - component: {fileID: 754506917383094952}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BossBreakableBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,3 +129,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: 0
   breakable: 1
+  mask:
+    serializedVersion: 2
+    m_Bits: 128

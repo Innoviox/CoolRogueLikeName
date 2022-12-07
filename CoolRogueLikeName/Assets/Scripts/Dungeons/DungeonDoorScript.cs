@@ -76,7 +76,6 @@ public class DungeonDoorScript : MonoBehaviour
             {
                 roomThisDoorLeadsFrom.ShowRoom(true);
                 roomThisDoorLeadsTo.ShowRoom(true);
-                // StartCoroutine(SwingDoor(true, roomThisDoorLeadsTo.PlayerInRoom()));
                 opening_direction = -1;
             }
             else
@@ -141,6 +140,7 @@ public class DungeonDoorScript : MonoBehaviour
         locked = true;
         renderer.material = doorClosedMaterial;
         renderer.enabled = true;
-        opening_direction = 1; // instantly start locking door
+        if (transform.position.y < max_y)
+            opening_direction = 1; // instantly start locking door
     }
 }

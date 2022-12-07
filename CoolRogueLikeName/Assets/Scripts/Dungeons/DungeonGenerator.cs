@@ -28,10 +28,13 @@ public class DungeonGenerator : MonoBehaviour
     private bool started = false;
     private RoomGenerator roomGenerator;
     private Transform teleporter = null;
+    public Transform tutorial;
+    public Tutorial tutorialComp;
 
     // Start is called before the first frame update
     void Start()
     {
+        tutorialComp = tutorial.GetComponent<Tutorial>();
         blocksDict = new Dictionary<string, Transform>();
         foreach (Transform block in blocks)
         {
@@ -303,6 +306,7 @@ public class DungeonGenerator : MonoBehaviour
             Transform prefab = blocksDict["Door"];
             Transform doorTransform = GameObject.Instantiate(prefab, new Vector3(door.x, 0, door.y), Quaternion.identity);
             doorTransform.name = $"Door ({door.x}, {door.y})";
+            doorTransform.parent = transform;
 
             var drs = doorTransform.GetComponent<DungeonDoorScript>();
             drs.player = player;
@@ -333,14 +337,11 @@ public class DungeonGenerator : MonoBehaviour
         expands = nRooms - 1;
 
         camera.transform.position = rooms[0].CameraPosition();
-
         player.transform.position = rooms[0].PlayerPosition();
 
         GenerateDungeon();
         MakeDungeon();
         StartCoroutine(StartDungeon());
-
-        GetComponent<Tutorial>().MakeText(-8, 5, "Use the WASD keys to move");
     }
 
     void Reset()
@@ -370,6 +371,9 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         dungeonRooms[0].GetComponent<DungeonRoomScript>().ShowRoom(true); // show doors
+        dungeonRooms[0].GetComponent<DungeonRoomScript>().lockDoors(true, 0); // lock doors
+
+        tutorialComp.StartTutorial();
         yield break;
     }
 
@@ -401,5 +405,10 @@ public class DungeonGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (tutorialComp.unlockFirstRoom)
+        {
+            dungeonRooms[0].GetComponent<DungeonRoomScript>().lockDoors(false, 0);
+            tutorialComp.unlockFirstRoom = false; // dont run again
+        }
     }
 }

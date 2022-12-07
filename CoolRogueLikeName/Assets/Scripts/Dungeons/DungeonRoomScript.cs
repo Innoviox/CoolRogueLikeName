@@ -34,9 +34,9 @@ public class DungeonRoomScript : MonoBehaviour
     public GameObject killedEnemiesScore;
     public GameObject clearedRoomsScore;
 
-    delegate void DoorToggleDelegate(bool on, int roomId);
-    DoorToggleDelegate showDoors;
-    DoorToggleDelegate lockDoors;
+    public delegate void DoorToggleDelegate(bool on, int roomId);
+    public DoorToggleDelegate showDoors;
+    public DoorToggleDelegate lockDoors;
     private bool started = false;
     private int nEnemies;
     private Transform boss;

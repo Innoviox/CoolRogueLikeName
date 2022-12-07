@@ -40,6 +40,7 @@ public class DungeonRoomScript : MonoBehaviour
     private bool started = false;
     private int nEnemies;
     private Transform boss;
+    private Tutorial t;
 
     // Start is called before the first frame update
     void Start()
@@ -56,6 +57,8 @@ public class DungeonRoomScript : MonoBehaviour
 
         willSpawnPowerups = Random.Range(0.0f, 1.0f) < 0.25;
         willSpawnWeapon = (!willSpawnPowerups) && Random.Range(0.0f, 1.0f) < 0.25;
+
+        t = roomTransform.parent.GetComponent<DungeonGenerator>().tutorialComp;
 
         Debug.Log("room start() finished");
     }
@@ -137,11 +140,37 @@ public class DungeonRoomScript : MonoBehaviour
             SpawnWeaponChest();
         }
 
+        if (room.isBossRoom)
+        {
+            // todo spawn teleporter
+            t.TickTutorial(9, room.x, room.y);
+        }
+        else if (room.id != 0)
+        {
+            roomTransform.parent.GetComponent<DungeonGenerator>().tutorialComp.TickTutorial(7, room.x, room.y);
+        }
+
         // player.GetComponent<PlayerMovement>().stats.enemySpawnFactor += 1;
     }
 
     public void WalkedInto()
     {
+        if (room.id != 0)
+        {
+            if (t.Unused(6))
+            {
+                t.TickTutorial(6, room.x, room.y);
+            }
+            else if (room.hasBossDoor)
+            {
+                t.TickTutorial(8, room.x, room.y);
+            }
+            else
+            {
+                t.ClearTutorial(); // remove tutorial when entering a room
+            }
+        }
+
         if (!RoomDone())
         {
             ActivateEnemies();

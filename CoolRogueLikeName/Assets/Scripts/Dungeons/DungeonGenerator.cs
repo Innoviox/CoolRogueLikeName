@@ -252,6 +252,12 @@ public class DungeonGenerator : MonoBehaviour
                     doors[room1.id] = new List<Wall> { wall };
                 }
 
+                if (room1.isBossRoom || room2.isBossRoom)
+                {
+                    room1.hasBossDoor = true;
+                    room2.hasBossDoor = true;
+                }
+
                 // Debug.Log($"Door on wall {wall} of room {room1.id} going to {room2.id}");
             }
         }

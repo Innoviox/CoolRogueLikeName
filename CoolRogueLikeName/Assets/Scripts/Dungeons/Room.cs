@@ -14,6 +14,7 @@ public class Room
     public List<Door> doorLocations;
     public int doorWidth = 1; // todo make a class for variables or smth
     public int bossSize = 15; // yeah we need a variables class
+    public bool hasBossDoor = false;
     public bool isBossRoom;
     private List<Transform> blocks;
 

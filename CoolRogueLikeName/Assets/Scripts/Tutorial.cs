@@ -17,8 +17,8 @@ public class Tutorial : MonoBehaviour
         "Walk close to a door to open it",
         // "The doors lock behind you",
         "Defeat the enemies to progress",
-        "Pick up powerups or weapons to enhance your abilities",
-        "The red door represents the boss room - beware!",
+        "Pick up powerups or \nweapons to enhance\n your abilities",
+        "The red door represents \nthe boss room - beware!",
         "Get to the teleporter to get to the next level",
     };
     private List<int> unusedTutorials;
@@ -112,5 +112,10 @@ public class Tutorial : MonoBehaviour
     public void ClearTutorial()
     {
         tm.text = " ";
+    }
+
+    public bool Unused(int idx)
+    {
+        return unusedTutorials.Contains(idx);
     }
 }

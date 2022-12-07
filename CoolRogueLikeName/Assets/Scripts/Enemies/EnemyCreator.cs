@@ -25,7 +25,7 @@ public class EnemyCreator : MonoBehaviour
         var boss = Instantiate(bossPrefab, position, new Quaternion());
         boss.parent = transform;
         boss.BroadcastMessage("SetPlayer", player);
-        boss.BroadcastMessage("SetCenter", position);
+        boss.BroadcastMessage("SetCenter", Instantiate(new GameObject(), position, new Quaternion()));
 
         return boss;
     }

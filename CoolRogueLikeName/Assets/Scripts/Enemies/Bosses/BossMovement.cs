@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossMovement : EnemyMovement
 {
-    public Vector3 center;
+    public Transform center;
     private BossAttack attack;
     public Coroutine aimCo = null;
 
@@ -45,7 +45,7 @@ public class BossMovement : EnemyMovement
     /// <summary>
     /// Starts the enemies aim coroutine
     /// </summary>
-    public void StartAim(Vector3 target)
+    public void StartAim(Transform target)
     {
         aimCo = StartCoroutine(EnemyAim(target));
     }
@@ -69,7 +69,7 @@ public class BossMovement : EnemyMovement
             // enemyBody.velocity = new Vector3(transform.forward.x * enemySpeed, 0, transform.forward.z * enemySpeed);
 
             // Transform position based movement
-            Vector3 temp = 20 * Time.deltaTime * (center - transform.position).normalized;
+            Vector3 temp = 20 * Time.deltaTime * (center.position - transform.position).normalized;
             temp.y = 0;
             transform.position += temp;
             // End transform based movement
@@ -89,8 +89,8 @@ public class BossMovement : EnemyMovement
     /// <returns></returns> True if in range, false otherwise
     bool inRange()
     {
-        if (transform.position.x > center.x - 1.5 && transform.position.x < center.x + 1.5 &&
-            transform.position.y > center.y - 1.5 && transform.position.y < center.y + 1.5)
+        if (transform.position.x > center.position.x - 1.5 && transform.position.x < center.position.x + 1.5 &&
+            transform.position.y > center.position.y - 1.5 && transform.position.y < center.position.y + 1.5)
         {
             return true;
         }
@@ -100,11 +100,11 @@ public class BossMovement : EnemyMovement
     /// <summary>
     /// Aims at the player. Must be stopped from outside.
     /// </summary>
-    private IEnumerator EnemyAim(Vector3 target)
+    private IEnumerator EnemyAim(Transform target)
     {
         while (true)
         {
-            var lookPos = target - transform.position;
+            var lookPos = target.position - transform.position;
             lookPos.y = 0; // Only look along xz-plane
             var rotation = Quaternion.LookRotation(lookPos);
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1);
@@ -117,9 +117,8 @@ public class BossMovement : EnemyMovement
     {
         this.player = player;
     }
-
-    public void SetCenter(Vector3 position)
+    public void SetCenter(Transform center)
     {
-        this.center = position;
+        this.center = center;
     }
 }

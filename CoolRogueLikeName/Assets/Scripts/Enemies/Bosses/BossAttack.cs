@@ -134,7 +134,7 @@ public class BossAttack : EnemyAttack
             }
         }
 
-        move.StartAim(player.position);
+        move.StartAim(player);
         boss.bState = Boss1Script.bossState.normalAttacks;
         boss.aimAtPlayer = true;
         boss.immune = false;

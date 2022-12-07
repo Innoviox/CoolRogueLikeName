@@ -84,7 +84,7 @@ public class Boss1Script : MonoBehaviour
             {
                 // Only aim at player if boss is not already aiming at player
                 if (move.aimCo == null)
-                    move.StartAim(player.position);
+                    move.StartAim(player);
 
                 attackCo = StartCoroutine(attack.NormalAttacks());
                 moveCo = StartCoroutine(move.MoveToPlayer());

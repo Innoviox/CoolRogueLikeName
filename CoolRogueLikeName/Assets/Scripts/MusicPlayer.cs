@@ -23,7 +23,7 @@ public class MusicPlayer : MonoBehaviour
             sources.Add(gameObject.AddComponent<AudioSource>());
         }
 
-        PlayChord("C", 4, true);
+        // PlayChord("C", 4, true);
     }
 
     // Update is called once per frame

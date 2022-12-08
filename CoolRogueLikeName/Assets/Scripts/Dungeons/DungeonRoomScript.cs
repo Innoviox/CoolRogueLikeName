@@ -34,11 +34,13 @@ public class DungeonRoomScript : MonoBehaviour
     public GameObject killedEnemiesScore;
     public GameObject clearedRoomsScore;
 
-    delegate void DoorToggleDelegate(bool on, int roomId);
-    DoorToggleDelegate showDoors;
-    DoorToggleDelegate lockDoors;
+    public delegate void DoorToggleDelegate(bool on, int roomId);
+    public DoorToggleDelegate showDoors;
+    public DoorToggleDelegate lockDoors;
     private bool started = false;
     private int nEnemies;
+    private List<Transform> bosses;
+    private Tutorial t;
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +57,8 @@ public class DungeonRoomScript : MonoBehaviour
 
         willSpawnPowerups = Random.Range(0.0f, 1.0f) < 0.25;
         willSpawnWeapon = (!willSpawnPowerups) && Random.Range(0.0f, 1.0f) < 0.25;
+
+        t = roomTransform.parent.GetComponent<DungeonGenerator>().tutorialComp;
 
         Debug.Log("room start() finished");
     }
@@ -136,11 +140,37 @@ public class DungeonRoomScript : MonoBehaviour
             SpawnWeaponChest();
         }
 
+        if (room.isBossRoom)
+        {
+            roomTransform.parent.GetComponent<DungeonGenerator>().MakeTeleporter();
+            t.TickTutorial(9, room.x, room.y);
+        }
+        else if (room.id != 0)
+        {
+            t.TickTutorial(7, room.x, room.y);
+        }
+
         // player.GetComponent<PlayerMovement>().stats.enemySpawnFactor += 1;
     }
 
     public void WalkedInto()
     {
+        if (room.id != 0)
+        {
+            if (t.Unused(6))
+            {
+                t.TickTutorial(6, room.x, room.y);
+            }
+            else if (room.hasBossDoor)
+            {
+                t.TickTutorial(8, room.x, room.y);
+            }
+            else
+            {
+                t.ClearTutorial(); // remove tutorial when entering a room
+            }
+        }
+
         if (!RoomDone())
         {
             ActivateEnemies();
@@ -166,12 +196,60 @@ public class DungeonRoomScript : MonoBehaviour
             return;
         }
 
-        var enemyScaling = player.GetComponent<PlayerMovement>().stats.enemySpawnFactor;
-        nEnemies = 0;
-        for (int i = 0; i < nEnemiesBase * enemyScaling; i++)
+        if (room.isBossRoom)
         {
-            enemyCreator.CreateEnemy(player, room.RandomLocation(2.0f));
-            nEnemies++;
+            int dungeonN = roomTransform.parent.GetComponent<DungeonGenerator>().GetDungeonN();
+            if (dungeonN == 1)
+            {
+                // special case: single boss spawns in the center of the room
+                bosses = new List<Transform>();
+                bosses.Add(enemyCreator.CreateBoss(player, room.Center(0.64f)));
+                nEnemies = 1;
+            }
+            else
+            {
+                /*
+                1 => 1 0
+                2 => 1 2
+                3 => 2 0
+                4 => 2 4
+                5 => 3 0
+                6 => 3 6
+                */
+                int nBosses = (dungeonN + 1) / 2;
+                int nMinions = (dungeonN % 2 == 0) ? dungeonN : 0;
+
+                bosses = new List<Transform>();
+                for (int i = 0; i < nBosses; i++)
+                {
+                    bosses.Add(enemyCreator.CreateBoss(player, room.RandomLocation(0.64f)));
+                }
+
+                for (int i = 0; i < nMinions; i++)
+                {
+                    enemyCreator.CreateEnemy(player, room.RandomLocation(2.0f));
+                    nEnemies++;
+                }
+
+                nEnemies = nBosses + nMinions;
+            }
+
+        }
+        else
+        {
+            int roomN = roomTransform.parent.GetComponent<DungeonGenerator>().TickRoomN();
+            if (roomN < 3)
+            {
+                enemyCreator.RemovePrefab(0);
+            }
+
+            var enemyScaling = player.GetComponent<Movement>().stats.enemySpawnFactor + roomN * 0.125f;
+            nEnemies = 0;
+            for (int i = 0; i < nEnemiesBase * enemyScaling; i++)
+            {
+                enemyCreator.CreateEnemy(player, room.RandomLocation(2.0f));
+                nEnemies++;
+            }
         }
 
         enemiesActivated = true;

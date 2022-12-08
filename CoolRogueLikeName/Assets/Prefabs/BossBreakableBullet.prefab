@@ -129,3 +129,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: 1
   breakable: 1
+  mask:
+    serializedVersion: 2
+    m_Bits: 128

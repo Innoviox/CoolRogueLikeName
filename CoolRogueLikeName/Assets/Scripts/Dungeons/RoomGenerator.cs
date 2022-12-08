@@ -58,8 +58,8 @@ public class RoomGenerator : MonoBehaviour
     {
         foreach (Vector3 doorPos in doorLocations)
         {
-            // if (Vector3.Distance(doorPos, pos) <= 1.0f)
-            if (Vector3.Distance(doorPos, pos) <= 2.0f)
+            if (Vector3.Distance(doorPos, pos) <= 1.0f)
+            // if (Vector3.Distance(doorPos, pos) <= 2.0f)
             {
                 Instantiate(floor, pos, rot, roomRootTransform);
                 return;

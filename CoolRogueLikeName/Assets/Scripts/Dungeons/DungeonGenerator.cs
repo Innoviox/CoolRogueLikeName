@@ -10,10 +10,10 @@ public class DungeonGenerator : MonoBehaviour
 {
     public int baseRoomSize = 10;
     public int minRoomSize = 5;
-    public int maxRoomSize = 15;
+    public int maxRoomSize = 12;
     public int doorSize = 1;
     public int nRooms = 10;
-    public int bossSize = 20;
+    public int bossSize = 15;
     public List<Transform> blocks; // id prefer this to be a dict but unity doesnt do dicts in the inspector
     private Dictionary<string, Transform> blocksDict;
     public List<Room> rooms;
@@ -28,10 +28,15 @@ public class DungeonGenerator : MonoBehaviour
     private bool started = false;
     private RoomGenerator roomGenerator;
     private Transform teleporter = null;
+    public Transform tutorial;
+    public Tutorial tutorialComp;
+    private int dungeonN = 0;
+    private int roomN = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        tutorialComp = tutorial.GetComponent<Tutorial>();
         blocksDict = new Dictionary<string, Transform>();
         foreach (Transform block in blocks)
         {
@@ -249,6 +254,13 @@ public class DungeonGenerator : MonoBehaviour
                     doors[room1.id] = new List<Wall> { wall };
                 }
 
+                if (room1.isBossRoom || room2.isBossRoom)
+                {
+                    room1.hasBossDoor = true;
+                    room2.hasBossDoor = true;
+                    globalDoorLocations[globalDoorLocations.Count - 1].isBossDoor = true;
+                }
+
                 // Debug.Log($"Door on wall {wall} of room {room1.id} going to {room2.id}");
             }
         }
@@ -263,7 +275,7 @@ public class DungeonGenerator : MonoBehaviour
     {
         try
         {
-            ExpandN(expands);
+            ExpandN(expands + (dungeonN - 1) * 2); // add 2 rooms per dungeon level
             Expand(true); // expand the boss room
             GenerateDoors();
         }
@@ -293,29 +305,57 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         MakeDoors();
-        MakeTeleporter();
+        // MakeTeleporter();
     }
 
     void MakeDoors()
     {
         foreach (Door door in globalDoorLocations)
         {
-            Transform prefab = blocksDict["Door"];
-            Transform doorTransform = GameObject.Instantiate(prefab, new Vector3(door.x, 0, door.y), Quaternion.identity);
+            Transform prefab = door.isBossDoor ? blocksDict["BossDoor"] : blocksDict["Door"];
+            Transform doorTransform = GameObject.Instantiate(prefab, new Vector3(door.x, 0.5f, door.y), Quaternion.identity);
             doorTransform.name = $"Door ({door.x}, {door.y})";
+            doorTransform.parent = transform;
+
+            switch (door.onWall)
+            {
+                case Wall.North:
+                    doorTransform.Rotate(0, 90, 0);
+                    break;
+                case Wall.East:
+                    doorTransform.Rotate(0, 180, 0);
+                    break;
+                case Wall.South:
+                    doorTransform.Rotate(0, 270, 0);
+                    break;
+                case Wall.West:
+                    doorTransform.Rotate(0, 0, 0);
+                    break;
+            }
+
+
 
             var drs = doorTransform.GetComponent<DungeonDoorScript>();
             drs.player = player;
+            drs.door = door;
             drs.roomThisDoorLeadsFrom = dungeonRooms[door.room1].GetComponent<DungeonRoomScript>();
             drs.roomThisDoorLeadsTo = dungeonRooms[door.room2].GetComponent<DungeonRoomScript>();
+
+            if (!door.isBossDoor)
+                doorTransform.Rotate(0, 0, 90);
+            else
+            {
+                doorTransform.Rotate(0, 90, 0);
+                doorTransform.position = new Vector3(door.x, 0, door.y);
+            }
 
             door.doorTransform = doorTransform;
         }
     }
 
-    void MakeTeleporter()
+    public void MakeTeleporter()
     {
-        Vector3 loc = rooms[rooms.Count - 1].RandomLocation(2.0f);
+        Vector3 loc = rooms[rooms.Count - 1].Center(0.5f);
         Transform prefab = blocksDict["Teleporter"];
         teleporter = GameObject.Instantiate(prefab, loc, Quaternion.identity);
         teleporter.name = "Teleporter";
@@ -333,11 +373,13 @@ public class DungeonGenerator : MonoBehaviour
         expands = nRooms - 1;
 
         camera.transform.position = rooms[0].CameraPosition();
-
         player.transform.position = rooms[0].PlayerPosition();
 
         GenerateDungeon();
         MakeDungeon();
+
+        dungeonN += 1;
+
         StartCoroutine(StartDungeon());
     }
 
@@ -353,6 +395,7 @@ public class DungeonGenerator : MonoBehaviour
         MakeRoom(0, 0, baseRoomSize, 0); // base room
 
         expandableRooms.Add(0); // base room is expandable
+        tutorialComp.ClearTutorial();
     }
 
     IEnumerator StartDungeon()
@@ -368,6 +411,12 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         dungeonRooms[0].GetComponent<DungeonRoomScript>().ShowRoom(true); // show doors
+        if (tutorialComp.unlockFirstRoom == 0)
+        {
+            dungeonRooms[0].GetComponent<DungeonRoomScript>().lockDoors(true, 0); // lock doors
+        }
+
+        tutorialComp.StartTutorial();
         yield break;
     }
 
@@ -399,5 +448,21 @@ public class DungeonGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (tutorialComp.unlockFirstRoom == 1)
+        {
+            dungeonRooms[0].GetComponent<DungeonRoomScript>().lockDoors(false, 0);
+            tutorialComp.unlockFirstRoom = 2; // dont run again
+        }
+    }
+
+    public int TickRoomN()
+    {
+        roomN += 1;
+        return roomN;
+    }
+
+    public int GetDungeonN()
+    {
+        return dungeonN;
     }
 }

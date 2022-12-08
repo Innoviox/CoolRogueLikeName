@@ -27,7 +27,11 @@ public class BossChargeShot : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+<<<<<<< NewEnemiesAndLayers
         if (InLayer(other, mask))
+=======
+        if (other.name.Contains("Player"))
+>>>>>>> simons-things
         {
             // damage player
 
@@ -36,7 +40,11 @@ public class BossChargeShot : MonoBehaviour
         }
 
         // When colliding with a wall, spawn an arc of bullets going in the direction opposite of the wall.
+<<<<<<< NewEnemiesAndLayers
         if (InLayer(other, maskScatter))
+=======
+        if (other.name.Contains("wall"))
+>>>>>>> simons-things
         {
             // Get bullets direction
             Vector3 currDir;

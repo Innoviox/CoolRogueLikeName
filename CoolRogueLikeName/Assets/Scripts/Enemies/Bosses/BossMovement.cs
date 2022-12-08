@@ -36,7 +36,7 @@ public class BossMovement : EnemyMovement
                 //WalkTowardsPlayer(maxDist);
             }
             //else
-              //  enemyBody.velocity = new Vector3(0, 0, 0);
+            //  enemyBody.velocity = new Vector3(0, 0, 0);
 
             yield return new WaitForSeconds(walkRate);
         }
@@ -95,7 +95,7 @@ public class BossMovement : EnemyMovement
             return true;
         }
         else
-            return false; 
+            return false;
     }
     /// <summary>
     /// Aims at the player. Must be stopped from outside.
@@ -107,9 +107,18 @@ public class BossMovement : EnemyMovement
             var lookPos = target.position - transform.position;
             lookPos.y = 0; // Only look along xz-plane
             var rotation = Quaternion.LookRotation(lookPos);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1); 
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1);
 
             yield return new WaitForSeconds(0.01f);
         }
+    }
+
+    public void SetPlayer(Transform player)
+    {
+        this.player = player;
+    }
+    public void SetCenter(Transform center)
+    {
+        this.center = center;
     }
 }

@@ -177,10 +177,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceleration: 100
   decceleration: 5
-  baseMaxSpeed: 10
-  jumpForce: 7
-  jumpCoolDown: 1
-  doubleJump: 0
+  baseMaxSpeed: 5
+  jumpForce: 5
+  jumpCoolDown: 3
+  doubleJump: 1
   dashForce: 30
   dashTime: 0.5
   jumpKey: 303

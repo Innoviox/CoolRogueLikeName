@@ -46,7 +46,7 @@ public class Movement : MonoBehaviour
                 rb.velocity = Vector3.zero;
                 return;
             }
-            if (Input.GetKeyDown(jumpKey)  && !jumpLock)
+            if (Input.GetKeyDown(jumpKey) && !jumpLock)
             {
                 StartCoroutine(Jump());
                 return;
@@ -54,13 +54,16 @@ public class Movement : MonoBehaviour
             rb.AddForce(accelerationDirection * acceleration, ForceMode.Acceleration); // Adds the acceleration to the player
 
             /* Keeps the velocity capped at maxSpeed */
-            Vector3 velocity = rb.velocity;
-            if (velocity.magnitude > baseMaxSpeed * stats.playerMoveSpeedFactor)
-            {
-                rb.velocity = velocity.normalized * baseMaxSpeed * stats.playerMoveSpeedFactor;
-            }
 
+            Vector3 velocity = rb.velocity;
+            Vector2 horizontalVelocity = new Vector3(velocity.x, velocity.z);
+            if (horizontalVelocity.magnitude > baseMaxSpeed * stats.playerMoveSpeedFactor)
+            {
+                horizontalVelocity = horizontalVelocity.normalized * baseMaxSpeed * stats.playerMoveSpeedFactor;
+            }
+            rb.velocity = new Vector3(horizontalVelocity.x, velocity.y, horizontalVelocity.y);
         }
+
     }
 
     IEnumerator Dash(Vector3 direction)
@@ -85,7 +88,8 @@ public class Movement : MonoBehaviour
     IEnumerator Jump()
     {
         jumpLock = true;
-        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        // rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+        // rb.velocity = Vector3.zero;
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         rb.drag = originalDrag;
 

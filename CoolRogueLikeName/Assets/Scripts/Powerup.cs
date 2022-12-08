@@ -21,6 +21,7 @@ public class Powerup : MonoBehaviour
     public float oscillationSpeed;
     private Vector3 startPos;
     private float t;
+    public DungeonRoomScript dungeonRoomScript;
 
     // Start is called before the first frame update
     void Start()
@@ -49,7 +50,8 @@ public class Powerup : MonoBehaviour
             else if (effect == "Heal Yourself")
             {
                 effects[effect] = 1;
-            } else
+            }
+            else
             {
                 effects[effect] = Random.Range(0, 1.0f) > 0.5 ? 1 : -1;
             }
@@ -64,7 +66,7 @@ public class Powerup : MonoBehaviour
     void Update()
     {
         t += Time.deltaTime % oscillationSpeed;
-        transform.position = startPos + (float) System.Math.Sin(t / oscillationSpeed) * oscillation;
+        transform.position = startPos + (float)System.Math.Sin(t / oscillationSpeed) * oscillation;
     }
 
     string GetText()
@@ -75,7 +77,8 @@ public class Powerup : MonoBehaviour
             if (effects[key] > 0)
             {
                 text += new string('+', effects[key]) + " " + key + "\n";
-            } else
+            }
+            else
             {
                 text += new string('-', -effects[key]) + " " + key + "\n";
             }
@@ -99,7 +102,7 @@ public class Powerup : MonoBehaviour
             DestroyText();
         }
     }
-    
+
     void OnTriggerStay(Collider other)
     {
         if (other.name.Contains("Player"))
@@ -119,12 +122,12 @@ public class Powerup : MonoBehaviour
 
     void DisplayText()
     {
-        // TODO
+        dungeonRoomScript.DisplayText(GetText());
     }
 
     void DestroyText()
     {
-
+        dungeonRoomScript.DestroyText();
     }
 
     // pass other so we can heal the player if we need
@@ -168,9 +171,14 @@ public class Powerup : MonoBehaviour
         {
             Debug.Log("This would heal the player if it was implemented");
             // TODO: This
-/*            HealthComponent healthcomp = other.gameObject.GetComponent<Health?>();
-            other.gameObject.GetComponent<Health?>().health += count * 0.2f * healthcomp.maxhealth;*/
+            /*            HealthComponent healthcomp = other.gameObject.GetComponent<Health?>();
+                        other.gameObject.GetComponent<Health?>().health += count * 0.2f * healthcomp.maxhealth;*/
         }
         stats.acquiredPowerups.Add(GetText());
+    }
+
+    void SetDungeonRoomScript(DungeonRoomScript dungeonRoomScript)
+    {
+        this.dungeonRoomScript = dungeonRoomScript;
     }
 }

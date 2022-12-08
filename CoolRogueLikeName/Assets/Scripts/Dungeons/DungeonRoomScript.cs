@@ -131,26 +131,26 @@ public class DungeonRoomScript : MonoBehaviour
             entryPoint.Unlock();
         }
 
-        if (willSpawnPowerups)
-        {
-            SpawnPowerups();
-        }
-        else if (willSpawnWeapon)
-        {
-            SpawnWeaponChest();
-        }
 
-        if (room.isBossRoom)
+        if (room.id != 0)
         {
-            roomTransform.parent.GetComponent<DungeonGenerator>().MakeTeleporter();
-            t.TickTutorial(9, room.x, room.y);
-        }
-        else if (room.id != 0)
-        {
-            t.TickTutorial(7, room.x, room.y);
-        }
+            if (true || willSpawnPowerups)
+            {
+                SpawnPowerups();
+                t.TickTutorial(10, room.x, room.y, room.size);
+            }
+            else if (willSpawnWeapon)
+            {
+                SpawnWeaponChest();
+                t.TickTutorial(7, room.x, room.y, room.size);
+            }
 
-        // player.GetComponent<PlayerMovement>().stats.enemySpawnFactor += 1;
+            if (room.isBossRoom)
+            {
+                roomTransform.parent.GetComponent<DungeonGenerator>().MakeTeleporter();
+                t.TickTutorial(9, room.x, room.y, room.size);
+            }
+        }
     }
 
     public void WalkedInto()
@@ -159,11 +159,11 @@ public class DungeonRoomScript : MonoBehaviour
         {
             if (t.Unused(6))
             {
-                t.TickTutorial(6, room.x, room.y);
+                t.TickTutorial(6, room.x, room.y, room.size);
             }
             else if (room.hasBossDoor)
             {
-                t.TickTutorial(8, room.x, room.y);
+                t.TickTutorial(8, room.x, room.y, room.size);
             }
             else
             {
@@ -238,9 +238,13 @@ public class DungeonRoomScript : MonoBehaviour
         else
         {
             int roomN = roomTransform.parent.GetComponent<DungeonGenerator>().TickRoomN();
-            if (roomN < 3)
+            if (roomN < 4)
             {
                 enemyCreator.RemovePrefab(0);
+            }
+            else
+            {
+                t.TickTutorial(11, room.x, room.y, room.size);
             }
 
             var enemyScaling = player.GetComponent<Movement>().stats.enemySpawnFactor + roomN * 0.125f;
@@ -318,7 +322,7 @@ public class DungeonRoomScript : MonoBehaviour
         GameObject wc = Instantiate(weaponChest);
         Transform wct = wc.GetComponent<Transform>();
         wct.parent = transform;
-        wct.position = new Vector3(0, 0, 0);
+        wct.position = new Vector3(room.x, 0, room.y);
     }
 
     public void SpawnPowerups()
@@ -326,6 +330,18 @@ public class DungeonRoomScript : MonoBehaviour
         GameObject pp = Instantiate(powerupPedestal);
         Transform ppt = pp.GetComponent<Transform>();
         ppt.parent = transform;
-        ppt.position = new Vector3(0, 0, 0);
+        ppt.position = new Vector3(room.x, 0, room.y);
+
+        pp.BroadcastMessage("SetDungeonRoomScript", this);
+    }
+
+    public void DisplayText(string text)
+    {
+        t.CustomTutorial(text, room.x, room.y, room.size);
+    }
+
+    public void DestroyText()
+    {
+        t.ClearTutorial();
     }
 }

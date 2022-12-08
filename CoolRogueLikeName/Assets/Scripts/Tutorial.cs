@@ -16,10 +16,13 @@ public class Tutorial : MonoBehaviour
         "Move the mouse to aim",
         "Walk close to a door to open it",
         // "The doors lock behind you",
-        "Defeat the enemies to progress",
-        "Pick up powerups or \nweapons to enhance\n your abilities",
+        "Defeat the enemies\nto progress",
+        // "Pick up powerups or \nweapons to enhance\n your abilities",
+        "Pick up a new weapon by\npressing E",
         "The red door represents \nthe boss room - beware!",
         "Get to the teleporter to get to the next level",
+        "Press E to pick up\na new power, but\nchoose carefully",
+        "These new enemies\ncan fight from afar"
     };
     private List<int> unusedTutorials;
     private int tutorialIdx = 0;
@@ -44,7 +47,7 @@ public class Tutorial : MonoBehaviour
 
     public void StartTutorial()
     {
-        TickTutorial(0, 0, 0);
+        TickTutorial(0, 0, 0, 10);
     }
 
     // Update is called once per frame
@@ -52,27 +55,27 @@ public class Tutorial : MonoBehaviour
     {
         if (tutorialIdx == 0 && Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
         {
-            TickTutorial(1, 0, 0);
+            TickTutorial(1, 0, 0, 10);
         }
 
         if (tutorialIdx == 1 && Input.GetKeyDown(KeyCode.Space))
         {
-            TickTutorial(2, 0, 0);
+            TickTutorial(2, 0, 0, 10);
         }
 
         if (tutorialIdx == 2 && Input.GetKeyDown(KeyCode.B))
         {
-            TickTutorial(3, 0, 0);
+            TickTutorial(3, 0, 0, 10);
         }
 
         if (tutorialIdx == 3 && Input.GetMouseButtonDown(0))
         {
-            TickTutorial(4, 0, 0);
+            TickTutorial(4, 0, 0, 10);
         }
 
         if (tutorialIdx == 4 && Input.GetAxis("Mouse X") != 0)
         {
-            TickTutorial(5, 0, 0);
+            TickTutorial(5, 0, 0, 10);
         }
     }
 
@@ -89,7 +92,7 @@ public class Tutorial : MonoBehaviour
         }
     }
 
-    public void TickTutorial(int idx, int roomX, int roomY)
+    public void TickTutorial(int idx, int roomX, int roomY, int roomSize)
     {
         if (!unusedTutorials.Contains(idx))
         {
@@ -103,7 +106,7 @@ public class Tutorial : MonoBehaviour
 
         unusedTutorials.Remove(idx);
 
-        transform.position = new Vector3(roomX - 8, 0.5f, roomY + 5);
+        transform.position = new Vector3(roomX - roomSize / 2 - 1, 0.5f, roomY + roomSize / 2 + 1);
         tutorialIdx = idx;
 
         TutorialUpdate(idx);
@@ -117,5 +120,11 @@ public class Tutorial : MonoBehaviour
     public bool Unused(int idx)
     {
         return unusedTutorials.Contains(idx);
+    }
+
+    public void CustomTutorial(string s, int roomX, int roomY, int roomSize)
+    {
+        transform.position = new Vector3(roomX - roomSize / 2 - 1, 0.5f, roomY + roomSize / 2 + 1);
+        tm.text = s;
     }
 }

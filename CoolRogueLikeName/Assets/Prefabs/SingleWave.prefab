@@ -133,6 +133,7 @@ MonoBehaviour:
   WaveSpeed: 16
   scaleChange: {x: 0.02, y: 0, z: 0}
   positionChange: {x: 0, y: 0, z: 0.01}
+  timeTolive: 4
 --- !u!65 &2846518372415671634
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ public class ScatterShotEnemyAttack : EnemyAttack
     protected void Awake()
     {
         shootRate = 1.5f;
-        numBullets = 3;
+        numBullets = 5;
     }
 
     // Start is called before the first frame update

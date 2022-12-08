@@ -314,6 +314,22 @@ public class DungeonGenerator : MonoBehaviour
             doorTransform.name = $"Door ({door.x}, {door.y})";
             doorTransform.parent = transform;
 
+            switch (door.onWall)
+            {
+                case Wall.North:
+                    doorTransform.Rotate(0, 0, 0);
+                    break;
+                case Wall.East:
+                    doorTransform.Rotate(0, 90, 0);
+                    break;
+                case Wall.South:
+                    doorTransform.Rotate(0, 180, 0);
+                    break;
+                case Wall.West:
+                    doorTransform.Rotate(0, 270, 0);
+                    break;
+            }
+
             var drs = doorTransform.GetComponent<DungeonDoorScript>();
             drs.player = player;
             drs.roomThisDoorLeadsFrom = dungeonRooms[door.room1].GetComponent<DungeonRoomScript>();

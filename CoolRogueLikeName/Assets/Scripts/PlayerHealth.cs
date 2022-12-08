@@ -11,7 +11,7 @@ public class PlayerHealth : MonoBehaviour
     public Transform canvasPrefab;
 
     GameObject healthBar;
-    float health;
+    public float health;
     private Transform canvas;
 
     // Start is called before the first frame update

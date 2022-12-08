@@ -107,7 +107,7 @@ public class Powerup : MonoBehaviour
     {
         if (other.name.Contains("Player"))
         {
-            if (Input.GetKeyDown(useKey))
+            if (Input.GetKey(useKey))
             {
                 DestroyText();
                 ApplyEffects(other);

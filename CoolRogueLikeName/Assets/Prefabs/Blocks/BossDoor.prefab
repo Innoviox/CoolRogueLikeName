@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5095712582807568489}
   - component: {fileID: 7013068691489895587}
   - component: {fileID: 1518952145573626801}
+  - component: {fileID: 3140853699609194654}
   m_Layer: 11
   m_Name: BossDoor
   m_TagString: Untagged
@@ -107,3 +108,16 @@ MonoBehaviour:
   roomThisDoorLeadsFrom: {fileID: 0}
   roomThisDoorLeadsTo: {fileID: 0}
   max_y: 0
+--- !u!65 &3140853699609194654
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8814547918385354102}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.999999, y: 6.000001, z: 3.0000005}
+  m_Center: {x: 0, y: 3.0000005, z: 4.263256e-14}

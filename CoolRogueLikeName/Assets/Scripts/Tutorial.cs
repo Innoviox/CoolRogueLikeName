@@ -124,7 +124,7 @@ public class Tutorial : MonoBehaviour
 
     public void CustomTutorial(string s, int roomX, int roomY, int roomSize)
     {
-        transform.position = new Vector3(roomX - roomSize / 2 - 1, 0.5f, roomY + roomSize / 2 + 1);
+        transform.position = new Vector3(roomX - roomSize / 2 - 2, 0.5f, roomY + roomSize / 2 + 2);
         tm.text = s;
     }
 }

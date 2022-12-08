@@ -30,10 +30,13 @@ public class EnemyCreator : MonoBehaviour
         return boss;
     }
 
-    public void RemovePrefab(int i)
+    public void SetOnly(params int[] i)
     {
-        var epl = new List<Transform>(enemyPrefabs);
-        epl.RemoveAt(i);
+        var epl = new List<Transform>();
+        foreach (int j in i)
+        {
+            epl.Add(enemyPrefabs[j]);
+        }
 
         enemyPrefabs = epl.ToArray();
     }

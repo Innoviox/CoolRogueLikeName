@@ -240,11 +240,16 @@ public class DungeonRoomScript : MonoBehaviour
             int roomN = roomTransform.parent.GetComponent<DungeonGenerator>().TickRoomN();
             if (roomN < 4)
             {
-                enemyCreator.RemovePrefab(0);
+                enemyCreator.SetOnly(1);
             }
-            else
+            else if (roomN < 8)
             {
+                enemyCreator.SetOnly(0, 1);
                 t.TickTutorial(11, room.x, room.y, room.size);
+            }
+            else if (roomN < 12)
+            {
+                enemyCreator.SetOnly(0, 1, 2);
             }
 
             var enemyScaling = player.GetComponent<Movement>().stats.enemySpawnFactor + roomN * 0.125f;

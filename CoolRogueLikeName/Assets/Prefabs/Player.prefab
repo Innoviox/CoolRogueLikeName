@@ -212,6 +212,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3600332684567557895, guid: 84abedcb063f66e419d65d9ae248521f, type: 3}
+      propertyPath: stats
+      value: 
+      objectReference: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
+    - target: {fileID: 3600332684567557895, guid: 84abedcb063f66e419d65d9ae248521f, type: 3}
+      propertyPath: firekey
+      value: 323
+      objectReference: {fileID: 0}
     - target: {fileID: 5518799508594205685, guid: 84abedcb063f66e419d65d9ae248521f, type: 3}
       propertyPath: m_Name
       value: Rifle

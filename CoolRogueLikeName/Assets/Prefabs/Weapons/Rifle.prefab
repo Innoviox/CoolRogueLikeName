@@ -323,8 +323,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 1061607915943802471}
   projectile: {fileID: 164837843160075365, guid: 703ea8129a09fc74f96ed060d7cc005f, type: 3}
-  projectileSpeed: 5
+  baseProjectileSpeed: 5
+  baseCooldown: 0.25
   baseDamage: 1
+  stats: {fileID: 0}
+  firebutton: Fire1
 --- !u!4 &1061607915943802471 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8876106568501734458, guid: b9ab48a6a016f454eaf5d5501be8079c, type: 3}

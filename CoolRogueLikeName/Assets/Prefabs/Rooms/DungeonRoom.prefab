@@ -70,3 +70,4 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 4093053622618400616, guid: c20c86c3a701f47388f6239db37639d3, type: 3}
   - {fileID: 2148692304167481364, guid: 1436f40d9a76b8a40a9e5926ee561028, type: 3}
+  bossPrefab: {fileID: 8126847467710810305, guid: 442c3a62cedcee247a0ba5c9b1ba16cd, type: 3}

@@ -230,7 +230,7 @@ GameObject:
   - component: {fileID: 2148692304365678625}
   - component: {fileID: 7219047890234823380}
   - component: {fileID: 7407315318565981308}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EnemyCapsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}

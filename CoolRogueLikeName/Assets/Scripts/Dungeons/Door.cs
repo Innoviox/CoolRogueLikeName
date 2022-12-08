@@ -11,12 +11,15 @@ public class Door
     public DungeonRoomScript from;
     public DungeonRoomScript to;
     public Transform doorTransform;
+    public Wall onWall;
+    public bool isBossDoor = false;
 
     public Door(int x, int y, int room1, int room2, Wall onWall)
     {
         this.x = x; // - 0.5f;
         this.y = y; // - 0.5f;
 
+        this.onWall = onWall;
         switch (onWall)
         {
             case Wall.North:

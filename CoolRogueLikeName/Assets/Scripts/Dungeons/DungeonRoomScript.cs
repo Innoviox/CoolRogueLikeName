@@ -243,7 +243,7 @@ public class DungeonRoomScript : MonoBehaviour
                 enemyCreator.RemovePrefab(0);
             }
 
-            var enemyScaling = player.GetComponent<PlayerMovement>().stats.enemySpawnFactor + roomN * 0.125f;
+            var enemyScaling = player.GetComponent<Movement>().stats.enemySpawnFactor + roomN * 0.125f;
             nEnemies = 0;
             for (int i = 0; i < nEnemiesBase * enemyScaling; i++)
             {

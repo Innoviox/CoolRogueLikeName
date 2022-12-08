@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
     public float maxHealth;
     public int swordDamage; // Damage received from the enemy sword
     public int waveDamage; // Damage received from the enemy wave attack
+    public Transform canvasPrefab;
 
     GameObject healthBar;
     float health;
+    private Transform canvas;
 
     // Start is called before the first frame update
     void Start()
@@ -29,8 +32,6 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("Collision");
-
         if (collision.transform.gameObject.name == "EnemyBullet(Clone)")
         {
             float damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
@@ -88,8 +89,15 @@ public class PlayerHealth : MonoBehaviour
         healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
         if (health <= 0.0f)
         {
-            Destroy(transform.gameObject);
+            StartCoroutine(DeathScreen());
             // TRIGGER DEATH SCENE
         }
+    }
+
+    IEnumerator DeathScreen()
+    {
+        canvas = Instantiate(canvasPrefab, new Vector3(572.25f, 247.25f, 0), Quaternion.identity);
+        yield return new WaitForSeconds(5.0f);
+        SceneManager.LoadScene(0);
     }
 }

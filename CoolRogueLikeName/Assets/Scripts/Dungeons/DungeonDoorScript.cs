@@ -26,43 +26,25 @@ public class DungeonDoorScript : MonoBehaviour
     private Vector3 rotationPoint;
 
     private int opening_direction; // 0 => none, -1 => down, 1 => up
-    private float opening_speed = 0.1f;
-    private int min_y;
-    private int max_y;
+    private float opening_speed = 0.02f;
+    private float min_y;
+    public float max_y;
+    public Door door;
 
 
     // Start is called before the first frame update
     void Start()
     {
         renderer = GetComponent<Renderer>();
-        renderer.material = doorGoesNowhereMaterial;
+        // renderer.material = doorGoesNowhereMaterial;
 
         collider = GetComponent<Collider>();
 
-
-        // rotation point is the "bottom left corner" of the door
-        rotationPoint = transform.position;
-        rotationPoint.y -= transform.localScale.y / 2;
-
-        switch (transform.rotation.eulerAngles.y)
-        {
-            case 0:
-                rotationPoint.x -= transform.localScale.x / 2;
-                break;
-            case 90:
-                rotationPoint.z += transform.localScale.x / 2;
-                break;
-            case 270:
-                rotationPoint.z -= transform.localScale.x / 2;
-                break;
-            case 360:
-                rotationPoint.x += transform.localScale.x / 2;
-                break;
-        }
-
         opening_direction = 0;
-        min_y = -2;
-        max_y = (int)transform.position.y;
+        min_y = -2.0f;
+        max_y = door.isBossDoor ? 0.0f : 0.5f; // dont have time to debug why this isnt working (int)transform.position.y;
+
+        Debug.Log($"{min_y} miny {max_y} maxy");
     }
 
     // Update is called once per frame
@@ -76,7 +58,6 @@ public class DungeonDoorScript : MonoBehaviour
             {
                 roomThisDoorLeadsFrom.ShowRoom(true);
                 roomThisDoorLeadsTo.ShowRoom(true);
-                // StartCoroutine(SwingDoor(true, roomThisDoorLeadsTo.PlayerInRoom()));
                 opening_direction = -1;
             }
             else
@@ -121,7 +102,10 @@ public class DungeonDoorScript : MonoBehaviour
         if (roomThisDoorLeadsTo != null)
         {
             // set material to open
-            renderer.material = doorUnlockedMaterial;
+            if (!door.isBossDoor)
+            {
+                renderer.material = doorUnlockedMaterial;
+            }
 
             // set collider to trigger
             // collider.isTrigger = true;
@@ -139,8 +123,10 @@ public class DungeonDoorScript : MonoBehaviour
         // lock door
         // collider.isTrigger = false;
         locked = true;
-        renderer.material = doorClosedMaterial;
+        if (!door.isBossDoor)
+            renderer.material = doorClosedMaterial;
         renderer.enabled = true;
-        opening_direction = 1; // instantly start locking door
+        if (transform.position.y < max_y)
+            opening_direction = 1; // instantly start locking door
     }
 }

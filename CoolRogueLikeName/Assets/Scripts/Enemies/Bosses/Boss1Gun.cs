@@ -20,7 +20,7 @@ public class Boss1Gun : MonoBehaviour
             var lookPos = player.position - transform.position;
             var rotation = Quaternion.LookRotation(lookPos);
             rotation *= Quaternion.Euler(new Vector3(90, 0, 0));
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1); 
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 1);
         }
         // Guns aim in the same direction as the bosses body
         else
@@ -29,5 +29,10 @@ public class Boss1Gun : MonoBehaviour
             rot *= Quaternion.Euler(new Vector3(90, 0, 0));
             transform.rotation = rot;
         }
+    }
+
+    public void SetPlayer(Transform player)
+    {
+        this.player = player;
     }
 }

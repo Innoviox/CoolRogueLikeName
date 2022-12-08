@@ -7,13 +7,15 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody playerBody;
     [SerializeField] private float baseMovementSpeed = 5, jump = 5;
     public PowerupManager stats;
-
     public bool canMove = true;
+
+    private LayerMask mask; // Testing
 
     // Start is called before the first frame update
     void Start()
     {
         playerBody = GetComponent<Rigidbody>();
+        mask = LayerMask.GetMask("EnemyProjectile");
     }
 
     // Update is called once per frame
@@ -47,6 +49,14 @@ public class PlayerMovement : MonoBehaviour
     // Testing
     public void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("Entered Trigger");
+        if (InLayer(other, mask))
+        {
+            Debug.Log("Took damage From: " + other.gameObject.name);
+        }
+    }
+
+    private bool InLayer(Collider other, LayerMask mask)
+    {
+        return ((1 << other.gameObject.layer) & mask.value) > 0;
     }
 }

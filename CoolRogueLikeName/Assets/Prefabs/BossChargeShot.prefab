@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 679057937136554228}
   - component: {fileID: 679057937136554227}
   - component: {fileID: 679057937136554217}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BossChargeShot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,6 +103,8 @@ MonoBehaviour:
   scaleChange: {x: 0.01, y: 0.01, z: 0.01}
   positionChange: {x: 0, y: 0, z: -0.1}
   Damage: 0
+  numBulletsPerRow: 0
+  numBulletsPerCol: 0
 --- !u!135 &679057937136554228
 SphereCollider:
   m_ObjectHideFlags: 0

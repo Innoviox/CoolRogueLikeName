@@ -36,7 +36,7 @@ public class Boss1Script : MonoBehaviour
         attack = transform.GetComponent<BossAttack>();
         move = transform.GetComponent<BossMovement>();
         healthThreshold = 75f;
-        health = 100f;
+        health = 1f;
         chargeAttackRate = 15;
         aimAtPlayer = true;
         immune = false;
@@ -103,7 +103,7 @@ public class Boss1Script : MonoBehaviour
         while (true)
         {
             // Wait for boss to finish its current state
-            if (bState == bossState.wait) { } 
+            if (bState == bossState.wait) { }
             else if (HpThreshold())
             {
                 bState = bossState.waveStart;
@@ -176,11 +176,16 @@ public class Boss1Script : MonoBehaviour
 
         if (health <= 0.0f)
         {
-            // transform.parent.parent.SendMessage("EnemyDestroyed");
+            transform.parent.parent.SendMessage("EnemyDestroyed");
             // Can play death animation
             Destroy(transform.parent.gameObject);
 
             // or Destroy(transform.root.gameObject); 
         }
+    }
+
+    public void SetPlayer(Transform player)
+    {
+        this.player = player;
     }
 }

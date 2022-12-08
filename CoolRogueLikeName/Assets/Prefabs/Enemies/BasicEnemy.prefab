@@ -299,7 +299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4093053622618400616}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BasicEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,7 +339,7 @@ GameObject:
   - component: {fileID: 4093053622673991517}
   - component: {fileID: 8324220240391201916}
   - component: {fileID: 6282670160552794105}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EnemyCapsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}

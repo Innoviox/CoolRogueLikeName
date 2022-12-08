@@ -20,7 +20,7 @@ public class BossAttack : EnemyAttack
     public int baseDamage = 1;
     public float projectileSpeed = 5;
     private int numNormalShots;
-    private float degreeToRotate;    // Used to create arc for bullets spawnd from charge shot
+    private float degreeToRotate;    // Used to create arc for bullets spawnd from scatter shot
     private int numWaves;
 
     private void Awake()
@@ -32,9 +32,9 @@ public class BossAttack : EnemyAttack
         numWaves = 4;
         numNormalShots = 3;
 
-        degreeToRotate = 180 / (numBullets + 1); 
+        degreeToRotate = 180 / (numBullets + 1);
     }
-  
+
     /// <summary>
     /// Shoots at the player cycling between normal shots and scatter shots 
     /// based on the ratio numNormalShots for every 1 scatter. 
@@ -52,7 +52,13 @@ public class BossAttack : EnemyAttack
             }
 
             // fires a scattershot at the player
-            ScatterShot();
+            // ScatterShot();
+
+            // Half of the bullets are breakable
+            int start = 0 + (numBullets / 4);
+            int end = numBullets - (numBullets / 4) - 1;
+
+            ScatterShotAtPlayer(rightSpawnPoint, breakableEnemyProjectile, enemyProjectile, (a) => (a >= start && a <= end), numBullets, projectileSpeed, baseDamage);
             yield return new WaitForSeconds(shootRate);
         }
     }
@@ -73,7 +79,7 @@ public class BossAttack : EnemyAttack
         for (int i = 0; i < numBullets; i++)
         {
             // Range to decide which bullets are breakable
-            proj = (2 <= i && i <= 4)? breakableEnemyProjectile : enemyProjectile;
+            proj = (2 <= i && i <= 4) ? breakableEnemyProjectile : enemyProjectile;
 
             bullet = Instantiate(proj, rightSpawnPoint.position, rightSpawnPoint.rotation);
             bullet.GetComponent<EnemyProjectile>().Damage = baseDamage;
@@ -101,13 +107,13 @@ public class BossAttack : EnemyAttack
 
         // Set projectiles damage
         bullet.GetComponent<BossChargeShot>().Damage = 15;
-        
+
         // Set its velocity to go forward by projectileSpeed
         bullet.GetComponent<Rigidbody>().velocity = dir * projectileSpeed;
 
         float timer = Time.time;
         // Wait three seconds after shooting charge shot to continue
-        while(timer + 3 >= Time.time)
+        while (timer + 3 >= Time.time)
         {
             yield return new WaitForSeconds(1f);
         }
@@ -140,7 +146,7 @@ public class BossAttack : EnemyAttack
         boss.immune = false;
         yield return null;
     }
- 
+
     IEnumerator RotateObject(float angle, Vector3 axis, float inTime)
     {
         // calculate rotation speed
@@ -172,4 +178,8 @@ public class BossAttack : EnemyAttack
         yield return null;
     }
 
+    public void SetPlayer(Transform player)
+    {
+        this.player = player;
+    }
 }

@@ -13,11 +13,14 @@ public class Room
     public List<Transform> doors;
     public List<Door> doorLocations;
     public int doorWidth = 1; // todo make a class for variables or smth
-    public int bossSize = 20; // yeah we need a variables class
+    public int bossSize = 15; // yeah we need a variables class
+    public bool hasBossDoor = false;
+    public bool isBossRoom;
     private List<Transform> blocks;
 
     public Room(int x, int y, int size, int id)
     {
+        Debug.Log(size);
         this.x = x;
         this.y = y;
         this.size = size;
@@ -32,6 +35,8 @@ public class Room
         doors = new List<Transform>();
         blocks = new List<Transform>();
         doorLocations = new List<Door>();
+
+        isBossRoom = size == bossSize;
     }
 
     public bool InRoom(int x, int y)
@@ -172,7 +177,7 @@ public class Room
 
     public Vector3 CameraPosition()
     {
-        return new Vector3(x, 10, y - size - 5); // formula should be tweaked but its probably fine for now
+        return new Vector3(x, 10, y - size - 4); // formula should be tweaked but its probably fine for now
     }
 
     public Vector3 PlayerPosition()
@@ -253,5 +258,10 @@ public class Room
     {
         Vector2 loc = RandomLocation();
         return new Vector3(loc.x, y, loc.y);
+    }
+
+    public Vector3 Center(float yPos)
+    {
+        return new Vector3(x, yPos, y);
     }
 }

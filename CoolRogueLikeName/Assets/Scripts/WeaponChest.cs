@@ -60,7 +60,6 @@ public class WeaponChest : MonoBehaviour
     IEnumerator OpenChest()
     {
         int weaponIndex = Random.Range(0, WeaponList.Count);
-        weaponIndex = 4;
 
         Quaternion openQ = Quaternion.Euler(-30, 90, 90);
         Quaternion startQ = hinge.rotation;

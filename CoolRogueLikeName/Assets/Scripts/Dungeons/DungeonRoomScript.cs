@@ -39,7 +39,7 @@ public class DungeonRoomScript : MonoBehaviour
     public DoorToggleDelegate lockDoors;
     private bool started = false;
     private int nEnemies;
-    private Transform boss;
+    private List<Transform> bosses;
     private Tutorial t;
 
     // Start is called before the first frame update
@@ -198,8 +198,42 @@ public class DungeonRoomScript : MonoBehaviour
 
         if (room.isBossRoom)
         {
-            boss = enemyCreator.CreateBoss(player, room.Center(0.64f));
-            nEnemies = 1;
+            int dungeonN = roomTransform.parent.GetComponent<DungeonGenerator>().GetDungeonN();
+            if (dungeonN == 1)
+            {
+                // special case: single boss spawns in the center of the room
+                bosses = new List<Transform>();
+                bosses.Add(enemyCreator.CreateBoss(player, room.Center(0.64f)));
+                nEnemies = 1;
+            }
+            else
+            {
+                /*
+                1 => 1 0
+                2 => 1 2
+                3 => 2 0
+                4 => 2 4
+                5 => 3 0
+                6 => 3 6
+                */
+                int nBosses = (dungeonN + 1) / 2;
+                int nMinions = (dungeonN % 2 == 0) ? dungeonN : 0;
+
+                bosses = new List<Transform>();
+                for (int i = 0; i < nBosses; i++)
+                {
+                    bosses.Add(enemyCreator.CreateBoss(player, room.RandomLocation(0.64f)));
+                }
+
+                for (int i = 0; i < nMinions; i++)
+                {
+                    enemyCreator.CreateEnemy(player, room.RandomLocation(2.0f));
+                    nEnemies++;
+                }
+
+                nEnemies = nBosses + nMinions;
+            }
+
         }
         else
         {
@@ -209,7 +243,7 @@ public class DungeonRoomScript : MonoBehaviour
                 enemyCreator.RemovePrefab(0);
             }
 
-            var enemyScaling = player.GetComponent<PlayerMovement>().stats.enemySpawnFactor;
+            var enemyScaling = player.GetComponent<PlayerMovement>().stats.enemySpawnFactor + roomN * 0.125f;
             nEnemies = 0;
             for (int i = 0; i < nEnemiesBase * enemyScaling; i++)
             {

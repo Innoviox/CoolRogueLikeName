@@ -275,7 +275,7 @@ public class DungeonGenerator : MonoBehaviour
     {
         try
         {
-            ExpandN(expands);
+            ExpandN(expands + (dungeonN - 1) * 2); // add 2 rooms per dungeon level
             Expand(true); // expand the boss room
             GenerateDoors();
         }
@@ -459,5 +459,10 @@ public class DungeonGenerator : MonoBehaviour
     {
         roomN += 1;
         return roomN;
+    }
+
+    public int GetDungeonN()
+    {
+        return dungeonN;
     }
 }

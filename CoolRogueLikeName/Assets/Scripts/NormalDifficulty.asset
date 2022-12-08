@@ -20,6 +20,5 @@ MonoBehaviour:
   playerDamageFactor: 1
   playerReloadSpeedFactor: 1
   bulletSpeedFactor: 1
-  playerBulletRangeFactor: 1
   enemySpawnFactor: 0.5
   acquiredPowerups: []

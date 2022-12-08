@@ -13,10 +13,10 @@ public class WeaponSword : BaseWeapon
         // Set projectiles damage
         bullet.GetComponent<Projectile>().Damage = baseDamage;
 
-        StartCoroutine(Rotate(Vector3.up, 40, baseCooldown * stats.playerReloadSpeedFactor));
+        StartCoroutine(Rotate(Vector3.up, baseCooldown * stats.playerReloadSpeedFactor));
     }
 
-    IEnumerator Rotate(Vector3 axis, float angle, float duration)
+    IEnumerator Rotate(Vector3 axis, float duration)
     {
         float startRotation = spawnPoint.eulerAngles.y;
         float endRotation = startRotation + 360.0f;
@@ -24,8 +24,7 @@ public class WeaponSword : BaseWeapon
         while (t < duration)
         {
             t += Time.deltaTime;
-            float yRotation = Mathf.Lerp(startRotation, endRotation, t / duration) % 360.0f;
-            spawnPoint.eulerAngles = new Vector3(spawnPoint.eulerAngles.x, yRotation, spawnPoint.eulerAngles.z);
+            spawnPoint.Rotate(axis * 360/duration * Time.deltaTime);
             yield return null;
         }
     }

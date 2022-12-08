@@ -6,34 +6,31 @@ using UnityEngine;
 public class PowerupManager : ScriptableObject
 {
     // used in EnemyMovement
-    public float enemyMoveSpeedFactor;
+    public float enemyMoveSpeedFactor = 1;
 
     // used in EnemyScript
-    public float enemyHealthFactor;
+    public float enemyHealthFactor = 1;
 
     // TODO, player doesn't take damage yet
-    public float enemyDamageFactor;
+    public float enemyDamageFactor = 1;
 
     // used in Movement.cs
-    public float playerMoveSpeedFactor;
+    public float playerMoveSpeedFactor = 1;
 
     // TODO, player has no health yet
-    public float playerHealthFactor;
+    public float playerHealthFactor = 1;
 
     // used in BaseWeapon.cs
-    public float playerDamageFactor;
+    public float playerDamageFactor = 1;
 
     // used in BaseWeapon.cs
-    public float playerReloadSpeedFactor;
+    public float playerReloadSpeedFactor = 1;
 
     // used in BaseWeapon.cs
-    public float bulletSpeedFactor;
+    public float bulletSpeedFactor = 1;
 
     // TODO
-    public float playerBulletRangeFactor;
-
-    // TODO
-    public float enemySpawnFactor;
+    public float enemySpawnFactor = 0.5f;
     public List<string> acquiredPowerups;
 
 }

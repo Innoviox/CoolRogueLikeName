@@ -30,6 +30,8 @@ public class DungeonGenerator : MonoBehaviour
     private Transform teleporter = null;
     public Transform tutorial;
     public Tutorial tutorialComp;
+    private int dungeonN = 0;
+    private int roomN = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -375,6 +377,9 @@ public class DungeonGenerator : MonoBehaviour
 
         GenerateDungeon();
         MakeDungeon();
+
+        dungeonN += 1;
+
         StartCoroutine(StartDungeon());
     }
 
@@ -448,5 +453,11 @@ public class DungeonGenerator : MonoBehaviour
             dungeonRooms[0].GetComponent<DungeonRoomScript>().lockDoors(false, 0);
             tutorialComp.unlockFirstRoom = 2; // dont run again
         }
+    }
+
+    public int TickRoomN()
+    {
+        roomN += 1;
+        return roomN;
     }
 }

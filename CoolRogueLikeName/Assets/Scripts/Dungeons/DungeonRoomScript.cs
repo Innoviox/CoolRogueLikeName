@@ -203,6 +203,12 @@ public class DungeonRoomScript : MonoBehaviour
         }
         else
         {
+            int roomN = roomTransform.parent.GetComponent<DungeonGenerator>().TickRoomN();
+            if (roomN < 3)
+            {
+                enemyCreator.RemovePrefab(0);
+            }
+
             var enemyScaling = player.GetComponent<PlayerMovement>().stats.enemySpawnFactor;
             nEnemies = 0;
             for (int i = 0; i < nEnemiesBase * enemyScaling; i++)

@@ -29,4 +29,12 @@ public class EnemyCreator : MonoBehaviour
 
         return boss;
     }
+
+    public void RemovePrefab(int i)
+    {
+        var epl = new List<Transform>(enemyPrefabs);
+        epl.RemoveAt(i);
+
+        enemyPrefabs = epl.ToArray();
+    }
 }

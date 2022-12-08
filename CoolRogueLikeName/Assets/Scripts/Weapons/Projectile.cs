@@ -32,8 +32,6 @@ public class Projectile : MonoBehaviour
     {
         if (other.transform.gameObject.name.Contains("Wall") || other.transform.gameObject.name.Contains("Door") || other.transform.gameObject.name.Contains("Floor"))
         {
-            Debug.Log("laser dying due to collision with " + other.gameObject.name);
-
             Destroy(gameObject);
         }
     }

@@ -142,12 +142,12 @@ public class DungeonRoomScript : MonoBehaviour
 
         if (room.isBossRoom)
         {
-            // todo spawn teleporter
+            roomTransform.parent.GetComponent<DungeonGenerator>().MakeTeleporter();
             t.TickTutorial(9, room.x, room.y);
         }
         else if (room.id != 0)
         {
-            roomTransform.parent.GetComponent<DungeonGenerator>().tutorialComp.TickTutorial(7, room.x, room.y);
+            t.TickTutorial(7, room.x, room.y);
         }
 
         // player.GetComponent<PlayerMovement>().stats.enemySpawnFactor += 1;
@@ -199,6 +199,7 @@ public class DungeonRoomScript : MonoBehaviour
         if (room.isBossRoom)
         {
             boss = enemyCreator.CreateBoss(player, room.Center(0.64f));
+            nEnemies = 1;
         }
         else
         {

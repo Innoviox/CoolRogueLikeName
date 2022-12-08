@@ -302,7 +302,7 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         MakeDoors();
-        MakeTeleporter();
+        // MakeTeleporter();
     }
 
     void MakeDoors()
@@ -323,9 +323,9 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
-    void MakeTeleporter()
+    public void MakeTeleporter()
     {
-        Vector3 loc = rooms[rooms.Count - 1].RandomLocation(2.0f);
+        Vector3 loc = rooms[rooms.Count - 1].Center(2.0f);
         Transform prefab = blocksDict["Teleporter"];
         teleporter = GameObject.Instantiate(prefab, loc, Quaternion.identity);
         teleporter.name = "Teleporter";

@@ -1,10 +1,10 @@
-- [ ] integrate boss
+- [x] integrate boss
   - [x] add boss to boss room
-  - [ ] add room.centerposition method and make boss spawn there
-  - [ ] make it so teleporter spawns on boss death at room center
+  - [x] add room.centerposition method and make boss spawn there
   - [x] fix camera position
-  - [ ] fix boss attacks
-  - [ ] add boss death trigger
+  - [x] fix boss attacks
+  - [x] add boss death trigger
+  - [x] make it so teleporter spawns on boss death at room center
 - [ ] models
   - [ ] doors
     - [ ] make model
@@ -14,9 +14,10 @@
 - [ ] sound
   - [ ] music
   - [ ] tell pat where to put sound effects
-- [ ] tutorial
-  - [ ] add tutorial text
-  - [ ] make first few rooms not have ranged enemies
+- [x] tutorial
+  - [x] add tutorial text
+  - [x] make first few rooms not have ranged enemies
+  - [ ] ~~only show tutorial once~~
 - [ ] death screen
 - [ ] scale 
   - [ ] \# of rooms as dungeon # increases

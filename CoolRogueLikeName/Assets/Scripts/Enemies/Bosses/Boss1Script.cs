@@ -176,7 +176,7 @@ public class Boss1Script : MonoBehaviour
 
         if (health <= 0.0f)
         {
-            // transform.parent.parent.SendMessage("EnemyDestroyed");
+            transform.parent.parent.SendMessage("EnemyDestroyed");
             // Can play death animation
             Destroy(transform.parent.gameObject);
 

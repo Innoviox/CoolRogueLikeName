@@ -13,11 +13,7 @@ GameObject:
   - component: {fileID: 2716307315077819784}
   - component: {fileID: 1967639194825027483}
   - component: {fileID: 4262214084844597738}
-<<<<<<< NewEnemiesAndLayers
   - component: {fileID: -3802116661396759874}
-=======
-  - component: {fileID: 7351843608934600781}
->>>>>>> simons-things
   m_Layer: 10
   m_Name: EnemyBreakableBullet
   m_TagString: Untagged

@@ -11,18 +11,14 @@ TagManager:
   - 
   - Water
   - UI
-  - Wall
-  - PlayerBody
-  - EnemyBody
-  - PlayerProjectile
-  - EnemyProjectile
-  - Door
-  - Floor
-<<<<<<< NewEnemiesAndLayers
-  - PlayerMelee
-=======
   - 
->>>>>>> simons-things
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 

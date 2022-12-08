@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 2451587856808832270}
   - component: {fileID: 2451587856808832271}
   - component: {fileID: 2451587856808832268}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: WaveRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c73e0f600d76984bb660ef6e2c8fcad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WaveSpeed: 16
   scaleChange: {x: 0.02, y: 0, z: 0}
   positionChange: {x: 0.01, y: 0, z: 0}
 --- !u!65 &2451587856808832271
@@ -178,7 +179,7 @@ GameObject:
   - component: {fileID: 2451587857619801919}
   - component: {fileID: 2451587857619801916}
   - component: {fileID: 2451587857619801917}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: WaveBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,6 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c73e0f600d76984bb660ef6e2c8fcad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WaveSpeed: 16
   scaleChange: {x: 0.02, y: 0, z: 0}
   positionChange: {x: 0, y: 0, z: -0.01}
 --- !u!65 &2451587857619801916
@@ -307,7 +309,7 @@ GameObject:
   - component: {fileID: 2451587857850689730}
   - component: {fileID: 2451587857850689731}
   - component: {fileID: 2451587857850689728}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: WaveFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,6 +393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c73e0f600d76984bb660ef6e2c8fcad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WaveSpeed: 16
   scaleChange: {x: 0.02, y: 0, z: 0}
   positionChange: {x: 0, y: 0, z: 0.01}
 --- !u!65 &2451587857850689731
@@ -436,7 +439,7 @@ GameObject:
   - component: {fileID: 2451587857981254211}
   - component: {fileID: 2451587857981254208}
   - component: {fileID: 2451587857981254209}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: WaveLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -520,6 +523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c73e0f600d76984bb660ef6e2c8fcad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WaveSpeed: 16
   scaleChange: {x: 0.02, y: 0, z: 0}
   positionChange: {x: -0.01, y: 0, z: 0}
 --- !u!65 &2451587857981254208

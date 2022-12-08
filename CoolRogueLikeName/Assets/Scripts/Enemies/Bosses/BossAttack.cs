@@ -20,7 +20,7 @@ public class BossAttack : EnemyAttack
     public int baseDamage = 1;
     public float projectileSpeed = 5;
     private int numNormalShots;
-    private float degreeToRotate;    // Used to create arc for bullets spawnd from charge shot
+    private float degreeToRotate;    // Used to create arc for bullets spawnd from scatter shot
     private int numWaves;
 
     private void Awake()
@@ -52,7 +52,13 @@ public class BossAttack : EnemyAttack
             }
 
             // fires a scattershot at the player
-            ScatterShot();
+            // ScatterShot();
+
+            // Half of the bullets are breakable
+            int start = 0 + (numBullets / 4);
+            int end = numBullets - (numBullets / 4) - 1;
+
+            ScatterShotAtPlayer(rightSpawnPoint, breakableEnemyProjectile, enemyProjectile, (a) => (a >= start && a <= end), numBullets, projectileSpeed, baseDamage);
             yield return new WaitForSeconds(shootRate);
         }
     }

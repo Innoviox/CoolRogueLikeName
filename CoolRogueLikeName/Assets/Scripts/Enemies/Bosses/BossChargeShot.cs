@@ -11,19 +11,27 @@ public class BossChargeShot : MonoBehaviour
     public int numBulletsPerRow;  // Number of bullets along one the arc
     public int numBulletsPerCol;
     private float degreeToRotate; // Evenly distributes bullets along 180 degrees
+    private LayerMask maskScatter;
+    private LayerMask mask;
 
     void Start()
     {
         body = GetComponent<Rigidbody>();
         numBulletsPerRow = 20;
         numBulletsPerCol = 3;
+        maskScatter = LayerMask.GetMask("Wall", "Door");
+        mask = LayerMask.GetMask("PlayerBody");
 
         degreeToRotate = 180 / (numBulletsPerRow + 1);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+<<<<<<< NewEnemiesAndLayers
+        if (InLayer(other, mask))
+=======
         if (other.name.Contains("Player"))
+>>>>>>> simons-things
         {
             // damage player
 
@@ -32,7 +40,11 @@ public class BossChargeShot : MonoBehaviour
         }
 
         // When colliding with a wall, spawn an arc of bullets going in the direction opposite of the wall.
+<<<<<<< NewEnemiesAndLayers
+        if (InLayer(other, maskScatter))
+=======
         if (other.name.Contains("wall"))
+>>>>>>> simons-things
         {
             // Get bullets direction
             Vector3 currDir;
@@ -79,5 +91,10 @@ public class BossChargeShot : MonoBehaviour
 
             Destroy(gameObject);
         }
+    }
+
+    private bool InLayer(Collider other, LayerMask mask)
+    {
+        return ((1 << other.gameObject.layer) & mask.value) > 0;
     }
 }

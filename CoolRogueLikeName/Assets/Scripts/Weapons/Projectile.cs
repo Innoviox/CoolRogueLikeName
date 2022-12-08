@@ -6,12 +6,19 @@ public class Projectile : MonoBehaviour
 {
     public float Damage;
     public int collisionCount;
+    private LayerMask mask;
+
+    private void Awake()
+    {
+        mask = LayerMask.GetMask("Wall", "Door", "EnemyBody"); // Floor: unsure which prefab refers to floor.
+    }
     private void OnCollisionEnter(Collision collision)
     {
         DoCollision(collision);
     }
 
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerEnter(Collider other)
+    {
         DoTrigger(other);
     }
 
@@ -34,5 +41,10 @@ public class Projectile : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private bool InLayer(Collider other, LayerMask mask)
+    {
+        return ((1 << other.gameObject.layer) & mask.value) > 0;
     }
 }

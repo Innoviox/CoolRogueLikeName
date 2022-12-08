@@ -136,6 +136,7 @@ MonoBehaviour:
   WaveSpeed: 16
   scaleChange: {x: 0.02, y: 0, z: 0}
   positionChange: {x: 0.01, y: 0, z: 0}
+  timeTolive: 6
 --- !u!65 &2451587856808832271
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -266,6 +267,7 @@ MonoBehaviour:
   WaveSpeed: 16
   scaleChange: {x: 0.02, y: 0, z: 0}
   positionChange: {x: 0, y: 0, z: -0.01}
+  timeTolive: 6
 --- !u!65 &2451587857619801916
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -396,6 +398,7 @@ MonoBehaviour:
   WaveSpeed: 16
   scaleChange: {x: 0.02, y: 0, z: 0}
   positionChange: {x: 0, y: 0, z: 0.01}
+  timeTolive: 6
 --- !u!65 &2451587857850689731
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -526,6 +529,7 @@ MonoBehaviour:
   WaveSpeed: 16
   scaleChange: {x: 0.02, y: 0, z: 0}
   positionChange: {x: -0.01, y: 0, z: 0}
+  timeTolive: 6
 --- !u!65 &2451587857981254208
 BoxCollider:
   m_ObjectHideFlags: 0

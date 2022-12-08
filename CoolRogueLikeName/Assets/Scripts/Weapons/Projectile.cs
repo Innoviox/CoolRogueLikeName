@@ -37,10 +37,16 @@ public class Projectile : MonoBehaviour
 
     protected virtual void DoTrigger(Collider other)
     {
+        if (InLayer(other, mask))
+        {
+            Destroy(gameObject);
+        }
+        /*
         if (other.transform.gameObject.name.Contains("Wall") || other.transform.gameObject.name.Contains("Door") || other.transform.gameObject.name.Contains("Floor"))
         {
             Destroy(gameObject);
         }
+        */
     }
 
     private bool InLayer(Collider other, LayerMask mask)

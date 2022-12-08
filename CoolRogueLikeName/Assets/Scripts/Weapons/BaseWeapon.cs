@@ -11,14 +11,16 @@ public class BaseWeapon : MonoBehaviour
     public int baseDamage = 1;
     public PowerupManager stats;
     public string firebutton;
+    private IEnumerator weaponCoroutineObject;
 
     public void EnableWeapon()
     {
-        StartCoroutine(WeaponCoroutine());
+        weaponCoroutineObject = WeaponCoroutine();
+        StartCoroutine(weaponCoroutineObject);
     }
     public void DisableWeapon()
     {
-        StopCoroutine(WeaponCoroutine());
+        StopCoroutine(weaponCoroutineObject);
     }
 
     IEnumerator WeaponCoroutine()

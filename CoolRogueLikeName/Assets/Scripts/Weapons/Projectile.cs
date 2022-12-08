@@ -22,6 +22,7 @@ public class Projectile : MonoBehaviour
         // Don't destroy myself if I collide with other bullets
         if (collision.transform.gameObject.name != "Bullet(Clone)")
         {
+            Debug.Log("laser dying due to collision with " + collision.gameObject.name);
             // Destroy myself :(
             Destroy(gameObject);
         }
@@ -31,6 +32,8 @@ public class Projectile : MonoBehaviour
     {
         if (other.transform.gameObject.name.Contains("Wall") || other.transform.gameObject.name.Contains("Door") || other.transform.gameObject.name.Contains("Floor"))
         {
+            Debug.Log("laser dying due to collision with " + other.gameObject.name);
+
             Destroy(gameObject);
         }
     }

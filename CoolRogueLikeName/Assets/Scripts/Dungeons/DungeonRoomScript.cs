@@ -166,7 +166,7 @@ public class DungeonRoomScript : MonoBehaviour
             return;
         }
 
-        var enemyScaling = player.GetComponent<PlayerMovement>().stats.enemySpawnFactor;
+        var enemyScaling = player.GetComponent<Movement>().stats.enemySpawnFactor; // Ethan changed the movement script
         nEnemies = 0;
         for (int i = 0; i < nEnemiesBase * enemyScaling; i++)
         {

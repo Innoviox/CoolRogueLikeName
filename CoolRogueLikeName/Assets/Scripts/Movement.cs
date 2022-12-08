@@ -19,6 +19,7 @@ public class Movement : MonoBehaviour
     private Rigidbody rb;
     private bool dashLock;
     private bool jumpLock;
+    private float originalDrag;
 
 
     void Start()
@@ -26,13 +27,14 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         dashLock = false;
         jumpLock = false;
+        originalDrag = rb.drag;
         rb.drag = decceleration;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!dashLock && !jumpLock)
+        if (!dashLock)
         {
             float hInput = Input.GetAxis("Horizontal"); // Keeps track of left and right movement 
             float vInput = Input.GetAxis("Vertical");   // Keeps track of forward and backwards movement
@@ -44,7 +46,7 @@ public class Movement : MonoBehaviour
                 rb.velocity = Vector3.zero;
                 return;
             }
-            if (Input.GetKeyDown(jumpKey))
+            if (Input.GetKeyDown(jumpKey)  && !jumpLock)
             {
                 StartCoroutine(Jump());
                 return;
@@ -85,6 +87,8 @@ public class Movement : MonoBehaviour
         jumpLock = true;
         rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        rb.drag = originalDrag;
+
         yield return null;
         if (doubleJump)
         {
@@ -92,6 +96,7 @@ public class Movement : MonoBehaviour
         }
         yield return new WaitForSeconds(jumpCoolDown);
         jumpLock = false;
+        rb.drag = decceleration;
         yield break;
 
     }

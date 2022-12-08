@@ -26,43 +26,24 @@ public class DungeonDoorScript : MonoBehaviour
     private Vector3 rotationPoint;
 
     private int opening_direction; // 0 => none, -1 => down, 1 => up
-    private float opening_speed = 0.1f;
-    private int min_y;
-    private int max_y;
+    private float opening_speed = 0.02f;
+    private float min_y;
+    private float max_y;
 
 
     // Start is called before the first frame update
     void Start()
     {
         renderer = GetComponent<Renderer>();
-        renderer.material = doorGoesNowhereMaterial;
+        // renderer.material = doorGoesNowhereMaterial;
 
         collider = GetComponent<Collider>();
 
-
-        // rotation point is the "bottom left corner" of the door
-        rotationPoint = transform.position;
-        rotationPoint.y -= transform.localScale.y / 2;
-
-        switch (transform.rotation.eulerAngles.y)
-        {
-            case 0:
-                rotationPoint.x -= transform.localScale.x / 2;
-                break;
-            case 90:
-                rotationPoint.z += transform.localScale.x / 2;
-                break;
-            case 270:
-                rotationPoint.z -= transform.localScale.x / 2;
-                break;
-            case 360:
-                rotationPoint.x += transform.localScale.x / 2;
-                break;
-        }
-
         opening_direction = 0;
-        min_y = -2;
-        max_y = (int)transform.position.y;
+        min_y = -2.0f;
+        max_y = 0.5f; // dont have time to debug why this isnt working (int)transform.position.y;
+
+        Debug.Log($"{min_y} miny {max_y} maxy");
     }
 
     // Update is called once per frame

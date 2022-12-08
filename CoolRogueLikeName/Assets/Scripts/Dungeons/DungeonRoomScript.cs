@@ -318,11 +318,14 @@ public class DungeonRoomScript : MonoBehaviour
         GameObject wc = Instantiate(weaponChest);
         Transform wct = wc.GetComponent<Transform>();
         wct.parent = transform;
-        wct.position = new Vector3(0, 1, 0);
+        wct.position = new Vector3(0, 0, 0);
     }
 
     public void SpawnPowerups()
     {
-        // todo: make powerup pedestal prefab, spawn em
+        GameObject pp = Instantiate(powerupPedestal);
+        Transform ppt = pp.GetComponent<Transform>();
+        ppt.parent = transform;
+        ppt.position = new Vector3(0, 0, 0);
     }
 }

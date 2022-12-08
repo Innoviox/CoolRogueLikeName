@@ -20,7 +20,7 @@
   - [x] make first few rooms not have ranged enemies
   - [ ] ~~only show tutorial once~~
 - [ ] death screen
-- [ ] scale 
-  - [ ] \# of rooms as dungeon # increases
-  - [ ] bosses as dungeon # increases
-  - [ ] \# of enemies as room # & dungeon # increases
+- [x] scale 
+  - [x] \# of rooms as dungeon # increases
+  - [x] bosses as dungeon # increases
+  - [x] \# of enemies as room # & dungeon # increases

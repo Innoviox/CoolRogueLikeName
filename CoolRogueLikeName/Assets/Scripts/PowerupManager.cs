@@ -20,13 +20,13 @@ public class PowerupManager : ScriptableObject
     // TODO, player has no health yet
     public float playerHealthFactor;
 
-    // used in Weapon.cs
+    // used in BaseWeapon.cs
     public float playerDamageFactor;
 
-    // used in Weapon.cs
+    // used in BaseWeapon.cs
     public float playerReloadSpeedFactor;
 
-    // used in Weapon.cs
+    // used in BaseWeapon.cs
     public float bulletSpeedFactor;
 
     // TODO

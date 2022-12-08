@@ -25,6 +25,7 @@ public class WeaponSword : MonoBehaviour
 
             GameObject hitbox = Instantiate(projectile, spawnPoint.position, spawnPoint.rotation);
             StartCoroutine( Rotate(Vector3.up, 40, attackRate) );
+            GetComponent<AudioSource>().Play();
             //hitbox.transform.SetParent(spawnPoint);
             // Set projectiles damage
             hitbox.GetComponent<SwordDamage>().Damage = baseDamage;

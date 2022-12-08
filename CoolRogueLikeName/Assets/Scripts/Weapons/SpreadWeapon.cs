@@ -25,6 +25,7 @@ public class SpreadWeapon : MonoBehaviour
             GameObject bullet = Instantiate(projectile, spawnPoint1.position, spawnPoint1.rotation);
             GameObject bullet2 = Instantiate(projectile, spawnPoint2.position, spawnPoint2.rotation);
             GameObject bullet3 = Instantiate(projectile, spawnPoint3.position, spawnPoint3.rotation);
+            GetComponent<AudioSource>().Play();
             // Set projectiles damage
             bullet.GetComponent<Projectile>().Damage = baseDamage;
             bullet2.GetComponent<Projectile>().Damage = baseDamage;

@@ -11,19 +11,23 @@ public class BossChargeShot : MonoBehaviour
     public int numBulletsPerRow;  // Number of bullets along one the arc
     public int numBulletsPerCol;
     private float degreeToRotate; // Evenly distributes bullets along 180 degrees
+    private LayerMask maskScatter;
+    private LayerMask mask;
 
     void Start()
     {
         body = GetComponent<Rigidbody>();
         numBulletsPerRow = 20;
         numBulletsPerCol = 3;
+        maskScatter = LayerMask.GetMask("Wall", "Door");
+        mask = LayerMask.GetMask("PlayerBody");
 
         degreeToRotate = 180 / (numBulletsPerRow + 1);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.name == "Player")
+        if (InLayer(other, mask))
         {
             // damage player
 
@@ -32,26 +36,36 @@ public class BossChargeShot : MonoBehaviour
         }
 
         // When colliding with a wall, spawn an arc of bullets going in the direction opposite of the wall.
-        if (other.transform.parent != null && other.transform.parent.transform.name == "Walls")
+        if (InLayer(other, maskScatter))
         {
             // Get bullets direction
-            Vector3 currDir; 
- 
-            // We want the vector normal to the surface of the wall pointing towards the inside of the room
-            if (Vector3.Dot(body.velocity, other.transform.forward) < 0)
-                currDir = other.transform.forward;
-            else
-                currDir = other.transform.forward * -1;
+            Vector3 currDir;
 
-            // Initial spawn direction for smaller bullets
-            currDir = Quaternion.Euler(0, -90 + degreeToRotate, 0) * currDir;
+            switch (other.transform.rotation.eulerAngles.y)
+            {
+                case 0:
+                    currDir = Vector3.back;
+                    break;
+                case 90:
+                    currDir = Vector3.left;
+                    break;
+                case 180:
+                    currDir = Vector3.forward;
+                    break;
+                case 270:
+                    currDir = Vector3.right;
+                    break;
+                default:
+                    currDir = Vector3.forward;
+                    break;
+            }
 
             // bullet position
             Vector3 pos = transform.localPosition;
             GameObject bullet;
 
             // Spawn 3 bullets 45 degrees from each other. 
-            for (int i = 0; i < numBulletsPerRow; i ++)
+            for (int i = 0; i < numBulletsPerRow; i++)
             {
                 // Number of bullets per column on explosion
                 for (int j = 1; j <= numBulletsPerCol; j++)
@@ -69,5 +83,10 @@ public class BossChargeShot : MonoBehaviour
 
             Destroy(gameObject);
         }
+    }
+
+    private bool InLayer(Collider other, LayerMask mask)
+    {
+        return ((1 << other.gameObject.layer) & mask.value) > 0;
     }
 }

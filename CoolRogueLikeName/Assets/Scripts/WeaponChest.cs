@@ -33,7 +33,7 @@ public class WeaponChest : MonoBehaviour
     // Update is called once per frame
     void OnTriggerStay(Collider other)
     {
-        if (other.name == "Player(Clone)")
+        if (other.name.Contains("Player"))
         {
             if (opened)
             {

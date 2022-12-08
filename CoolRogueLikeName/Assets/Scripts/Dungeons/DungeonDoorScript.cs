@@ -28,7 +28,8 @@ public class DungeonDoorScript : MonoBehaviour
     private int opening_direction; // 0 => none, -1 => down, 1 => up
     private float opening_speed = 0.02f;
     private float min_y;
-    private float max_y;
+    public float max_y;
+    public Door door;
 
 
     // Start is called before the first frame update
@@ -41,7 +42,7 @@ public class DungeonDoorScript : MonoBehaviour
 
         opening_direction = 0;
         min_y = -2.0f;
-        max_y = 0.5f; // dont have time to debug why this isnt working (int)transform.position.y;
+        max_y = door.isBossDoor ? 0.0f : 0.5f; // dont have time to debug why this isnt working (int)transform.position.y;
 
         Debug.Log($"{min_y} miny {max_y} maxy");
     }
@@ -101,7 +102,10 @@ public class DungeonDoorScript : MonoBehaviour
         if (roomThisDoorLeadsTo != null)
         {
             // set material to open
-            renderer.material = doorUnlockedMaterial;
+            if (!door.isBossDoor)
+            {
+                renderer.material = doorUnlockedMaterial;
+            }
 
             // set collider to trigger
             // collider.isTrigger = true;
@@ -119,7 +123,8 @@ public class DungeonDoorScript : MonoBehaviour
         // lock door
         // collider.isTrigger = false;
         locked = true;
-        renderer.material = doorClosedMaterial;
+        if (!door.isBossDoor)
+            renderer.material = doorClosedMaterial;
         renderer.enabled = true;
         if (transform.position.y < max_y)
             opening_direction = 1; // instantly start locking door

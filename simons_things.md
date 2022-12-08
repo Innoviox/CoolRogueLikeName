@@ -6,11 +6,12 @@
   - [x] add boss death trigger
   - [x] make it so teleporter spawns on boss death at room center
 - [ ] models
-  - [ ] doors
-    - [ ] make model
-    - [ ] color model for boss room
-    - [ ] open/closed model
-  - [ ] teleporter
+  - [x] doors
+    - [x] make model
+    - [x] color model for boss room
+    - [x] open/closed model
+  - [x] teleporter
+  - [ ] player model
 - [ ] sound
   - [ ] music
   - [ ] tell pat where to put sound effects
@@ -22,3 +23,4 @@
 - [ ] scale 
   - [ ] \# of rooms as dungeon # increases
   - [ ] bosses as dungeon # increases
+  - [ ] \# of enemies as room # & dungeon # increases

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Tutorial : MonoBehaviour
 {
-    public bool unlockFirstRoom = false;
+    public int unlockFirstRoom = 0;
     private TextMesh tm;
 
     private string[] strings = {
@@ -98,7 +98,7 @@ public class Tutorial : MonoBehaviour
 
         if (idx == 5)
         {
-            unlockFirstRoom = true;
+            unlockFirstRoom = 1;
         }
 
         unusedTutorials.Remove(idx);

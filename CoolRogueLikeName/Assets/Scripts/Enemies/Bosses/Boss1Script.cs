@@ -36,7 +36,7 @@ public class Boss1Script : MonoBehaviour
         attack = transform.GetComponent<BossAttack>();
         move = transform.GetComponent<BossMovement>();
         healthThreshold = 75f;
-        health = 100f;
+        health = 1f;
         chargeAttackRate = 15;
         aimAtPlayer = true;
         immune = false;

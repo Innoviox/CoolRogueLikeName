@@ -1019,11 +1019,33 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7387493603810643651, guid: e69cb583a5c680a40acd3dce7e60959b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7387493603810643651, guid: e69cb583a5c680a40acd3dce7e60959b, type: 3}
       propertyPath: projectile
       value: 
       objectReference: {fileID: 3398959733314657087, guid: 951fe4ae29b8c7642ad8191f98813c9f, type: 3}
-    m_RemovedComponents: []
+    - target: {fileID: 7387493604619535361, guid: e69cb583a5c680a40acd3dce7e60959b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7387493604619535361, guid: e69cb583a5c680a40acd3dce7e60959b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7387493604619535361, guid: e69cb583a5c680a40acd3dce7e60959b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7387493603810643651, guid: e69cb583a5c680a40acd3dce7e60959b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e69cb583a5c680a40acd3dce7e60959b, type: 3}
+--- !u!4 &1405088823400731835 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7387493604619535361, guid: e69cb583a5c680a40acd3dce7e60959b, type: 3}
+  m_PrefabInstance: {fileID: 8501184890354356410}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3111111519991658046 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6833831919672043140, guid: e69cb583a5c680a40acd3dce7e60959b, type: 3}
@@ -1130,3 +1152,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1409369804962116956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9102541344068840386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1820377853f8c0f4c8b23b767805a121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 1405088823400731835}
+  projectile: {fileID: 3398959733314657087, guid: 951fe4ae29b8c7642ad8191f98813c9f, type: 3}
+  baseProjectileSpeed: 5
+  baseCooldown: 0.25
+  baseDamage: 1
+  stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
+  firebutton: Fire1

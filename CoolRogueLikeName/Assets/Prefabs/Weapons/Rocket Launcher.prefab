@@ -302,8 +302,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6987906923380532425}
-  - component: {fileID: 3067112048763506744}
   - component: {fileID: 7377546848747118312}
+  - component: {fileID: 7197199248689125303}
   m_Layer: 0
   m_Name: Rocket Launcher
   m_TagString: Untagged
@@ -332,23 +332,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3067112048763506744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2053788248616497708}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd44b59e4ab9e27438a422d1d99c0155, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 3067112047891438627}
-  projectile: {fileID: 1604056893111525442, guid: 2c387e2cbb2f8464eafc477cb315a4fd, type: 3}
-  projectileSpeed: 10
-  baseDamage: 1
-  cooldown: 0.66
 --- !u!82 &7377546848747118312
 AudioSource:
   m_ObjectHideFlags: 0
@@ -445,6 +428,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7197199248689125303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2053788248616497708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1820377853f8c0f4c8b23b767805a121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPoint: {fileID: 3067112047891438627}
+  projectile: {fileID: 1604056893111525442, guid: 2c387e2cbb2f8464eafc477cb315a4fd, type: 3}
+  baseProjectileSpeed: 5
+  baseCooldown: 3
+  baseDamage: 10
+  stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
+  firebutton: Fire1
 --- !u!1 &3067112047891438624
 GameObject:
   m_ObjectHideFlags: 0

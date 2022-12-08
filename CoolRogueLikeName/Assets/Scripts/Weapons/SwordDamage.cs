@@ -2,19 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SwordDamage : MonoBehaviour
+public class SwordDamage : Projectile
 {
-    public int Damage;
-    
+    public float lifetime = 0.25f;
 
-     void Update() 
+    void Start() 
     {
-        float destroyTime = 0.25F;
-        
-        Destroy(gameObject, destroyTime);
+        Destroy(gameObject, lifetime);
     }
 
-        private void OnTriggerEnter(Collider collision)
+    protected override void DoTrigger(Collider collision)
     {
         // Don't destroy myself if I collide with other bullets
         if (collision.transform.gameObject.name != "Sword Hitbox(Clone)")
@@ -22,7 +19,5 @@ public class SwordDamage : MonoBehaviour
             Debug.Log(Damage);
             //Destroy(gameObject);
         }
-
     }
-    
 }

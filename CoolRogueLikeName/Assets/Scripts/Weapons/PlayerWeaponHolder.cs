@@ -12,6 +12,7 @@ public class PlayerWeaponHolder : MonoBehaviour
     {
         //weapon.position = weaponPosition;
         weapon.rotation = Quaternion.identity;
+        weapon.gameObject.GetComponent<BaseWeapon>().EnableWeapon();
     }
 
     // swap all details of the transforms
@@ -30,6 +31,8 @@ public class PlayerWeaponHolder : MonoBehaviour
         weapon.parent = tempParent;
 
         // todo: enable & disable weapon shooting
+        newWeapon.gameObject.GetComponent<BaseWeapon>().EnableWeapon();
+        weapon.gameObject.GetComponent<BaseWeapon>().DisableWeapon();
 
         Transform tempWeapon = weapon;
         weapon = newWeapon;

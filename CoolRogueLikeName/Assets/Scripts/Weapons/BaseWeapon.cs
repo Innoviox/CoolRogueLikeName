@@ -12,28 +12,6 @@ public class BaseWeapon : MonoBehaviour
     public PowerupManager stats;
     public string firebutton;
 
-    /*// Update is called once per frame
-    void Update()
-    {
-        //if (Input.GetButton("Fire1"))         // Uncomment me for scatter shot 
-        if (Input.GetKeyDown(KeyCode.Mouse0))  //  Comment this line for scatter
-        {
-            // Create a bullet from the prefab 
-            GameObject bullet = Instantiate(projectile, spawnPoint.position, spawnPoint.rotation);
-            GetComponent<AudioSource>().Play();
-            // Set projectiles damage
-            bullet.GetComponent<Projectile>().Damage = baseDamage;
-
-            // Set its velocity to go forward by projectileSpeed
-            bullet.GetComponent<Rigidbody>().velocity = spawnPoint.forward * projectileSpeed;
-        }
-    }*/
-
-    void Start()
-    {
-        EnableWeapon();
-    }
-
     public void EnableWeapon()
     {
         StartCoroutine(WeaponCoroutine());

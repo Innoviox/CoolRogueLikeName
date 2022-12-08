@@ -2,49 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponSword : MonoBehaviour
+public class WeaponSword : BaseWeapon
 {
-    public Transform spawnPoint;   // Select this through the inspector
-    public GameObject projectile;  // Selected Invisible hitbox prefab through inspector
-    public Transform rotateAbout;
-    public int baseDamage; // set in inspector for easy testing
-    //float timer = 30.0f;
-    public float attackRate;
-    public float cooldown;
-    private float nextAttack;
-
-    // Update is called once per frame
-    void Update()
+    public override void DoWeaponAction(float damage, float projectileSpeed)
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > nextAttack)
-        {
-            
-            nextAttack = Time.time + cooldown;
+        // This section is the same as the base, but without needing to access the rigidbody of the projectile
+        // Create a bullet from the prefab 
+        GameObject bullet = Instantiate(projectile, spawnPoint.position, spawnPoint.rotation);
+        GetComponent<AudioSource>().Play();
+        // Set projectiles damage
+        bullet.GetComponent<Projectile>().Damage = baseDamage;
 
-            // Create a bullet from the prefab 
-
-            GameObject hitbox = Instantiate(projectile, spawnPoint.position, spawnPoint.rotation);
-            StartCoroutine( Rotate(Vector3.up, 40, attackRate) );
-            GetComponent<AudioSource>().Play();
-            //hitbox.transform.SetParent(spawnPoint);
-            // Set projectiles damage
-            hitbox.GetComponent<SwordDamage>().Damage = baseDamage;
-
-        
-        }
+        StartCoroutine(Rotate(Vector3.up, 40, baseCooldown * stats.playerReloadSpeedFactor));
     }
 
-    IEnumerator Rotate( Vector3 axis, float angle, float duration)
-   {
-      float startRotation = rotateAbout.eulerAngles.y;
+    IEnumerator Rotate(Vector3 axis, float angle, float duration)
+    {
+        float startRotation = spawnPoint.eulerAngles.y;
         float endRotation = startRotation + 360.0f;
         float t = 0.0f;
-        while ( t  < duration )
+        while (t < duration)
         {
             t += Time.deltaTime;
             float yRotation = Mathf.Lerp(startRotation, endRotation, t / duration) % 360.0f;
-            rotateAbout.eulerAngles = new Vector3(rotateAbout.eulerAngles.x, yRotation, rotateAbout.eulerAngles.z);
+            spawnPoint.eulerAngles = new Vector3(spawnPoint.eulerAngles.x, yRotation, spawnPoint.eulerAngles.z);
             yield return null;
         }
-   }
- }
+    }
+}

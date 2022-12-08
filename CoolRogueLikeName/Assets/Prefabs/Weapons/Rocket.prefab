@@ -262,8 +262,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 0
-  Explosion: 1
-  explosionRadius: {fileID: 4834403663527026098, guid: 8e2951b08ab8b6243a3af07916e9443d, type: 3}
+  collisionCount: 0
+  explosionPrefab: {fileID: 4834403663527026098, guid: 8e2951b08ab8b6243a3af07916e9443d, type: 3}
   explosionTime: 0.2
 --- !u!1 &1747408007129684734
 GameObject:

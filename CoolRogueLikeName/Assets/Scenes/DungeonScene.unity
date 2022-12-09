@@ -228,6 +228,7 @@ GameObject:
   - component: {fileID: 471363305}
   - component: {fileID: 471363304}
   - component: {fileID: 471363303}
+  - component: {fileID: 471363306}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -301,6 +302,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+--- !u!45 &471363306
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471363302}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 8f68db7aa6f4c2744b966605af5f76f5, type: 2}
 --- !u!1 &1934108693
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,6 +356,8 @@ MonoBehaviour:
   expandableRooms: 
   camera: {fileID: 471363304}
   playerPrefab: {fileID: 3737592448777623360, guid: 6e0054fed8e5846a798c4ab52ef73f01, type: 3}
+  tutorial: {fileID: 0}
+  tutorialComp: {fileID: 0}
 --- !u!4 &1934108695
 Transform:
   m_ObjectHideFlags: 0

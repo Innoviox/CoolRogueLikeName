@@ -75,6 +75,10 @@ public class Movement : MonoBehaviour
     IEnumerator Dash(Vector3 direction)
     {
         dashLock = true;
+        if(direction == Vector3.zero)
+        {
+            direction = new Vector3(0, 0, 1);
+        }
         rb.AddForce(direction * dashForce, ForceMode.Impulse);
         yield return new WaitForSeconds(dashTime);
         dashLock = false;

@@ -9,13 +9,13 @@ public class PlayerHealth : MonoBehaviour
     public float maxHealth;
     public int swordDamage; // Damage received from the enemy sword
     public int waveDamage; // Damage received from the enemy wave attack
-    public Transform canvasPrefab;
     public PowerupManager stats;
     public float healAmount;
 
     GameObject healthBar;
     public float health;
-    private Transform canvas;
+
+    public ScoreManager scoreManager;
 
     // Start is called before the first frame update
     void Start()
@@ -97,15 +97,9 @@ public class PlayerHealth : MonoBehaviour
         healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
         if (health <= 0.0f)
         {
-            StartCoroutine(DeathScreen());
-            // TRIGGER DEATH SCENE
+            Debug.Log("Player Died");
+            scoreManager.playerDeath();
+            SceneManager.LoadScene(2);
         }
-    }
-
-    IEnumerator DeathScreen()
-    {
-        canvas = Instantiate(canvasPrefab, new Vector3(572.25f, 247.25f, 0), Quaternion.identity);
-        yield return new WaitForSeconds(5.0f);
-        SceneManager.LoadScene(0);
     }
 }

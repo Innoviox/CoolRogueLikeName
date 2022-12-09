@@ -163,10 +163,10 @@ MonoBehaviour:
   maxHealth: 0
   swordDamage: 1
   waveDamage: 1
-  canvasPrefab: {fileID: 1355610905270808686, guid: 99465d771d1ec9845beac9457b7a108d, type: 3}
   stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
   healAmount: 1
   health: 0
+  scoreManager: {fileID: 11400000, guid: 122bf98c62c8b964e81371072efeb734, type: 2}
 --- !u!114 &1356424271613546667
 MonoBehaviour:
   m_ObjectHideFlags: 0

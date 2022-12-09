@@ -329,6 +329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
   player: {fileID: 0}
+  scoreManager: {fileID: 11400000, guid: 122bf98c62c8b964e81371072efeb734, type: 2}
 --- !u!114 &4439576860798941387
 MonoBehaviour:
   m_ObjectHideFlags: 0

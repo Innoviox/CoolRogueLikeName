@@ -13,6 +13,8 @@ public class EnemyScript : MonoBehaviour
     private LayerMask playerTriggerProjectiles;
     private LayerMask playerTriggerMelee;
 
+    public ScoreManager scoreManager;
+
     void Start()
     {
         healthBar = transform.parent.Find("HealthBar").gameObject;
@@ -109,6 +111,7 @@ public class EnemyScript : MonoBehaviour
         if (health <= 0.0f)
         {
             transform.parent.parent.SendMessage("EnemyDestroyed");
+            scoreManager.enemyDestroyed();
             Destroy(transform.parent.gameObject);
         }
     }

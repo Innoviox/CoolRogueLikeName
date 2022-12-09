@@ -16,6 +16,7 @@ public class ScoreManager : ScriptableObject
     // Start is called before the first frame update
     void Start()
     {
+        // These are not being called in Unity editor
         enemiesDestroyed = 0;
         roomsCleared = 0;
         levelsCleared = 0;

@@ -20,7 +20,6 @@ public class Room
 
     public Room(int x, int y, int size, int id)
     {
-        Debug.Log(size);
         this.x = x;
         this.y = y;
         this.size = size;
@@ -182,7 +181,6 @@ public class Room
 
     public Vector3 PlayerPosition()
     {
-        // Debug.Log($"PlayerPosition {x} {y} {size}");
         return new Vector3(x, 2, y);
     }
 

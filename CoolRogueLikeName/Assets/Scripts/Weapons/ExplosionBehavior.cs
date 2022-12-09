@@ -28,14 +28,11 @@ public class ExplosionBehavior : Projectile
     protected override void DoTrigger(Collider other)
     {
         // do nothing
-        Debug.Log("Called explosions trigger, other =" + other.name);
     }
 
     protected override void DoCollision(Collision collision)
     {
         // do nothing
-        Debug.Log("Called explosions trigger, other =" + collision.gameObject.name);
-
     }
 
 }

@@ -101,8 +101,11 @@ public class PlayerHealth : MonoBehaviour
         health -= damageTaken * stats.enemyDamageFactor;
 
         Debug.Log(maxHealth);
-        healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
-        if (health <= 0.0f)
+        if (healthBar)
+        {
+            healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
+        }
+        if (health < 0.0f)
         {
             StartCoroutine(DeathScreen());
             // TRIGGER DEATH SCENE

@@ -5,10 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public float baseMaxHealth;
     public float maxHealth;
     public int swordDamage; // Damage received from the enemy sword
     public int waveDamage; // Damage received from the enemy wave attack
     public Transform canvasPrefab;
+    public PowerupManager stats;
+    public float healAmount;
 
     GameObject healthBar;
     public float health;
@@ -18,6 +21,7 @@ public class PlayerHealth : MonoBehaviour
     void Start()
     {
         healthBar = transform.Find("HealthBar").gameObject;
+        maxHealth = baseMaxHealth * stats.playerHealthFactor;
         health = maxHealth;
     }
 
@@ -28,6 +32,26 @@ public class PlayerHealth : MonoBehaviour
         healthBar.transform.position = new Vector3(transform.position.x,
                                                    transform.position.y + 1,
                                                    transform.position.z);
+    }
+
+    public void UpdateMaxHealth()
+    {
+        float ratio = health / maxHealth;
+        maxHealth = baseMaxHealth * stats.playerHealthFactor;
+        health = maxHealth * ratio;
+        healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
+
+    }
+
+    public void Heal(int count)
+    {
+        health += healAmount * count;
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
+        healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
+
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -69,6 +93,7 @@ public class PlayerHealth : MonoBehaviour
 
         health -= damageTaken * stats.enemyDamageFactor;
 
+        Debug.Log(maxHealth);
         healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
         if (health <= 0.0f)
         {

@@ -7,3 +7,4 @@ final sprint todo
 - [ ] sword no worky
 - [ ] rocket explosions no worky
 - [ ] increase powerup effectiveness
+- [ ] remove debug.logs

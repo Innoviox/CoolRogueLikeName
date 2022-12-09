@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2648034078201140435}
   - component: {fileID: 6318134228794776416}
   - component: {fileID: 1955405935335890033}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ActualLaser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 2083093972932994015}
   - component: {fileID: 5870448878203508766}
   - component: {fileID: -5813494453228046393}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LaserBolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}

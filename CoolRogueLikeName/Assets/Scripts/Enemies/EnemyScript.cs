@@ -35,30 +35,13 @@ public class EnemyScript : MonoBehaviour
     // Take damage on colliding with projectile
     private void OnCollisionEnter(Collision collision)
     {
-        // Check collision occured with a bullet
-        // Since bullet is a prefab its gameobject name gets set to Bullet(Clone)
-        if (collision.transform.gameObject.name == "Bullet(Clone)")
+        if (InLayer(collision.collider, playerTriggerMelee))
         {
-            // Get the projectiles damage
-            float damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
-
-            health -= damageTaken;
-
-            healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
+            takeDamage(collision.transform.gameObject.GetComponent<SwordDamage>().Damage);
         }
-        else if (collision.transform.gameObject.name == "Rocket(Clone)")
+        else if (InLayer(collision.collider, playerTriggerProjectiles))
         {
-            float damageTaken = collision.transform.gameObject.GetComponent<RocketProjectile>().Damage;
-
-            health -= damageTaken;
-
-            healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
-        }
-
-        if (health <= 0.0f)
-        {
-            transform.parent.parent.SendMessage("EnemyDestroyed");
-            Destroy(transform.parent.gameObject);
+            takeDamage(collision.transform.gameObject.GetComponent<Projectile>().Damage);
         }
     }
 
@@ -77,43 +60,6 @@ public class EnemyScript : MonoBehaviour
         {
             takeDamage(collision.transform.gameObject.GetComponent<Projectile>().Damage);
         }
-
-        /*
-        // Check collision occured with a bullet
-        // Since bullet is a prefab its gameobject name gets set to Bullet(Clone)
-        if (collision.transform.gameObject.name == "SwordHitbox(Clone)")
-        {
-            // Get the projectiles damage
-            float damageTaken = collision.transform.gameObject.GetComponent<SwordDamage>().Damage;
-
-            health -= damageTaken;
-
-            healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
-        }
-        else if (collision.transform.gameObject.name == "LaserBolt(Clone)")
-        {
-            float damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
-
-            health -= damageTaken;
-
-            healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
-        }
-        else if (collision.transform.gameObject.name == "Explosion(Clone)")
-        {
-            float damageTaken = collision.transform.gameObject.GetComponent<Projectile>().Damage;
-
-            health -= damageTaken;
-
-            healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
-        }
-        */
-        if (health <= 0.0f)
-        {
-            transform.parent.parent.SendMessage("EnemyDestroyed");
-            GameObject deathSound = Instantiate(deathSoundContainer, transform.position, Quaternion.identity);
-            Destroy(deathSound, deathSoundContainer.GetComponent<AudioSource>().clip.length);
-            Destroy(transform.parent.gameObject);
-        }
     }
 
     private bool InLayer(Collider other, LayerMask mask)
@@ -126,5 +72,13 @@ public class EnemyScript : MonoBehaviour
         health -= da;
 
         healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
+
+        if (health <= 0.0f)
+        {
+            transform.parent.parent.SendMessage("EnemyDestroyed");
+            GameObject deathSound = Instantiate(deathSoundContainer, transform.position, Quaternion.identity);
+            Destroy(deathSound, deathSoundContainer.GetComponent<AudioSource>().clip.length);
+            Destroy(transform.parent.gameObject);
+        }
     }
 }

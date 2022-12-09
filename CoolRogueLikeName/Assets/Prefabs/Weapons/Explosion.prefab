@@ -14,9 +14,8 @@ GameObject:
   - component: {fileID: 7775889384556215813}
   - component: {fileID: 6718580471296946105}
   - component: {fileID: 1345073218061450580}
-  - component: {fileID: -2905710421942394275}
   - component: {fileID: 6110887057010708320}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,6 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38a22254b0508e74aaae0b32b5c0ecdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Damage: 0
+  collisionCount: 0
   explosionRad: {fileID: 4834403663527026098}
   expTime: 0
 --- !u!122 &1345073218061450580
@@ -127,20 +128,6 @@ Halo:
     serializedVersion: 2
     rgba: 4278226687
   m_Size: 3
---- !u!114 &-2905710421942394275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4834403663527026098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35c1e81292543e641a461ca60e47d874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damage: 5
-  collisionCount: 0
 --- !u!82 &6110887057010708320
 AudioSource:
   m_ObjectHideFlags: 0

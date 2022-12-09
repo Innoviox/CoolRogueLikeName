@@ -27,7 +27,7 @@ public class RocketProjectile : Projectile
         if (collision.transform.gameObject.name != "RocketProj(Clone)")
         {
             explosion = Instantiate(explosionPrefab, collision.contacts[0].point, Quaternion.identity);
-            explosion.GetComponent<Projectile>().Damage = explosionDamage;
+            explosion.GetComponent<ExplosionBehavior>().Damage = explosionDamage;
             // Destroy myself :(
             Destroy(gameObject);
         }

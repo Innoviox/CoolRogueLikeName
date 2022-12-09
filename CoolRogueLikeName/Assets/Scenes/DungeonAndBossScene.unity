@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -151,7 +151,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 0.6981132, g: 0.6424537, b: 0.49065503, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -436,6 +436,12 @@ MonoBehaviour:
   side: {fileID: 6390407097035863360, guid: 0e7be20feb04b2640a0c9d02c2c120ab, type: 3}
   corner: {fileID: 7378988671338045736, guid: b82cdc5280f296245a7576382bc7a3b2, type: 3}
   door: {fileID: 0}
+  decorations:
+  - {fileID: 919132149155446097, guid: a2d29fe05331dc74c90960ab46541704, type: 3}
+  - {fileID: 919132149155446097, guid: e23a540f1cb62924190b6376f458c24d, type: 3}
+  - {fileID: 919132149155446097, guid: 4841e6010ce58b1468dd9240f44af6b6, type: 3}
+  - {fileID: 919132149155446097, guid: 3f9f24888a03a084f8dddc44e0b8de75, type: 3}
+  decorationSpawnRate: 0.04
   sideLocations: []
 --- !u!114 &1934108697
 MonoBehaviour:

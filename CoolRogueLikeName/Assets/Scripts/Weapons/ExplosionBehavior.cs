@@ -15,7 +15,7 @@ public class ExplosionBehavior : MonoBehaviour
         explosionLight.color = new Color(0.7f, 0.5f, 0.0f, 0.7f);
         GetComponent<AudioSource>().Play();
         expTime = explosionRad.GetComponent<AudioSource>().clip.length;
-
+        Destroy(this, GetComponent<AudioSource>().clip.length - 0.2F);
     }
 
     // Update is called once per frame

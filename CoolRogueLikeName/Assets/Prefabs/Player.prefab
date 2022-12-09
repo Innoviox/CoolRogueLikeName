@@ -185,7 +185,7 @@ MonoBehaviour:
   jumpForce: 25
   jumpCoolDown: 3
   doubleJump: 1
-  dashForce: 20
+  dashForce: 100
   dashTime: 0.5
   jumpKey: 32
   dashKey: 113

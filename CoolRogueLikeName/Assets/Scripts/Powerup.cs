@@ -152,8 +152,8 @@ public class Powerup : MonoBehaviour
         }
         if (effects.TryGetValue("Max Health", out count))
         {
-            // TODO: scale up player health, do this better maybe
             stats.playerHealthFactor *= 1 + count * 0.05f;
+            other.gameObject.GetComponent<PlayerHealth>().UpdateMaxHealth();
         }
         if (effects.TryGetValue("Weapon Damage", out count))
         {
@@ -169,10 +169,7 @@ public class Powerup : MonoBehaviour
         }
         if (effects.TryGetValue("Heal Yourself", out count))
         {
-            Debug.Log("This would heal the player if it was implemented");
-            // TODO: This
-            /*            HealthComponent healthcomp = other.gameObject.GetComponent<Health?>();
-                        other.gameObject.GetComponent<Health?>().health += count * 0.2f * healthcomp.maxhealth;*/
+            other.gameObject.GetComponent<PlayerHealth>().Heal(count);
         }
         stats.acquiredPowerups.Add(GetText());
     }

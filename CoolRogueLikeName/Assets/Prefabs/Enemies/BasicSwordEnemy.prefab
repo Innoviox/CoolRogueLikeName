@@ -347,6 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a53bd39202a6b64f98c5258fc91d6e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
   player: {fileID: 0}
   deathSoundContainer: {fileID: 4870482295347389331, guid: 5ffbe5acfb4ab1642a28cc76d929c037, type: 3}
 --- !u!114 &7219047890234823380
@@ -445,7 +446,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 71536ed3db262b14f9ed651f475a1e1f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

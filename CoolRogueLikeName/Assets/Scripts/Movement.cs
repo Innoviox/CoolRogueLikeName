@@ -19,7 +19,6 @@ public class Movement : MonoBehaviour
     private Rigidbody rb;
     private bool dashLock;
     private bool jumpLock;
-    private float originalDrag;
 
 
     void Start()
@@ -27,8 +26,6 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         dashLock = false;
         jumpLock = false;
-        originalDrag = rb.drag;
-        rb.drag = decceleration;
     }
 
     // Update is called once per frame
@@ -36,10 +33,19 @@ public class Movement : MonoBehaviour
     {
         if (!dashLock)
         {
-            float hInput = Input.GetAxis("Horizontal"); // Keeps track of left and right movement 
-            float vInput = Input.GetAxis("Vertical");   // Keeps track of forward and backwards movement
+            float hInput = Input.GetAxisRaw("Horizontal"); // Keeps track of left and right movement 
+            float vInput = Input.GetAxisRaw("Vertical");   // Keeps track of forward and backwards movement
+            if(hInput == 0)
+            {
+                rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
+            }
+            if(vInput == 0)
+            {
+                rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 0);
+            }
 
             Vector3 accelerationDirection = new Vector3(hInput, 0, vInput).normalized; // This holds the direction the player is moving
+            // Debug.Log("Direction: " + accelerationDirection.x + " " + accelerationDirection.y + " " + accelerationDirection.z);
             if (Input.GetKeyDown(dashKey))
             {
                 StartCoroutine(Dash(accelerationDirection));
@@ -51,17 +57,17 @@ public class Movement : MonoBehaviour
                 StartCoroutine(Jump());
                 return;
             }
-            rb.AddForce(accelerationDirection * acceleration, ForceMode.Acceleration); // Adds the acceleration to the player
+                rb.AddForce(accelerationDirection * acceleration, ForceMode.Acceleration); // Adds the acceleration to the player
 
-            /* Keeps the velocity capped at maxSpeed */
+                /* Keeps the velocity capped at maxSpeed */
 
-            Vector3 velocity = rb.velocity;
-            Vector2 horizontalVelocity = new Vector3(velocity.x, velocity.z);
-            if (horizontalVelocity.magnitude > baseMaxSpeed * stats.playerMoveSpeedFactor)
-            {
-                horizontalVelocity = horizontalVelocity.normalized * baseMaxSpeed * stats.playerMoveSpeedFactor;
-            }
-            rb.velocity = new Vector3(horizontalVelocity.x, velocity.y, horizontalVelocity.y);
+                Vector3 velocity = rb.velocity;
+                Vector2 horizontalVelocity = new Vector2(velocity.x, velocity.z);
+                if (horizontalVelocity.magnitude > baseMaxSpeed * stats.playerMoveSpeedFactor)
+                {
+                    horizontalVelocity = horizontalVelocity.normalized * baseMaxSpeed * stats.playerMoveSpeedFactor;
+                }
+                rb.velocity = new Vector3(horizontalVelocity.x, velocity.y, horizontalVelocity.y);
         }
 
     }
@@ -69,6 +75,10 @@ public class Movement : MonoBehaviour
     IEnumerator Dash(Vector3 direction)
     {
         dashLock = true;
+        if(direction == Vector3.zero)
+        {
+            direction = new Vector3(0, 0, 1);
+        }
         rb.AddForce(direction * dashForce, ForceMode.Impulse);
         yield return new WaitForSeconds(dashTime);
         dashLock = false;
@@ -91,7 +101,6 @@ public class Movement : MonoBehaviour
         // rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         // rb.velocity = Vector3.zero;
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        rb.drag = originalDrag;
 
         yield return null;
         if (doubleJump)
@@ -100,7 +109,6 @@ public class Movement : MonoBehaviour
         }
         yield return new WaitForSeconds(jumpCoolDown);
         jumpLock = false;
-        rb.drag = decceleration;
         yield break;
 
     }

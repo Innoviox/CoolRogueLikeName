@@ -138,6 +138,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   immune: 0
+  stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
+  baseHealth: 100
   player: {fileID: 0}
   aimAtPlayer: 0
   bState: 3

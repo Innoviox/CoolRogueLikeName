@@ -8,6 +8,16 @@ public class RocketProjectile : Projectile
     public GameObject explosionPrefab;
     public float explosionTime;
     private GameObject explosion;
+    private float explosionDamage;
+
+    void Update()
+    {
+        if (Damage != 0)
+        {
+            explosionDamage = Damage;
+            Damage = 0;
+        }
+    }
     // Projectile ends its life when colliding with a wall
     // or an enemy. 
     // Spawns explosion radius and slight VFX to convey an explosion.
@@ -17,10 +27,9 @@ public class RocketProjectile : Projectile
         if (collision.transform.gameObject.name != "RocketProj(Clone)")
         {
             explosion = Instantiate(explosionPrefab, collision.contacts[0].point, Quaternion.identity);
+            explosion.GetComponent<Projectile>().Damage = explosionDamage;
             // Destroy myself :(
             Destroy(gameObject);
-
-            Destroy(explosion, explosion.GetComponent<AudioSource>().clip.length-0.2F);
         }
 
     }

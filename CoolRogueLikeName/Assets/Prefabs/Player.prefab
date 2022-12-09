@@ -159,10 +159,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69ef0d379c4c584478d242f840fe40bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  baseMaxHealth: 5
+  maxHealth: 0
   swordDamage: 1
   waveDamage: 1
   canvasPrefab: {fileID: 1355610905270808686, guid: 99465d771d1ec9845beac9457b7a108d, type: 3}
+  stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
+  healAmount: 1
   health: 0
 --- !u!114 &1356424271613546667
 MonoBehaviour:

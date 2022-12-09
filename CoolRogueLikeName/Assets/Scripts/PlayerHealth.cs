@@ -5,10 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public float baseMaxHealth;
     public float maxHealth;
     public int swordDamage; // Damage received from the enemy sword
     public int waveDamage; // Damage received from the enemy wave attack
     public Transform canvasPrefab;
+    public PowerupManager stats;
+    public float healAmount;
 
     GameObject healthBar;
     public float health;
@@ -18,6 +21,7 @@ public class PlayerHealth : MonoBehaviour
     void Start()
     {
         healthBar = transform.Find("HealthBar").gameObject;
+        maxHealth = baseMaxHealth * stats.playerHealthFactor;
         health = maxHealth;
     }
 
@@ -30,62 +34,66 @@ public class PlayerHealth : MonoBehaviour
                                                    transform.position.z);
     }
 
+    public void UpdateMaxHealth()
+    {
+        float ratio = health / maxHealth;
+        maxHealth = baseMaxHealth * stats.playerHealthFactor;
+        health = maxHealth * ratio;
+        healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
+
+    }
+
+    public void Heal(int count)
+    {
+        health += healAmount * count;
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
+        healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
+
+    }
+
     private void OnTriggerEnter(Collider collision)
     {
+        float damageTaken = 0;
+
         if (collision.transform.gameObject.name == "EnemyBullet(Clone)")
         {
-            float damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
-            health -= damageTaken;
+            damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
         }
 
         if (collision.transform.gameObject.name == "Sword")
         {
-            Debug.Log("Sword Collision");
-            health -= swordDamage;
+            damageTaken = swordDamage;
         }
 
         if (collision.transform.gameObject.name == "BossBullet(Clone)")
         {
-            float damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
-            health -= damageTaken;
+            damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
         }
 
         if (collision.transform.gameObject.name == "BossBreakableBullet(Clone)")
         {
-            float damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
-            health -= damageTaken;
+            damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
         }
 
         if (collision.transform.gameObject.name == "BossChargeShot(Clone)")
         {
-            float damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
-            health -= damageTaken;
+            damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
         }
 
-        if (collision.transform.gameObject.name == "WaveBack")
+        if (collision.transform.gameObject.name == "WaveBack" ||
+            collision.transform.gameObject.name == "WaveFront" ||
+            collision.transform.gameObject.name == "WaveLeft" ||
+            collision.transform.gameObject.name == "WaveRight")
         {
-            Debug.Log("Back");
-            health -= waveDamage;
+            damageTaken = waveDamage;
         }
 
-        if (collision.transform.gameObject.name == "WaveFront")
-        {
-            Debug.Log("Front");
-            health -= waveDamage;
-        }
+        health -= damageTaken * stats.enemyDamageFactor;
 
-        if (collision.transform.gameObject.name == "WaveLeft")
-        {
-            Debug.Log("Left");
-            health -= waveDamage;
-        }
-
-        if (collision.transform.gameObject.name == "WaveRight")
-        {
-            Debug.Log("Right");
-            health -= waveDamage;
-        }
-
+        Debug.Log(maxHealth);
         healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
         if (health <= 0.0f)
         {

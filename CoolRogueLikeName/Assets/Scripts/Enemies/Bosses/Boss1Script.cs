@@ -9,6 +9,8 @@ public class Boss1Script : MonoBehaviour
     private float healthThreshold;   // Decides when the boss will do a wave attack.      
     private int chargeAttackRate;    // How often the boss does a charge attack
     public bool immune;              // Boss is immune to damage during wave attack
+    public PowerupManager stats;
+    public float baseHealth = 100f;
 
     private BossAttack attack;       // Bosses attack script
     private BossMovement move;       // Bosses movement script
@@ -35,8 +37,8 @@ public class Boss1Script : MonoBehaviour
         chargeAttackTimer = Time.time;
         attack = transform.GetComponent<BossAttack>();
         move = transform.GetComponent<BossMovement>();
-        healthThreshold = 75f;
-        health = 100f;
+        health = baseHealth * stats.enemyHealthFactor;
+        healthThreshold = health * 0.75f;
         chargeAttackRate = 15;
         aimAtPlayer = true;
         immune = false;

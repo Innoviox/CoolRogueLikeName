@@ -1,6 +1,9 @@
 final sprint todo
 
-- [ ] make player not be a cube
+- [x] make player not be a cube
 - [ ] make enemies not be capsules
-- [ ] give each weapon damage / cooldown values
+- [x] give each weapon damage / cooldown values
 - [ ] HUD?
+- [ ] sword no worky
+- [ ] rocket explosions no worky
+- [ ] increase powerup effectiveness

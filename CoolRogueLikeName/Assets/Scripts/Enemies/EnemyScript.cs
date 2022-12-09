@@ -11,6 +11,7 @@ public class EnemyScript : MonoBehaviour
     public Transform player;
     private LayerMask playerTriggerProjectiles;
     private LayerMask playerTriggerMelee;
+    public GameObject deathSoundContainer;
 
     void Start()
     {
@@ -108,6 +109,8 @@ public class EnemyScript : MonoBehaviour
         if (health <= 0.0f)
         {
             transform.parent.parent.SendMessage("EnemyDestroyed");
+            GameObject deathSound = Instantiate(deathSoundContainer, transform.position, Quaternion.identity);
+            Destroy(deathSound, deathSoundContainer.GetComponent<AudioSource>().clip.length);
             Destroy(transform.parent.gameObject);
         }
     }

@@ -32,59 +32,42 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
+        float damageTaken = 0;
+
         if (collision.transform.gameObject.name == "EnemyBullet(Clone)")
         {
-            float damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
-            health -= damageTaken;
+            damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
         }
 
         if (collision.transform.gameObject.name == "Sword")
         {
-            Debug.Log("Sword Collision");
-            health -= swordDamage;
+            damageTaken = swordDamage;
         }
 
         if (collision.transform.gameObject.name == "BossBullet(Clone)")
         {
-            float damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
-            health -= damageTaken;
+            damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
         }
 
         if (collision.transform.gameObject.name == "BossBreakableBullet(Clone)")
         {
-            float damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
-            health -= damageTaken;
+            damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
         }
 
         if (collision.transform.gameObject.name == "BossChargeShot(Clone)")
         {
-            float damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
-            health -= damageTaken;
+            damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
         }
 
-        if (collision.transform.gameObject.name == "WaveBack")
+        if (collision.transform.gameObject.name == "WaveBack" ||
+            collision.transform.gameObject.name == "WaveFront" ||
+            collision.transform.gameObject.name == "WaveLeft" ||
+            collision.transform.gameObject.name == "WaveRight")
         {
-            Debug.Log("Back");
-            health -= waveDamage;
+            damageTaken = waveDamage;
         }
 
-        if (collision.transform.gameObject.name == "WaveFront")
-        {
-            Debug.Log("Front");
-            health -= waveDamage;
-        }
-
-        if (collision.transform.gameObject.name == "WaveLeft")
-        {
-            Debug.Log("Left");
-            health -= waveDamage;
-        }
-
-        if (collision.transform.gameObject.name == "WaveRight")
-        {
-            Debug.Log("Right");
-            health -= waveDamage;
-        }
+        health -= damageTaken * stats.enemyDamageFactor;
 
         healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
         if (health <= 0.0f)

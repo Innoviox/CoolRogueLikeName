@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
 {
+    public PowerupManager stats;
     float health;
     float maxHealth = 5.0f;
 

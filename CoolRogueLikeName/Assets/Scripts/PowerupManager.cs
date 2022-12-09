@@ -11,13 +11,13 @@ public class PowerupManager : ScriptableObject
     // used in EnemyScript
     public float enemyHealthFactor = 1;
 
-    // TODO, player doesn't take damage yet
+    // used in PlayerHealth
     public float enemyDamageFactor = 1;
 
     // used in Movement.cs
     public float playerMoveSpeedFactor = 1;
 
-    // TODO, player has no health yet
+    // used in PlayerHealth
     public float playerHealthFactor = 1;
 
     // used in BaseWeapon.cs
@@ -29,7 +29,7 @@ public class PowerupManager : ScriptableObject
     // used in BaseWeapon.cs
     public float bulletSpeedFactor = 1;
 
-    // TODO
+    // used somewhere
     public float enemySpawnFactor = 0.5f;
     public List<string> acquiredPowerups;
 

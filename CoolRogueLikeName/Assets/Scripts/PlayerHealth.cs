@@ -60,27 +60,33 @@ public class PlayerHealth : MonoBehaviour
 
         if (collision.transform.gameObject.name == "EnemyBullet(Clone)")
         {
+
+            GetComponent<AudioSource>().Play();
             damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
         }
 
         if (collision.transform.gameObject.name == "Sword")
         {
+            GetComponent<AudioSource>().Play();
             damageTaken = swordDamage;
         }
 
         if (collision.transform.gameObject.name == "BossBullet(Clone)")
         {
+            GetComponent<AudioSource>().Play();
             damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
         }
 
         if (collision.transform.gameObject.name == "BossBreakableBullet(Clone)")
         {
+            GetComponent<AudioSource>().Play();
             damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
         }
 
         if (collision.transform.gameObject.name == "BossChargeShot(Clone)")
         {
             damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
+            GetComponent<AudioSource>().Play();
         }
 
         if (collision.transform.gameObject.name == "WaveBack" ||
@@ -88,6 +94,7 @@ public class PlayerHealth : MonoBehaviour
             collision.transform.gameObject.name == "WaveLeft" ||
             collision.transform.gameObject.name == "WaveRight")
         {
+            GetComponent<AudioSource>().Play();
             damageTaken = waveDamage;
         }
 

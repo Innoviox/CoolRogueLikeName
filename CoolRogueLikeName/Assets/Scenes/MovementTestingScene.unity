@@ -604,6 +604,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1356424271613546667, guid: 6e0054fed8e5846a798c4ab52ef73f01, type: 3}
+      propertyPath: acceleration
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3737592448777623360, guid: 6e0054fed8e5846a798c4ab52ef73f01, type: 3}
       propertyPath: m_RootOrder
       value: 6

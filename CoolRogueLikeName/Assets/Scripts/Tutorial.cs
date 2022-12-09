@@ -11,7 +11,7 @@ public class Tutorial : MonoBehaviour
     private string[] strings = {
         "Use the WASD keys to move",
         "Use Space to jump",
-        "Use B to dash",
+        "Use Q to dash",
         "Click to shoot",
         "Move the mouse to aim",
         "Walk close to a door to open it",
@@ -63,7 +63,7 @@ public class Tutorial : MonoBehaviour
             TickTutorial(2, 0, 0, 10);
         }
 
-        if (tutorialIdx == 2 && Input.GetKeyDown(KeyCode.B))
+        if (tutorialIdx == 2 && Input.GetKeyDown(KeyCode.Q))
         {
             TickTutorial(3, 0, 0, 10);
         }

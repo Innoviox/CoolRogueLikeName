@@ -9,6 +9,7 @@ public class PlayerHealth : MonoBehaviour
     public int swordDamage; // Damage received from the enemy sword
     public int waveDamage; // Damage received from the enemy wave attack
     public Transform canvasPrefab;
+    
 
     GameObject healthBar;
     float health;
@@ -36,54 +37,63 @@ public class PlayerHealth : MonoBehaviour
         {
             float damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
             health -= damageTaken;
+            GetComponent<AudioSource>().Play();
         }
 
         if (collision.transform.gameObject.name == "Sword")
         {
             Debug.Log("Sword Collision");
             health -= swordDamage;
+            GetComponent<AudioSource>().Play();
         }
 
         if (collision.transform.gameObject.name == "BossBullet(Clone)")
         {
             float damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
             health -= damageTaken;
+            GetComponent<AudioSource>().Play();
         }
 
         if (collision.transform.gameObject.name == "BossBreakableBullet(Clone)")
         {
             float damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
             health -= damageTaken;
+            GetComponent<AudioSource>().Play();
         }
 
         if (collision.transform.gameObject.name == "BossChargeShot(Clone)")
         {
             float damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
             health -= damageTaken;
+            GetComponent<AudioSource>().Play();
         }
 
         if (collision.transform.gameObject.name == "WaveBack")
         {
             Debug.Log("Back");
             health -= waveDamage;
+            GetComponent<AudioSource>().Play();
         }
 
         if (collision.transform.gameObject.name == "WaveFront")
         {
             Debug.Log("Front");
             health -= waveDamage;
+            GetComponent<AudioSource>().Play();
         }
 
         if (collision.transform.gameObject.name == "WaveLeft")
         {
             Debug.Log("Left");
             health -= waveDamage;
+            GetComponent<AudioSource>().Play();
         }
 
         if (collision.transform.gameObject.name == "WaveRight")
         {
             Debug.Log("Right");
             health -= waveDamage;
+            GetComponent<AudioSource>().Play();
         }
 
         healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);

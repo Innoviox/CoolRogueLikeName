@@ -32,7 +32,7 @@ public class RoomGenerator : MonoBehaviour
                 Instantiate(floor, new Vector3(center.x + i, center.y, center.z + j), Quaternion.identity, roomRootTransform);
                 if (Random.Range(0, 1.0f) < decorationSpawnRate)
                 {
-                    SideInstantiate(decorations[Random.Range(0, decorations.Count)], new Vector3(center.x + i, center.y, center.z + j), Quaternion.Euler(0, Random.Range(0, 4) * 90, 0), roomRootTransform);
+                    SideInstantiate(decorations[Random.Range(0, decorations.Count)], new Vector3(center.x + i, center.y, center.z + j), Quaternion.Euler(0, Random.Range(0, 4) * 90, 0), roomRootTransform, locationsNextToDoors);
                 }
             }
         }

@@ -36,6 +36,9 @@ public class DungeonGenerator : MonoBehaviour
     private List<Vector2> locationsNextToDoors;
     public TMP_Text maxHealthText;
     public Slider healthSlider;
+    public Slider dashSlider;
+    public Slider jumpSlider;
+    public Slider weaponSlider;
 
     // Start is called before the first frame update
     void Start()

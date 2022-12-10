@@ -46,7 +46,6 @@ public class PlayerHealth : MonoBehaviour
         maxHealthText.text = $"{maxHealth}";
         healthSlider.value = health;
         healthSlider.maxValue = maxHealth;
-        Debug.Log($"{health}/{maxHealth}");
     }
 
     public void UpdateMaxHealth()

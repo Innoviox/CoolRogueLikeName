@@ -137,7 +137,7 @@ public class DungeonRoomScript : MonoBehaviour
 
         if (room.id != 0)
         {
-            if (true || willSpawnPowerups)
+            if (willSpawnPowerups)
             {
                 SpawnPowerups();
                 t.TickTutorial(10, room.x, room.y, room.size);
@@ -248,7 +248,6 @@ public class DungeonRoomScript : MonoBehaviour
             else if (roomN < 8)
             {
                 enemyCreator.SetOnly(0, 1);
-                t.TickTutorial(11, room.x, room.y, room.size);
             }
             else if (roomN < 12)
             {
@@ -259,7 +258,12 @@ public class DungeonRoomScript : MonoBehaviour
             nEnemies = 0;
             for (int i = 0; i < nEnemiesBase * enemyScaling; i++)
             {
-                enemyCreator.CreateEnemy(player, room.RandomLocation(2.0f));
+                int enemyType = enemyCreator.CreateEnemy(player, room.RandomLocation(2.0f));
+                if (enemyType == 0)
+                {
+                    t.TickTutorial(11, room.x, room.y, room.size);
+                }
+
                 nEnemies++;
             }
         }

@@ -32,6 +32,7 @@ public class DungeonGenerator : MonoBehaviour
     public Tutorial tutorialComp;
     private int dungeonN = 0;
     private int roomN = 0;
+    private List<Vector2> locationsNextToDoors;
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +49,7 @@ public class DungeonGenerator : MonoBehaviour
         rooms = new List<Room>();
         globalDoorLocations = new List<Door>();
         dungeonRooms = new List<Transform>();
+        locationsNextToDoors = new List<Vector2>();
 
         roomGenerator = GetComponent<RoomGenerator>();
         roomGenerator.Setup();
@@ -242,8 +244,10 @@ public class DungeonGenerator : MonoBehaviour
                 if (doors.ContainsKey(room2.id) && doors[room2.id].Contains(wall.Opposite())) continue;
 
                 // room1.AddDoor(room1.GenerateDoorLocation(wall, room2));
-                var location = room1.GenerateDoorLocation(wall, room2);
-                globalDoorLocations.Add(new Door((int)location.x, (int)location.y, room1.id, room2.id, wall));
+                var locations = room1.GenerateDoorLocation(wall, room2);
+                globalDoorLocations.Add(new Door((int)locations[0].x, (int)locations[0].y, room1.id, room2.id, wall));
+                locationsNextToDoors.Add(locations[1]);
+                // globalDoorLocations.Add(new Door((int)locations[1].x, (int)locations[1].y, room1.id, room2.id, wall));
 
                 if (doors.ContainsKey(room1.id))
                 {
@@ -292,7 +296,7 @@ public class DungeonGenerator : MonoBehaviour
         foreach (Room room in rooms)
         {
             Transform drt = room.MakeRoom(blocksDict, player, camera);
-            roomGenerator.GenerateRoom(drt, new Vector3(room.x, 0, room.y), room.size, room.size, globalDoorLocations);
+            roomGenerator.GenerateRoom(drt, new Vector3(room.x, 0, room.y), room.size, room.size, globalDoorLocations, locationsNextToDoors);
 
             drt.parent = GetComponent<Transform>();
 
@@ -332,8 +336,6 @@ public class DungeonGenerator : MonoBehaviour
                     doorTransform.Rotate(0, 0, 0);
                     break;
             }
-
-
 
             var drs = doorTransform.GetComponent<DungeonDoorScript>();
             drs.player = player;
@@ -391,6 +393,7 @@ public class DungeonGenerator : MonoBehaviour
         dungeonRooms = new List<Transform>();
         globalDoorLocations = new List<Door>();
         expandableRooms = new List<int>();
+        locationsNextToDoors = new List<Vector2>();
 
         MakeRoom(0, 0, baseRoomSize, 0); // base room
 

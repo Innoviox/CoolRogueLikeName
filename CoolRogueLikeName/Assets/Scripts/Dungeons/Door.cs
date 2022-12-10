@@ -20,17 +20,17 @@ public class Door
         this.y = y; // - 0.5f;
 
         this.onWall = onWall;
-        switch (onWall)
-        {
-            case Wall.North:
-            case Wall.South:
-                this.x += 0.5f;
-                break;
-            case Wall.East:
-            case Wall.West:
-                this.y += 0.5f;
-                break;
-        }
+        // switch (onWall)
+        // {
+        //     case Wall.North:
+        //     case Wall.South:
+        //         this.x += 0.5f;
+        //         break;
+        //     case Wall.East:
+        //     case Wall.West:
+        //         this.y += 0.5f;
+        //         break;
+        // }
 
         this.room1 = room1;
         this.room2 = room2;

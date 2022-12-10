@@ -68,7 +68,6 @@ public class RoomGenerator : MonoBehaviour
         foreach (Vector2 doorPos in locationsNextToDoors)
         {
             Vector3 loc = new Vector3(doorPos.x, 0.0f, doorPos.y);
-            Debug.Log($"{loc} {pos} {Vector3.Distance(loc, pos)}");
             if (Vector3.Distance(loc, pos) <= 0.5f)
             {
                 Instantiate(floor, pos, rot, roomRootTransform);

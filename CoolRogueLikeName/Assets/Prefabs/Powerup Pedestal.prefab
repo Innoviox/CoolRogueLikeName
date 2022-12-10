@@ -111,7 +111,7 @@ MonoBehaviour:
   oscillation: {x: 0, y: 0.25, z: 0}
   oscillationSpeed: 0.75
   dungeonRoomScript: {fileID: 0}
-  powerUpFactor: 0.1
+  powerUpFactor: 0.2
 --- !u!65 &223918714567101437
 BoxCollider:
   m_ObjectHideFlags: 0

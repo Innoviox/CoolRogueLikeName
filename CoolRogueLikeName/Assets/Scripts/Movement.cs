@@ -63,6 +63,7 @@ public class Movement : MonoBehaviour
             {
                 StartCoroutine(Dash(accelerationDirection));
                 rb.velocity = Vector3.zero;
+                dashSlider.value -= dashTime;
                 dash = false;
                 return;
             }
@@ -95,7 +96,13 @@ public class Movement : MonoBehaviour
         if (jumpSlider.value < jumpSlider.maxValue)
         {
             jumpSlider.value += Time.deltaTime;
-            maxJumpsText.text = ((int)(jumpSlider.value / jumpCoolDown)).ToString(); //doubleJump ? "2" : "1";
+            maxJumpsText.text = ((int)(jumpSlider.value / jumpCoolDown)).ToString();
+        }
+
+        if (dashSlider.value < dashSlider.maxValue)
+        {
+            dashSlider.value += Time.deltaTime;
+            maxDashText.text = ((int)(dashSlider.value / dashTime)).ToString();
         }
 
         dash = dash || Input.GetKeyDown(dashKey);
@@ -139,8 +146,8 @@ public class Movement : MonoBehaviour
 
 
         maxDashText.text = "1";
-        dashSlider.value = 1;
-        dashSlider.maxValue = 1;
+        dashSlider.value = dashTime;
+        dashSlider.maxValue = dashTime;
 
         // todo 
         jumpSlider.maxValue = jumpCoolDown * (doubleJump ? 2 : 1);

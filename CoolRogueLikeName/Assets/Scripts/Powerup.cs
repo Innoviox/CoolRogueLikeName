@@ -23,6 +23,8 @@ public class Powerup : MonoBehaviour
     private float t;
     public DungeonRoomScript dungeonRoomScript;
 
+    public float powerUpFactor;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,7 +36,7 @@ public class Powerup : MonoBehaviour
             "Player Movement Speed",    //playerMoveSpeedFactor
             "Max Health",               //playerHealthFactor
             "Weapon Damage",            //playerDamageFactor
-            "Weapon Reload Speed",      //playerReloadSpeedFactor
+            "Weapon Reload Time",       //playerReloadSpeedFactor
             "Bullet Speed",             //bulletSpeedFactor
             "Heal Yourself"
         };
@@ -136,36 +138,36 @@ public class Powerup : MonoBehaviour
         int count;
         if (effects.TryGetValue("Enemy Movement Speed", out count))
         {
-            stats.enemyMoveSpeedFactor *= 1 + count * 0.05f;
+            stats.enemyMoveSpeedFactor *= 1 + count * powerUpFactor;
         }
         if (effects.TryGetValue("Enemy Health", out count))
         {
-            stats.enemyHealthFactor *= 1 + count * 0.05f;
+            stats.enemyHealthFactor *= 1 + count * powerUpFactor;
         }
         if (effects.TryGetValue("Enemy Damage", out count))
         {
-            stats.enemyDamageFactor *= 1 + count * 0.05f;
+            stats.enemyDamageFactor *= 1 + count * powerUpFactor;
         }
         if (effects.TryGetValue("Player Movement Speed", out count))
         {
-            stats.playerMoveSpeedFactor *= 1 + count * 0.05f;
+            stats.playerMoveSpeedFactor *= 1 + count * powerUpFactor;
         }
         if (effects.TryGetValue("Max Health", out count))
         {
-            stats.playerHealthFactor *= 1 + count * 0.05f;
+            stats.playerHealthFactor *= 1 + count * powerUpFactor;
             other.gameObject.GetComponent<PlayerHealth>().UpdateMaxHealth();
         }
         if (effects.TryGetValue("Weapon Damage", out count))
         {
-            stats.playerDamageFactor *= 1 + count * 0.05f;
+            stats.playerDamageFactor *= 1 + count * powerUpFactor;
         }
         if (effects.TryGetValue("Weapon Reload Speed", out count))
         {
-            stats.playerReloadSpeedFactor *= 1 + count * 0.05f;
+            stats.playerReloadSpeedFactor *= 1 + count * powerUpFactor;
         }
         if (effects.TryGetValue("Bullet Speed", out count))
         {
-            stats.bulletSpeedFactor *= 1 + count * 0.05f;
+            stats.bulletSpeedFactor *= 1 + count * powerUpFactor;
         }
         if (effects.TryGetValue("Heal Yourself", out count))
         {

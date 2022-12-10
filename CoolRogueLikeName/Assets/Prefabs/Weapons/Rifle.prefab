@@ -222,7 +222,7 @@ BoxCollider:
   m_GameObject: {fileID: 1467228159891566403}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -373,7 +373,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 1061607915943802471}
   projectile: {fileID: 164837843160075365, guid: 703ea8129a09fc74f96ed060d7cc005f, type: 3}
   baseProjectileSpeed: 5
-  baseCooldown: 0.25
+  baseCooldown: 0.5
   baseDamage: 1
   stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
   firebutton: Fire1

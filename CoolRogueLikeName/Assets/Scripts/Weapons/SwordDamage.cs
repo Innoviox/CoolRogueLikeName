@@ -13,11 +13,10 @@ public class SwordDamage : Projectile
 
     protected override void DoTrigger(Collider collision)
     {
-        // Don't destroy myself if I collide with other bullets
-        if (collision.transform.gameObject.name != "Sword Hitbox(Clone)")
-        {
-            Debug.Log(Damage);
-            //Destroy(gameObject);
-        }
+        // Don't destroy myself if I collide with other things
+    }
+    protected override void DoCollision(Collision collision)
+    {
+        // Don't destroy myself if I collide with other things
     }
 }

@@ -443,7 +443,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 3067112047891438627}
   projectile: {fileID: 1604056893111525442, guid: 2c387e2cbb2f8464eafc477cb315a4fd, type: 3}
   baseProjectileSpeed: 5
-  baseCooldown: 3
+  baseCooldown: 5
   baseDamage: 10
   stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
   firebutton: Fire1

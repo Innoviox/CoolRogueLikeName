@@ -8,7 +8,7 @@ public class BaseWeapon : MonoBehaviour
     public GameObject projectile;  // Selected Bullet prefab through inspector
     public float baseProjectileSpeed = 5;
     public float baseCooldown = 0.25f;
-    public int baseDamage = 1;
+    public float baseDamage = 1;
     public PowerupManager stats;
     public string firebutton;
     private IEnumerator weaponCoroutineObject;

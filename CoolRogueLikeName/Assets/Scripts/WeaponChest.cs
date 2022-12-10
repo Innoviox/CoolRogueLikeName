@@ -60,8 +60,8 @@ public class WeaponChest : MonoBehaviour
     IEnumerator OpenChest()
     {
         int weaponIndex = Random.Range(0, WeaponList.Count);
-
-        Quaternion openQ = Quaternion.Euler(-30, 90, 90);
+        weaponIndex = 0;
+        Quaternion openQ = hinge.rotation * Quaternion.Euler(0, 120, 0);
         Quaternion startQ = hinge.rotation;
         float timeTaken = 0;
         while (timeTaken < openDuration)

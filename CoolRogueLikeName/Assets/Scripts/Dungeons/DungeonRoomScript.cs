@@ -61,8 +61,6 @@ public class DungeonRoomScript : MonoBehaviour
         willSpawnWeapon = (!willSpawnPowerups) && Random.Range(0.0f, 1.0f) < 0.25;
 
         t = roomTransform.parent.GetComponent<DungeonGenerator>().tutorialComp;
-
-        Debug.Log("room start() finished");
     }
 
     public void StartRoom()
@@ -101,7 +99,6 @@ public class DungeonRoomScript : MonoBehaviour
     {
         if (started && other.transform == player)
         {
-            Debug.Log($"Room {room.id} saw player enter");
             WalkedInto();
         }
     }
@@ -142,7 +139,7 @@ public class DungeonRoomScript : MonoBehaviour
                 SpawnPowerups();
                 t.TickTutorial(10, room.x, room.y, room.size);
             }
-            else if (willSpawnWeapon)
+            else if (true || willSpawnWeapon)
             {
                 SpawnWeaponChest();
                 t.TickTutorial(7, room.x, room.y, room.size);
@@ -289,8 +286,6 @@ public class DungeonRoomScript : MonoBehaviour
 
     public bool PlayerInRoom()
     {
-        // Debug.Log($"{bounds.ToString()}");
-        // Debug.Log($"min {player.position + playerBounds.min} {bounds.Contains(player.position + playerBounds.min)} max {player.position + playerBounds.max} {bounds.Contains(player.position + playerBounds.max)}");
         return bounds.Contains(player.position + playerBounds.min) && bounds.Contains(player.position + playerBounds.max);
     }
 

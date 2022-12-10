@@ -42,9 +42,7 @@ public class DungeonDoorScript : MonoBehaviour
 
         opening_direction = 0;
         min_y = -2.0f;
-        max_y = door.isBossDoor ? 0.0f : 0.5f; // dont have time to debug why this isnt working (int)transform.position.y;
-
-        Debug.Log($"{min_y} miny {max_y} maxy");
+        max_y = door.isBossDoor ? 0.0f : 0.5f;
     }
 
     // Update is called once per frame

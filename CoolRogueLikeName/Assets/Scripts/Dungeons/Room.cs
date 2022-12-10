@@ -159,7 +159,7 @@ public class Room
                 max = Mathf.Min(this.y + this.size, other.y + other.size);
                 break;
         }
-        return (min: min, max: max);
+        return (min: min + 1, max: max - 1);
     }
 
     public void ClearDoors()

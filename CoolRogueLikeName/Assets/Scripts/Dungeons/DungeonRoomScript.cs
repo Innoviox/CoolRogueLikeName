@@ -9,6 +9,8 @@ public class DungeonRoomScript : MonoBehaviour
     public Room room;
     public bool generateEnemies = true; // todo make private with getter/setter
     public new Camera camera;
+    public float cameraMoveDuration;
+    public AnimationCurve cameraMoveCurve;
 
     public bool willSpawnPowerups;
     public bool willSpawnWeapon;
@@ -279,6 +281,14 @@ public class DungeonRoomScript : MonoBehaviour
 
     private IEnumerator MoveCamera()
     {
+        float t = 0;
+        Vector3 startT = camera.transform.position; // todo use transforms
+        while (t < cameraMoveDuration)
+        {
+            t += Time.deltaTime;
+            camera.transform.position = Vector3.Lerp(startT, cameraPosition, t/cameraMoveDuration);
+            yield return null;
+        }
         Debug.Log("setting camera position to " + cameraPosition);
         camera.transform.position = cameraPosition;
         yield break;

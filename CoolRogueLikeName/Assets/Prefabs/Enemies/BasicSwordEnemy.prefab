@@ -349,6 +349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
   player: {fileID: 0}
+  scoreManager: {fileID: 11400000, guid: 122bf98c62c8b964e81371072efeb734, type: 2}
   deathSoundContainer: {fileID: 4870482295347389331, guid: 5ffbe5acfb4ab1642a28cc76d929c037, type: 3}
 --- !u!114 &7219047890234823380
 MonoBehaviour:

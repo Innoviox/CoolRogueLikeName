@@ -15,6 +15,8 @@ public class DungeonRoomScript : MonoBehaviour
     public GameObject weaponChest;
     public GameObject powerupPedestal;
 
+    public ScoreManager scoreManager;
+
     public Dictionary<string, Transform> blocksDict;
     public int nEnemiesBase = 2; // todo
     private List<DungeonDoorScript> doors;
@@ -122,6 +124,7 @@ public class DungeonRoomScript : MonoBehaviour
         // Debug.Log("room finished");
         // finish room
         roomDone = true;
+        scoreManager.roomCleared();
 
         // open all doors
         lockDoors(false, room.id);

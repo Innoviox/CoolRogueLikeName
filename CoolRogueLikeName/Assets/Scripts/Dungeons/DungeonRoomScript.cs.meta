@@ -3,7 +3,14 @@ guid: 16a6d788a81ae47dea4ec0973d088a7c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - player: {instanceID: 0}
+  - camera: {instanceID: 0}
+  - weaponChest: {instanceID: 0}
+  - powerupPedestal: {instanceID: 0}
+  - scoreManager: {fileID: 11400000, guid: 122bf98c62c8b964e81371072efeb734, type: 2}
+  - killedEnemiesScore: {instanceID: 0}
+  - clearedRoomsScore: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

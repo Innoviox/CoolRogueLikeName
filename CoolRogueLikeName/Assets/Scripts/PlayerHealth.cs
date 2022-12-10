@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 using TMPro;
 
 public class PlayerHealth : MonoBehaviour
@@ -42,8 +43,10 @@ public class PlayerHealth : MonoBehaviour
                                                    transform.position.y + 1,
                                                    transform.position.z);
 
+        health = Math.Max(0, health);
+
         // todo only do this when they change
-        maxHealthText.text = $"{maxHealth}";
+        maxHealthText.text = $"{health}";
         healthSlider.value = health;
         healthSlider.maxValue = maxHealth;
     }
@@ -54,7 +57,6 @@ public class PlayerHealth : MonoBehaviour
         maxHealth = baseMaxHealth * stats.playerHealthFactor;
         health = maxHealth * ratio;
         healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
-
     }
 
     public void Heal(int count)

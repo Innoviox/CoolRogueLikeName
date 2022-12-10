@@ -142,6 +142,7 @@ MonoBehaviour:
   baseHealth: 100
   player: {fileID: 0}
   aimAtPlayer: 0
+  scoreManager: {fileID: 11400000, guid: 122bf98c62c8b964e81371072efeb734, type: 2}
   bState: 3
 --- !u!114 &2516773780319354918
 MonoBehaviour:

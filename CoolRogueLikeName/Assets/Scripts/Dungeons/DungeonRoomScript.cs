@@ -15,6 +15,8 @@ public class DungeonRoomScript : MonoBehaviour
     public GameObject weaponChest;
     public GameObject powerupPedestal;
 
+    public ScoreManager scoreManager;
+
     public Dictionary<string, Transform> blocksDict;
     public int nEnemiesBase = 2; // todo
     private List<DungeonDoorScript> doors;
@@ -119,6 +121,7 @@ public class DungeonRoomScript : MonoBehaviour
         // Debug.Log("room finished");
         // finish room
         roomDone = true;
+        scoreManager.roomCleared();
 
         // open all doors
         lockDoors(false, room.id);
@@ -242,7 +245,6 @@ public class DungeonRoomScript : MonoBehaviour
             else if (roomN < 8)
             {
                 enemyCreator.SetOnly(0, 1);
-                t.TickTutorial(11, room.x, room.y, room.size);
             }
             else if (roomN < 12)
             {
@@ -253,7 +255,12 @@ public class DungeonRoomScript : MonoBehaviour
             nEnemies = 0;
             for (int i = 0; i < nEnemiesBase * enemyScaling; i++)
             {
-                enemyCreator.CreateEnemy(player, room.RandomLocation(2.0f));
+                int enemyType = enemyCreator.CreateEnemy(player, room.RandomLocation(2.0f));
+                if (enemyType == 0)
+                {
+                    t.TickTutorial(11, room.x, room.y, room.size);
+                }
+
                 nEnemies++;
             }
         }

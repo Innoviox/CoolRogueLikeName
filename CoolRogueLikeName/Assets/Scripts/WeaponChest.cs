@@ -19,7 +19,7 @@ public class WeaponChest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     void FixedUpdate()
@@ -39,7 +39,7 @@ public class WeaponChest : MonoBehaviour
             {
                 if (weaponReady)
                 {
-                    if (Input.GetKeyDown(openKey))
+                    if (Input.GetKey(openKey))
                     {
                         PlayerWeaponHolder holder = other.gameObject.GetComponent<PlayerWeaponHolder>();
                         availableWeaponTransform = holder.SwapWeapons(availableWeaponTransform);
@@ -48,7 +48,7 @@ public class WeaponChest : MonoBehaviour
             }
             else
             {
-                if (Input.GetKeyDown(openKey))
+                if (Input.GetKey(openKey))
                 {
                     StartCoroutine(OpenChest());
                     opened = true;

@@ -14,6 +14,8 @@ public class EnemyScript : MonoBehaviour
     private LayerMask playerTriggerMelee;
     public GameObject deathSoundContainer;
 
+    public ScoreManager scoreManager;
+
     void Start()
     {
         healthBar = transform.parent.Find("HealthBar").gameObject;
@@ -60,6 +62,7 @@ public class EnemyScript : MonoBehaviour
         {
             takeDamage(collision.transform.gameObject.GetComponent<Projectile>().Damage);
         }
+
     }
 
     private bool InLayer(Collider other, LayerMask mask)

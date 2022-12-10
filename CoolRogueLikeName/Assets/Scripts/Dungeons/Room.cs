@@ -100,11 +100,13 @@ public class Room
         return Wall.None;
     }
 
-    public Vector2 GenerateDoorLocation(Wall wall, Room other)
+    public List<Vector2> GenerateDoorLocation(Wall wall, Room other)
     {
 
         int x = 0;
         int y = 0;
+        int xdelta = 0;
+        int ydelta = 0;
         var overlap = Overlap(wall, other);
         int pos = Random.Range(overlap.min + doorWidth, overlap.max - doorWidth);
 
@@ -113,26 +115,26 @@ public class Room
             case Wall.North:
                 x = pos;
                 y = this.y + this.size;
-                // ydelta = -1;
+                xdelta = -1;
                 break;
             case Wall.East:
                 x = this.x + this.size;
                 y = pos;
-                // xdelta = 1;
+                ydelta = 1;
                 break;
             case Wall.South:
                 x = pos;
                 y = this.y - this.size;
-                // ydelta = 1;
+                xdelta = 1;
                 break;
             case Wall.West:
                 x = this.x - this.size;
                 y = pos;
-                // xdelta = -1;
+                ydelta = -1;
                 break;
         }
 
-        return new Vector2(x, y); //, new Vector2(x + xdelta, y + ydelta) };
+        return new List<Vector2> { new Vector2(x, y), new Vector2(x + xdelta, y + ydelta) };
     }
 
     private (int min, int max) Overlap(Wall wall, Room other)

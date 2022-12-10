@@ -52,6 +52,7 @@ MonoBehaviour:
   willSpawnWeapon: 0
   weaponChest: {fileID: 4006035000834694273, guid: 48aeedda83525eb45b522a65a2a8e25f, type: 3}
   powerupPedestal: {fileID: 7839918911667443012, guid: a49fca79e243f604c8a9f46ea7b551e0, type: 3}
+  scoreManager: {fileID: 11400000, guid: 122bf98c62c8b964e81371072efeb734, type: 2}
   nEnemiesBase: 2
   killedEnemiesScore: {fileID: 0}
   clearedRoomsScore: {fileID: 0}

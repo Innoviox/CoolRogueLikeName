@@ -21,6 +21,8 @@ public class Boss1Script : MonoBehaviour
 
     public bool aimAtPlayer;
 
+    public ScoreManager scoreManager;
+
     public enum bossState
     {
         waveAttack,
@@ -178,6 +180,7 @@ public class Boss1Script : MonoBehaviour
 
         if (health <= 0.0f)
         {
+            scoreManager.enemyDestroyed();
             transform.parent.parent.SendMessage("EnemyDestroyed");
             // Can play death animation
             Destroy(transform.parent.gameObject);

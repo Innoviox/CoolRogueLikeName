@@ -9,6 +9,8 @@ public class DungeonTeleporterScript : MonoBehaviour
     public Transform player;
     // todo animate?
 
+    public ScoreManager scoreManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,7 @@ public class DungeonTeleporterScript : MonoBehaviour
         // Debug.Log(Vector3.Distance(transform.position, player.position));
         if (Vector3.Distance(transform.position, player.position) < 2)
         {
+            scoreManager.levelCleared();
             teleport();
         }
     }

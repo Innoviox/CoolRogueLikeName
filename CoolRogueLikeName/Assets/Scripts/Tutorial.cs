@@ -9,7 +9,7 @@ public class Tutorial : MonoBehaviour
     private TextMesh tm;
 
     private string[] strings = {
-        "Use the WASD keys to move",
+        "Use the WASD or arrow\nkeys to move",
         "Use Space to jump",
         "Use Q to dash",
         "Click to shoot",
@@ -53,10 +53,7 @@ public class Tutorial : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (tutorialIdx == 0 && (Input.GetKeyDown(KeyCode.W) ||
-                                 Input.GetKeyDown(KeyCode.A) ||
-                                 Input.GetKeyDown(KeyCode.S) ||
-                                 Input.GetKeyDown(KeyCode.D)))
+        if (tutorialIdx == 0 && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0))
         {
             TickTutorial(1, 0, 0, 10);
         }

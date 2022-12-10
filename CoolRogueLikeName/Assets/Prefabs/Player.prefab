@@ -97,6 +97,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPosition: {x: 0.6043072, y: 0.14200002, z: 0.611}
   weapon: {fileID: 7496856814030437339}
+  weaponSlider: {fileID: 0}
 --- !u!114 &2808727001882172352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,6 +143,10 @@ MonoBehaviour:
   jumpKey: 32
   dashKey: 113
   stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
+  jumpSlider: {fileID: 0}
+  dashSlider: {fileID: 0}
+  maxJumpsText: {fileID: 0}
+  maxDashText: {fileID: 0}
 --- !u!82 &6800974102734950525
 AudioSource:
   m_ObjectHideFlags: 0

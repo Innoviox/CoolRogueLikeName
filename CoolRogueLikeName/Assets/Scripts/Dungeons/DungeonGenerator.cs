@@ -36,9 +36,11 @@ public class DungeonGenerator : MonoBehaviour
     private List<Vector2> locationsNextToDoors;
     public TMP_Text maxHealthText;
     public Slider healthSlider;
-    public Slider dashSlider;
-    public Slider jumpSlider;
     public Slider weaponSlider;
+    public Slider jumpSlider;
+    public Slider dashSlider;
+    public TMP_Text maxJumpsText;
+    public TMP_Text maxDashText;
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +55,7 @@ public class DungeonGenerator : MonoBehaviour
         player.parent = transform;
         player.GetComponent<PlayerHealth>().SetHud(maxHealthText, healthSlider);
         player.GetComponent<PlayerWeaponHolder>().SetHud(weaponSlider);
+        player.GetComponent<Movement>().SetHud(jumpSlider, dashSlider, maxJumpsText, maxDashText);
 
         roomBlocks = new List<Transform>();
         rooms = new List<Room>();

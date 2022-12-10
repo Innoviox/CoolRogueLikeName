@@ -20,7 +20,6 @@ public class Room
 
     public Room(int x, int y, int size, int id)
     {
-        Debug.Log(size);
         this.x = x;
         this.y = y;
         this.size = size;
@@ -160,7 +159,7 @@ public class Room
                 max = Mathf.Min(this.y + this.size, other.y + other.size);
                 break;
         }
-        return (min: min, max: max);
+        return (min: min + 1, max: max - 1);
     }
 
     public void ClearDoors()
@@ -184,7 +183,6 @@ public class Room
 
     public Vector3 PlayerPosition()
     {
-        // Debug.Log($"PlayerPosition {x} {y} {size}");
         return new Vector3(x, 2, y);
     }
 

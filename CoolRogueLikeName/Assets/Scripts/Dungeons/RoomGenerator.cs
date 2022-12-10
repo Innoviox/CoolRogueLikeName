@@ -8,6 +8,8 @@ public class RoomGenerator : MonoBehaviour
     public GameObject side;
     public GameObject corner;
     public GameObject door;
+    public List<GameObject> decorations;
+    public float decorationSpawnRate;
 
     public List<Vector3> sideLocations;
 
@@ -28,6 +30,10 @@ public class RoomGenerator : MonoBehaviour
             for (float j = -z + 1.5f; j < z - 1; j++)
             {
                 Instantiate(floor, new Vector3(center.x + i, center.y, center.z + j), Quaternion.identity, roomRootTransform);
+                if (Random.Range(0, 1.0f) < decorationSpawnRate)
+                {
+                    SideInstantiate(decorations[Random.Range(0, decorations.Count)], new Vector3(center.x + i, center.y, center.z + j), Quaternion.Euler(0, Random.Range(0, 4) * 90, 0), roomRootTransform, locationsNextToDoors);
+                }
             }
         }
         for (float i = -z + 1.5f; i < z - 1; i++)

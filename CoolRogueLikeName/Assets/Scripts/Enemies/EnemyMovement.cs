@@ -92,4 +92,9 @@ public class EnemyMovement : MonoBehaviour
     {
         return Random.Range(1, 4);
     }
+
+    public void SetPlayer(Transform player)
+    {
+        this.player = player;
+    }
 }

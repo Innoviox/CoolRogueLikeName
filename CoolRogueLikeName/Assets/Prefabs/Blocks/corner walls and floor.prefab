@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7866873434394606482}
   - component: {fileID: 6522166773964551223}
   - component: {fileID: 9036353260450201853}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: corner walls and floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

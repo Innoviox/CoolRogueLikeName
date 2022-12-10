@@ -17,12 +17,17 @@ public class PlayerHealth : MonoBehaviour
 
     public ScoreManager scoreManager;
 
+    private LayerMask enemyProjectilesLayer;
+    private LayerMask enemyMeleeLayer;
+
     // Start is called before the first frame update
     void Start()
     {
         healthBar = transform.Find("HealthBar").gameObject;
         maxHealth = baseMaxHealth * stats.playerHealthFactor;
         health = maxHealth;
+        enemyProjectilesLayer = LayerMask.GetMask("EnemyProjectile");
+        enemyMeleeLayer = LayerMask.GetMask("EnemyMelee");
     }
 
     // Update is called once per frame
@@ -54,60 +59,39 @@ public class PlayerHealth : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider collision)
+    private void OnTriggerEnter(Collider other)
     {
         float damageTaken = 0;
 
-        if (collision.transform.gameObject.name == "EnemyBullet(Clone)")
+        if (InLayer(other, enemyMeleeLayer))
         {
-
-            GetComponent<AudioSource>().Play();
-            damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
+            damageTaken = other.gameObject.GetComponent<EnemySword>().baseDamage;
+        } else if (InLayer(other, enemyProjectilesLayer))
+        {
+            damageTaken = other.gameObject.GetComponent<EnemyProjectile>().Damage;
         }
 
-        if (collision.transform.gameObject.name == "Sword")
+        if (damageTaken > 0)
         {
             GetComponent<AudioSource>().Play();
-            damageTaken = swordDamage;
+            health -= damageTaken * stats.enemyDamageFactor;
         }
 
-        if (collision.transform.gameObject.name == "BossBullet(Clone)")
+        if (healthBar)
         {
-            GetComponent<AudioSource>().Play();
-            damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
+            healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
         }
-
-        if (collision.transform.gameObject.name == "BossBreakableBullet(Clone)")
-        {
-            GetComponent<AudioSource>().Play();
-            damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
-        }
-
-        if (collision.transform.gameObject.name == "BossChargeShot(Clone)")
-        {
-            damageTaken = collision.transform.gameObject.GetComponent<EnemyProjectile>().Damage;
-            GetComponent<AudioSource>().Play();
-        }
-
-        if (collision.transform.gameObject.name == "WaveBack" ||
-            collision.transform.gameObject.name == "WaveFront" ||
-            collision.transform.gameObject.name == "WaveLeft" ||
-            collision.transform.gameObject.name == "WaveRight")
-        {
-            GetComponent<AudioSource>().Play();
-            damageTaken = waveDamage;
-        }
-
-        health -= damageTaken * stats.enemyDamageFactor;
-
-        Debug.Log(maxHealth);
-        healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
-        if (health <= 0.0f)
+        if (health < 0.0f)
         {
             Debug.Log("Player Died");
             scoreManager.playerDeath();
             transform.parent.GetComponent<MusicPlayer>().state = 3;
             SceneManager.LoadScene(2);
         }
+    }
+    
+    private bool InLayer(Collider other, LayerMask mask)
+    {
+        return ((1 << other.gameObject.layer) & mask.value) > 0;
     }
 }

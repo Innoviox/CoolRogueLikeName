@@ -5,7 +5,7 @@ using UnityEngine;
 public class Boss1Script : MonoBehaviour
 {
     private float chargeAttackTimer; // Cooldown on bosses charge attack
-    private float health;            // Bosses health
+    public float health;            // Bosses health
     private float healthThreshold;   // Decides when the boss will do a wave attack.      
     private int chargeAttackRate;    // How often the boss does a charge attack
     public bool immune;              // Boss is immune to damage during wave attack
@@ -22,6 +22,9 @@ public class Boss1Script : MonoBehaviour
     public bool aimAtPlayer;
 
     public ScoreManager scoreManager;
+
+    private LayerMask playerProjectileMask;
+    private LayerMask playerMeleeMask;
 
     public enum bossState
     {
@@ -44,6 +47,9 @@ public class Boss1Script : MonoBehaviour
         chargeAttackRate = 15;
         aimAtPlayer = true;
         immune = false;
+
+        playerProjectileMask = LayerMask.GetMask("PlayerProjectile");
+        playerMeleeMask = LayerMask.GetMask("PlayerMelee");
     }
 
     void Start()
@@ -141,7 +147,7 @@ public class Boss1Script : MonoBehaviour
     {
         if (health <= healthThreshold)
         {
-            healthThreshold -= 25;
+            healthThreshold -= baseHealth * stats.enemyHealthFactor / 4;
             return true;
         }
         return false;
@@ -167,7 +173,7 @@ public class Boss1Script : MonoBehaviour
     {
         // Check collision occured with a bullet
         // Since bullet is a prefab its gameobject name gets set to Bullet(Clone)
-        if (!immune && other.transform.gameObject.name == "Bullet(Clone)")
+        if (!immune && InLayer(other, playerProjectileMask))
         {
             // Get the projectiles damage
             float damageTaken = other.transform.gameObject.GetComponent<Projectile>().Damage;
@@ -176,6 +182,11 @@ public class Boss1Script : MonoBehaviour
 
             // healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
             // change health bar of Boss
+        } else if (!immune && InLayer(other, playerMeleeMask))
+        {
+            float damageTaken = other.transform.gameObject.GetComponent<SwordDamage>().Damage;
+
+            health -= damageTaken;
         }
 
         if (health <= 0.0f)
@@ -192,5 +203,10 @@ public class Boss1Script : MonoBehaviour
     public void SetPlayer(Transform player)
     {
         this.player = player;
+    }
+
+    private bool InLayer(Collider other, LayerMask mask)
+    {
+        return ((1 << other.gameObject.layer) & mask.value) > 0;
     }
 }

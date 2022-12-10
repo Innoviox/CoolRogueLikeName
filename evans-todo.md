@@ -7,5 +7,6 @@ final sprint todo
 - [x] sword no worky
 - [x] sword enemies no worky
 - [x] rocket explosions no worky
-- [ ] increase powerup effectiveness
+- [x] increase powerup effectiveness
 - [ ] remove debug.logs
+- [ ] make jump cooldown and dash cooldown powerupable

@@ -48,6 +48,31 @@ MonoBehaviour:
   player: {fileID: 0}
   generateEnemies: 1
   camera: {fileID: 0}
+  cameraMoveDuration: 0.5
+  cameraMoveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   willSpawnPowerups: 0
   willSpawnWeapon: 0
   weaponChest: {fileID: 4006035000834694273, guid: 48aeedda83525eb45b522a65a2a8e25f, type: 3}

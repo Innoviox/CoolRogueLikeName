@@ -15,6 +15,7 @@ public class EnemyCreator : MonoBehaviour
         enemy.parent = transform;
         enemy.BroadcastMessage("SetPlayer", player);
 
+        Debug.Log($"Enemy created: {enemyType} {enemy}");
         return enemyType;
     }
 

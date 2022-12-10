@@ -75,4 +75,9 @@ public class EnemyAttack : MonoBehaviour
     {
         swordAnimator.SetTrigger("NormalAttack");
     }
+
+    public void SetPlayer(Transform player)
+    {
+        this.player = player;
+    }
 }

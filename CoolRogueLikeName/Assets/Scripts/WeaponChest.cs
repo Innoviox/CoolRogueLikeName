@@ -39,7 +39,7 @@ public class WeaponChest : MonoBehaviour
             {
                 if (weaponReady)
                 {
-                    if (Input.GetKeyDown(openKey))
+                    if (Input.GetKey(openKey))
                     {
                         PlayerWeaponHolder holder = other.gameObject.GetComponent<PlayerWeaponHolder>();
                         availableWeaponTransform = holder.SwapWeapons(availableWeaponTransform);

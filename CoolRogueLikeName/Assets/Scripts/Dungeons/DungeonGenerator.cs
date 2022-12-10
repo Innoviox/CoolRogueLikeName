@@ -52,6 +52,7 @@ public class DungeonGenerator : MonoBehaviour
         player = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         player.parent = transform;
         player.GetComponent<PlayerHealth>().SetHud(maxHealthText, healthSlider);
+        player.GetComponent<PlayerWeaponHolder>().SetHud(weaponSlider);
 
         roomBlocks = new List<Transform>();
         rooms = new List<Room>();

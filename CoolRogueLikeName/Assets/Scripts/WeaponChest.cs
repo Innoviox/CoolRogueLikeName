@@ -39,7 +39,7 @@ public class WeaponChest : MonoBehaviour
             {
                 if (weaponReady)
                 {
-                    if (Input.GetKey(openKey))
+                    if (Input.GetKeyDown(openKey))
                     {
                         PlayerWeaponHolder holder = other.gameObject.GetComponent<PlayerWeaponHolder>();
                         availableWeaponTransform = holder.SwapWeapons(availableWeaponTransform);
@@ -60,7 +60,7 @@ public class WeaponChest : MonoBehaviour
     IEnumerator OpenChest()
     {
         int weaponIndex = Random.Range(0, WeaponList.Count);
-        weaponIndex = 0;
+
         Quaternion openQ = hinge.rotation * Quaternion.Euler(0, 120, 0);
         Quaternion startQ = hinge.rotation;
         float timeTaken = 0;

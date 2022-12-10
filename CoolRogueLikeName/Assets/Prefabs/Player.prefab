@@ -131,7 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceleration: 100
   decceleration: 5
-  baseMaxSpeed: 5
+  baseMaxSpeed: 2
   jumpForce: 25
   jumpCoolDown: 3
   doubleJump: 1

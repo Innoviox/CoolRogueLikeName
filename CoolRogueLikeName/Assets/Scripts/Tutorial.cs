@@ -41,8 +41,9 @@ public class Tutorial : MonoBehaviour
         tm = gameObject.AddComponent<TextMesh>();
         tm.text = " ";
         tm.color = Color.black;
-        tm.fontSize = 10;
+        tm.fontSize = 150;
         tm.transform.rotation = Quaternion.Euler(90, 0, 0);
+        tm.transform.localScale = new Vector3(0.08f, 0.08f, 0.08f);
     }
 
     public void StartTutorial()

@@ -53,7 +53,10 @@ public class Tutorial : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (tutorialIdx == 0 && Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
+        if (tutorialIdx == 0 && (Input.GetKeyDown(KeyCode.W) ||
+                                 Input.GetKeyDown(KeyCode.A) ||
+                                 Input.GetKeyDown(KeyCode.S) ||
+                                 Input.GetKeyDown(KeyCode.D)))
         {
             TickTutorial(1, 0, 0, 10);
         }

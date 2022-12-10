@@ -84,4 +84,9 @@ public class EnemyScript : MonoBehaviour
             Destroy(transform.parent.gameObject);
         }
     }
+
+    public void SetPlayer(Transform player)
+    {
+        this.player = player;
+    }
 }

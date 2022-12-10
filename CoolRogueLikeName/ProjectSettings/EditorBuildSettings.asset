@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DungeonAndBossScene.unity
     guid: 80bce7458c90e4ca5ba99b3774cf8a40
+  - enabled: 1
+    path: Assets/Scenes/Death Scene.unity
+    guid: 46cc0b4f892c77a45b4cfffb6b8550e8
   m_configObjects: {}

@@ -259,7 +259,7 @@ public class DungeonRoomScript : MonoBehaviour
             for (int i = 0; i < nEnemiesBase * enemyScaling; i++)
             {
                 int enemyType = enemyCreator.CreateEnemy(player, room.RandomLocation(2.0f));
-                if (enemyType == 0)
+                if (enemyType == 0 && roomN >= 4)
                 {
                     t.TickTutorial(11, room.x, room.y, room.size);
                 }

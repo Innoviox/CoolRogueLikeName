@@ -11,6 +11,7 @@ public class MusicPlayer : MonoBehaviour
     public AudioClip[] pianoNotes; // todo
     private AudioClip[] choralNotes;
     private string[] noteNames = { "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#" };
+    public int bossDefeated = 0; // 0 => still fighting, 1 => lost, 2 => won
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +30,7 @@ public class MusicPlayer : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            // PlayChordSequence("A", 4, "m4M");
+            // PlayBossMusic();
         }
     }
 
@@ -114,6 +115,45 @@ public class MusicPlayer : MonoBehaviour
         foreach (AudioSource source in sources)
         {
             source.volume = 1.0f;
+        }
+    }
+
+    void PlayBossMusic()
+    {
+        PlayChordSequence("A", 4, "M6M");
+        // PlayChordSequence("E#", 2, "m9M");
+    }
+
+    void PlayBossVictory()
+    {
+        PlayChordSequence("C", 5, "M2M");
+    }
+
+    void PlayBossDefeat()
+    {
+
+    }
+
+    void PlayDefeat() { }
+
+    IEnumerator PlayBoss()
+    {
+        while (bossDefeated == 0)
+        {
+            PlayBossMusic();
+            yield return new WaitForSeconds(2.0f);
+        }
+
+        Stop();
+
+        if (bossDefeated == 1)
+        {
+            PlayBossDefeat();
+        }
+        else
+        {
+            PlayBossVictory();
+
         }
     }
 }

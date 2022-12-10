@@ -19,6 +19,7 @@ public class EnemyCreator : MonoBehaviour
         capsule.GetComponent<EnemyMovement>().player = player;
         capsule.GetComponent<EnemyAttack>().player = player;
 
+        Debug.Log($"Enemy created: {enemyType} {enemy}");
         return enemyType;
     }
 

@@ -12,20 +12,19 @@ public class WeaponSword : BaseWeapon
         GetComponent<AudioSource>().Play();
         // Set projectiles damage
         bullet.GetComponent<Projectile>().Damage = baseDamage;
-
-        StartCoroutine(Rotate(Vector3.up, baseCooldown * stats.playerReloadSpeedFactor));
+        StartCoroutine(Rotate(Vector3.up, 0.25f));
     }
 
     IEnumerator Rotate(Vector3 axis, float duration)
     {
-        float startRotation = spawnPoint.eulerAngles.y;
-        float endRotation = startRotation + 360.0f;
+        Quaternion startRotation = spawnPoint.localRotation;
         float t = 0.0f;
         while (t < duration)
         {
             t += Time.deltaTime;
-            spawnPoint.Rotate(axis * 360/duration * Time.deltaTime);
+            spawnPoint.Rotate(axis * -360/duration * Time.deltaTime);
             yield return null;
         }
+        spawnPoint.localRotation = startRotation;
     }
 }

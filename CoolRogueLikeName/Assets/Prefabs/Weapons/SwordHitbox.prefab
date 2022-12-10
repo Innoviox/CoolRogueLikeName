@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3292048667936349352}
   - component: {fileID: 103488745039431887}
   - component: {fileID: -1744433140745995733}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: SwordHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,3 +112,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 0
+  collisionCount: 0
+  lifetime: 0.25

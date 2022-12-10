@@ -5,6 +5,7 @@ final sprint todo
 - [x] give each weapon damage / cooldown values
 - [ ] HUD?
 - [ ] sword no worky
-- [ ] rocket explosions no worky
+- [ ] sword enemies no worky
+- [x] rocket explosions no worky
 - [ ] increase powerup effectiveness
 - [ ] remove debug.logs

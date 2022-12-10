@@ -11,7 +11,7 @@ public class Movement : MonoBehaviour
     public float baseMaxSpeed; // Max speed of the player
     public float jumpForce; // Increases the jump height of the player
     public float jumpCoolDown; // Amount of time between jumps
-    public bool doubleJump; // Enables the player to double jump
+    // public bool doubleJump; // Enables the player to double jump
     public float dashForce; // Sets the distance of the player dash
     public float dashTime; // Sets the time the player is dashing for
     public KeyCode jumpKey; // Sets the jump key
@@ -29,6 +29,8 @@ public class Movement : MonoBehaviour
 
     private bool dash;
     private bool jump;
+    public int numJumps = 2;
+    public int numDashes = 1;
 
 
     void Start()
@@ -39,6 +41,9 @@ public class Movement : MonoBehaviour
 
         dash = false;
         jump = false;
+
+        numJumps = 2;
+        numDashes = 1;
     }
 
     // Update is called once per frame
@@ -93,17 +98,13 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        if (jumpSlider.value < jumpSlider.maxValue)
-        {
-            jumpSlider.value += Time.deltaTime;
-            maxJumpsText.text = ((int)(jumpSlider.value / jumpCoolDown)).ToString();
-        }
+        dashSlider.maxValue = dashTime * numDashes;
+        dashSlider.value += Time.deltaTime;
+        maxDashText.text = ((int)(dashSlider.value / dashTime)).ToString();
 
-        if (dashSlider.value < dashSlider.maxValue)
-        {
-            dashSlider.value += Time.deltaTime;
-            maxDashText.text = ((int)(dashSlider.value / dashTime)).ToString();
-        }
+        jumpSlider.maxValue = jumpCoolDown * numJumps;
+        jumpSlider.value += Time.deltaTime;
+        maxJumpsText.text = ((int)(jumpSlider.value / jumpCoolDown)).ToString();
 
         dash = dash || Input.GetKeyDown(dashKey);
         jump = jump || Input.GetKeyDown(jumpKey) && CanJump();
@@ -144,14 +145,12 @@ public class Movement : MonoBehaviour
         this.maxJumpsText = maxJumpsText;
         this.maxDashText = maxDashText;
 
+        dashSlider.maxValue = dashTime * numDashes;
+        dashSlider.value = dashSlider.maxValue;
 
-        maxDashText.text = "1";
-        dashSlider.value = dashTime;
-        dashSlider.maxValue = dashTime;
-
-        // todo 
-        jumpSlider.maxValue = jumpCoolDown * (doubleJump ? 2 : 1);
-        maxJumpsText.text = doubleJump ? "2" : "1";
+        jumpSlider.maxValue = jumpCoolDown * numJumps;
         jumpSlider.value = jumpSlider.maxValue;
+
+        Debug.Log($"{dashSlider.value} / {dashSlider.maxValue} {jumpSlider.value} / {jumpSlider.maxValue}");
     }
 }

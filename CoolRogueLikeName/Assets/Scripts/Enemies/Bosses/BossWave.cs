@@ -16,7 +16,6 @@ public class BossWave : MonoBehaviour
     public int WaveSpeed;
     private float scale, pos;
     private Vector3 scaleC, posC;
-    public Vector3 scaleChange, positionChange; // Scale should be twice as much as the absolute value of position
     public float timeTolive;
     private float startTime;
     // Start is called before the first frame update
@@ -25,19 +24,6 @@ public class BossWave : MonoBehaviour
         startTime = Time.time;
         SetScalePos();
     }
-
-    /*
-    // Update is called once per frame
-    void Update()
-    {
-        transform.localScale += scaleChange;
-        transform.localPosition += positionChange;
-
-        // Destroy wave if enough time has passed
-        if (startTime + timeTolive < Time.time)
-            Destroy(gameObject);
-    }
-    */
 
     private void FixedUpdate()
     {

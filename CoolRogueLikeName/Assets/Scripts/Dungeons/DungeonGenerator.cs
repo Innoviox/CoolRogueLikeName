@@ -2,9 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Reflection;
 using WallMethods;
-
+using TMPro;
 
 public class DungeonGenerator : MonoBehaviour
 {
@@ -33,6 +34,8 @@ public class DungeonGenerator : MonoBehaviour
     private int dungeonN = 0;
     private int roomN = 0;
     private List<Vector2> locationsNextToDoors;
+    public TMP_Text maxHealthText;
+    public Slider healthSlider;
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +48,7 @@ public class DungeonGenerator : MonoBehaviour
         }
         player = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         player.parent = transform;
+        player.GetComponent<PlayerHealth>().SetHud(maxHealthText, healthSlider);
 
         roomBlocks = new List<Transform>();
         rooms = new List<Room>();

@@ -12,7 +12,7 @@ public class EnemyProjectile : MonoBehaviour
     private void Awake()
     {
         mask = LayerMask.GetMask("PlayerBody", "Wall", "Door");
-        maskBreakable = LayerMask.GetMask("PlayerBody", "Wall", "Door", "PlayerProjectile");
+        maskBreakable = LayerMask.GetMask("PlayerBody", "Wall", "Door", "PlayerProjectile", "PlayerMelee");
     }
     // Projectile ends its life when colliding with a wall
     // or an enemy. 

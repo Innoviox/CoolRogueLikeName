@@ -107,7 +107,7 @@ public class Tutorial : MonoBehaviour
 
         unusedTutorials.Remove(idx);
 
-        transform.position = new Vector3(roomX - roomSize / 2 - 1, 0.5f, roomY + roomSize / 2 + 1);
+        transform.position = new Vector3(roomX - roomSize / 2 - 2, 0.5f, roomY + roomSize / 2 + 1);
         tutorialIdx = idx;
 
         TutorialUpdate(idx);

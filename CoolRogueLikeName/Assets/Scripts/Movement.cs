@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
@@ -16,9 +18,17 @@ public class Movement : MonoBehaviour
     public KeyCode dashKey; // Sets the dash key
     public PowerupManager stats;
 
+    public Slider jumpSlider;
+    public Slider dashSlider;
+    public TMP_Text maxJumpsText;
+    public TMP_Text maxDashText;
+
     private Rigidbody rb;
     private bool dashLock;
     private bool jumpLock;
+
+    private bool dash;
+    private bool jump;
 
 
     void Start()
@@ -26,6 +36,9 @@ public class Movement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         dashLock = false;
         jumpLock = false;
+
+        dash = false;
+        jump = false;
     }
 
     // Update is called once per frame
@@ -35,47 +48,76 @@ public class Movement : MonoBehaviour
         {
             float hInput = Input.GetAxisRaw("Horizontal"); // Keeps track of left and right movement 
             float vInput = Input.GetAxisRaw("Vertical");   // Keeps track of forward and backwards movement
-            if(hInput == 0)
+            if (hInput == 0)
             {
                 rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
             }
-            if(vInput == 0)
+            if (vInput == 0)
             {
                 rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 0);
             }
 
             Vector3 accelerationDirection = new Vector3(hInput, 0, vInput).normalized; // This holds the direction the player is moving
             // Debug.Log("Direction: " + accelerationDirection.x + " " + accelerationDirection.y + " " + accelerationDirection.z);
-            if (Input.GetKeyDown(dashKey))
+            if (dash)
             {
                 StartCoroutine(Dash(accelerationDirection));
                 rb.velocity = Vector3.zero;
+                dashSlider.value -= dashTime;
+                dash = false;
                 return;
             }
-            if (Input.GetKeyDown(jumpKey) && !jumpLock)
+
+            if (jump)
             {
-                StartCoroutine(Jump());
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                jumpSlider.value -= jumpCoolDown;
+                jump = false;
                 return;
             }
-                rb.AddForce(accelerationDirection * acceleration, ForceMode.Acceleration); // Adds the acceleration to the player
 
-                /* Keeps the velocity capped at maxSpeed */
+            rb.AddForce(accelerationDirection * acceleration, ForceMode.Acceleration); // Adds the acceleration to the player
 
-                Vector3 velocity = rb.velocity;
-                Vector2 horizontalVelocity = new Vector2(velocity.x, velocity.z);
-                if (horizontalVelocity.magnitude > baseMaxSpeed * stats.playerMoveSpeedFactor)
-                {
-                    horizontalVelocity = horizontalVelocity.normalized * baseMaxSpeed * stats.playerMoveSpeedFactor;
-                }
-                rb.velocity = new Vector3(horizontalVelocity.x, velocity.y, horizontalVelocity.y);
+            /* Keeps the velocity capped at maxSpeed */
+
+            Vector3 velocity = rb.velocity;
+            Vector2 horizontalVelocity = new Vector2(velocity.x, velocity.z);
+            if (horizontalVelocity.magnitude > baseMaxSpeed * stats.playerMoveSpeedFactor)
+            {
+                horizontalVelocity = horizontalVelocity.normalized * baseMaxSpeed * stats.playerMoveSpeedFactor;
+            }
+            rb.velocity = new Vector3(horizontalVelocity.x, velocity.y, horizontalVelocity.y);
         }
 
+    }
+
+    void Update()
+    {
+        if (jumpSlider.value < jumpSlider.maxValue)
+        {
+            jumpSlider.value += Time.deltaTime;
+            maxJumpsText.text = ((int)(jumpSlider.value / jumpCoolDown)).ToString();
+        }
+
+        if (dashSlider.value < dashSlider.maxValue)
+        {
+            dashSlider.value += Time.deltaTime;
+            maxDashText.text = ((int)(dashSlider.value / dashTime)).ToString();
+        }
+
+        dash = dash || Input.GetKeyDown(dashKey);
+        jump = jump || Input.GetKeyDown(jumpKey) && CanJump();
+    }
+
+    bool CanJump()
+    {
+        return jumpSlider.value >= jumpCoolDown;
     }
 
     IEnumerator Dash(Vector3 direction)
     {
         dashLock = true;
-        if(direction == Vector3.zero)
+        if (direction == Vector3.zero)
         {
             direction = new Vector3(0, 0, 1);
         }
@@ -95,35 +137,21 @@ public class Movement : MonoBehaviour
         //}
     }
 
-    IEnumerator Jump()
+    public void SetHud(Slider jumpSlider, Slider dashSlider, TMP_Text maxJumpsText, TMP_Text maxDashText)
     {
-        jumpLock = true;
-        // rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-        // rb.velocity = Vector3.zero;
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        this.jumpSlider = jumpSlider;
+        this.dashSlider = dashSlider;
+        this.maxJumpsText = maxJumpsText;
+        this.maxDashText = maxDashText;
 
-        yield return null;
-        if (doubleJump)
-        {
-            StartCoroutine(DoubleJump());
-        }
-        yield return new WaitForSeconds(jumpCoolDown);
-        jumpLock = false;
-        yield break;
 
-    }
+        maxDashText.text = "1";
+        dashSlider.value = dashTime;
+        dashSlider.maxValue = dashTime;
 
-    IEnumerator DoubleJump()
-    {
-        while (jumpLock)
-        {
-            if (Input.GetKeyDown(jumpKey))
-            {
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                yield break;
-            }
-            yield return null;
-        }
-        yield break;
+        // todo 
+        jumpSlider.maxValue = jumpCoolDown * (doubleJump ? 2 : 1);
+        maxJumpsText.text = doubleJump ? "2" : "1";
+        jumpSlider.value = jumpSlider.maxValue;
     }
 }

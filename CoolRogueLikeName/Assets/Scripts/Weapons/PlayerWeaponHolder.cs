@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerWeaponHolder : MonoBehaviour
 {
 
     public Vector3 weaponPosition;
     public Transform weapon;
+    public Slider weaponSlider;
 
     void Start()
     {
@@ -36,6 +38,7 @@ public class PlayerWeaponHolder : MonoBehaviour
 
         Transform tempWeapon = weapon;
         weapon = newWeapon;
+        weapon.gameObject.GetComponent<BaseWeapon>().SetHud(weaponSlider);
         return tempWeapon;
     }
 
@@ -45,10 +48,17 @@ public class PlayerWeaponHolder : MonoBehaviour
         newWeapon.position = weaponPosition;
         newWeapon.rotation = Quaternion.identity;
         weapon = newWeapon;
+        weapon.gameObject.GetComponent<BaseWeapon>().SetHud(weaponSlider);
     }
 
     public Transform GetWeapon()
     {
         return weapon;
+    }
+
+    public void SetHud(Slider slider)
+    {
+        weaponSlider = slider;
+        weapon.gameObject.GetComponent<BaseWeapon>().SetHud(weaponSlider);
     }
 }

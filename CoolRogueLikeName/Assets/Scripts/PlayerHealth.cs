@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -16,7 +18,8 @@ public class PlayerHealth : MonoBehaviour
     public float health;
 
     public ScoreManager scoreManager;
-
+    public TMP_Text maxHealthText;
+    public Slider healthSlider;
     private LayerMask enemyProjectilesLayer;
     private LayerMask enemyMeleeLayer;
 
@@ -25,6 +28,7 @@ public class PlayerHealth : MonoBehaviour
     {
         healthBar = transform.Find("HealthBar").gameObject;
         maxHealth = baseMaxHealth * stats.playerHealthFactor;
+
         health = maxHealth;
         enemyProjectilesLayer = LayerMask.GetMask("EnemyProjectile");
         enemyMeleeLayer = LayerMask.GetMask("EnemyMelee");
@@ -37,6 +41,11 @@ public class PlayerHealth : MonoBehaviour
         healthBar.transform.position = new Vector3(transform.position.x,
                                                    transform.position.y + 1,
                                                    transform.position.z);
+
+        // todo only do this when they change
+        maxHealthText.text = $"{maxHealth}";
+        healthSlider.value = health;
+        healthSlider.maxValue = maxHealth;
     }
 
     public void UpdateMaxHealth()
@@ -66,7 +75,8 @@ public class PlayerHealth : MonoBehaviour
         if (InLayer(other, enemyMeleeLayer))
         {
             damageTaken = other.gameObject.GetComponent<EnemySword>().baseDamage;
-        } else if (InLayer(other, enemyProjectilesLayer))
+        }
+        else if (InLayer(other, enemyProjectilesLayer))
         {
             damageTaken = other.gameObject.GetComponent<EnemyProjectile>().Damage;
         }
@@ -89,9 +99,16 @@ public class PlayerHealth : MonoBehaviour
             SceneManager.LoadScene(2);
         }
     }
-    
+
     private bool InLayer(Collider other, LayerMask mask)
     {
         return ((1 << other.gameObject.layer) & mask.value) > 0;
+    }
+
+    public void SetHud(TMP_Text maxHealthText, Slider healthSlider)
+    {
+        this.maxHealthText = maxHealthText;
+        this.healthSlider = healthSlider;
+        healthSlider.minValue = 0;
     }
 }

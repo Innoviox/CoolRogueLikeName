@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BaseWeapon : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class BaseWeapon : MonoBehaviour
     public PowerupManager stats;
     public string firebutton;
     private IEnumerator weaponCoroutineObject;
+    public Slider weaponSlider;
 
     public void EnableWeapon()
     {
@@ -29,7 +31,15 @@ public class BaseWeapon : MonoBehaviour
         {
             yield return new WaitUntil(() => Input.GetButtonDown(firebutton));
             DoWeaponAction(baseDamage * stats.playerDamageFactor, baseProjectileSpeed * stats.bulletSpeedFactor);
-            yield return new WaitForSeconds(baseCooldown * stats.playerReloadSpeedFactor);
+
+            weaponSlider.value = 0;
+            weaponSlider.maxValue = baseCooldown * stats.playerReloadSpeedFactor;
+            for (float i = 0; i < weaponSlider.maxValue; i += Time.deltaTime)
+            {
+                weaponSlider.value = i;
+                yield return null;
+            }
+            weaponSlider.value = weaponSlider.maxValue;
         }
     }
 
@@ -46,4 +56,10 @@ public class BaseWeapon : MonoBehaviour
         bullet.GetComponent<Rigidbody>().velocity = spawnPoint.forward * projectileSpeed;
     }
 
+    public void SetHud(Slider slider)
+    {
+        weaponSlider = slider;
+        weaponSlider.maxValue = baseCooldown * stats.playerReloadSpeedFactor;
+        weaponSlider.value = weaponSlider.maxValue;
+    }
 }

@@ -174,6 +174,16 @@ public class DungeonRoomScript : MonoBehaviour
             }
         }
 
+        if (room.isBossRoom)
+        {
+            roomTransform.parent.GetComponent<MusicPlayer>().state = 2;
+        }
+        else
+        {
+            roomTransform.parent.GetComponent<MusicPlayer>().state = 1;
+        }
+
+
         if (!RoomDone())
         {
             ActivateEnemies();

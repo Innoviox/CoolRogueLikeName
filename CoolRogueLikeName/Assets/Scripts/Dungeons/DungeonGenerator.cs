@@ -44,6 +44,7 @@ public class DungeonGenerator : MonoBehaviour
             blocksDict.Add(block.name, block);
         }
         player = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        player.parent = transform;
 
         roomBlocks = new List<Transform>();
         rooms = new List<Room>();
@@ -420,6 +421,7 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         tutorialComp.StartTutorial();
+        GetComponent<MusicPlayer>().state = 1; // in game state
         yield break;
     }
 

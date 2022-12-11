@@ -20,14 +20,12 @@ public class EnemyScript : MonoBehaviour
     {
         healthBar = transform.parent.Find("HealthBar").gameObject;
         health = maxHealth;
-        playerTriggerProjectiles = LayerMask.GetMask("PlayerProjectile"); // 
+        playerTriggerProjectiles = LayerMask.GetMask("PlayerProjectile");
         playerTriggerMelee = LayerMask.GetMask("PlayerMelee");
     }
 
     void Update()
     {
-        // The enemy will constantly look at the player.
-        // transform.LookAt(player);
         // Make the enemy health bar follow the enemy as they move around. 
         healthBar.transform.position = new Vector3(transform.position.x,
                                                    healthBar.transform.position.y,
@@ -50,10 +48,6 @@ public class EnemyScript : MonoBehaviour
     // take damage on being in sword hitbox
     private void OnTriggerEnter(Collider collision)
     {
-
-        // We can problably introduce polymorphism to player damage so :
-        // (meleeDamage, projectile) is Damage
-        // Then GetComponent<Damage> 
         if (InLayer(collision, playerTriggerMelee))
         {
             takeDamage(collision.transform.gameObject.GetComponent<SwordDamage>().Damage);

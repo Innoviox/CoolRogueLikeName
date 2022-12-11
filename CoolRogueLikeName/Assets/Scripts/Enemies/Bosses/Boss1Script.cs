@@ -5,7 +5,7 @@ using UnityEngine;
 public class Boss1Script : MonoBehaviour
 {
     private float chargeAttackTimer; // Cooldown on bosses charge attack
-    public float health;            // Bosses health
+    public float health;             // Bosses health
     private float healthThreshold;   // Decides when the boss will do a wave attack.      
     private int chargeAttackRate;    // How often the boss does a charge attack
     public bool immune;              // Boss is immune to damage during wave attack
@@ -162,8 +162,6 @@ public class Boss1Script : MonoBehaviour
         {
             StopCoroutine(moveCo);
             StopCoroutine(attackCo);
-            // Using position based movement so commented this out
-            // move.enemyBody.velocity = new Vector3(0, 0, 0); // Stop bosses momentum
             moveCo = null;
             attackCo = null;
         }
@@ -172,31 +170,25 @@ public class Boss1Script : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Check collision occured with a bullet
-        // Since bullet is a prefab its gameobject name gets set to Bullet(Clone)
         if (!immune && InLayer(other, playerProjectileMask))
         {
-            // Get the projectiles damage
-            float damageTaken = other.transform.gameObject.GetComponent<Projectile>().Damage;
-
-            health -= damageTaken;
-
-            // healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
-            // change health bar of Boss
-        } else if (!immune && InLayer(other, playerMeleeMask))
+            TakeDamage(other.transform.gameObject.GetComponent<Projectile>().Damage);
+        } 
+        else if (!immune && InLayer(other, playerMeleeMask))
         {
-            float damageTaken = other.transform.gameObject.GetComponent<SwordDamage>().Damage;
-
-            health -= damageTaken;
+            TakeDamage(other.transform.gameObject.GetComponent<SwordDamage>().Damage);
         }
+    }
+
+    public void TakeDamage(float da)
+    {
+        health -= da;
 
         if (health <= 0.0f)
         {
             scoreManager.enemyDestroyed();
             transform.parent.parent.SendMessage("EnemyDestroyed");
-            // Can play death animation
             Destroy(transform.parent.gameObject);
-
-            // or Destroy(transform.root.gameObject); 
         }
     }
 

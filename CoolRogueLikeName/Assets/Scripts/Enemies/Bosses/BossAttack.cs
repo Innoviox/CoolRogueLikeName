@@ -20,7 +20,6 @@ public class BossAttack : EnemyAttack
     public int baseDamage = 1;
     public float projectileSpeed = 5;
     private int numNormalShots;
-    private float degreeToRotate;    // Used to create arc for bullets spawnd from scatter shot
     private int numWaves;
 
     private void Awake()
@@ -28,11 +27,10 @@ public class BossAttack : EnemyAttack
         numBullets = 8;
         boss = transform.GetComponent<Boss1Script>();
         move = transform.GetComponent<BossMovement>();
-        shootRate = 1.5f;
+        shootRate = 2.5f;
         numWaves = 4;
         numNormalShots = 3;
 
-        degreeToRotate = 180 / (numBullets + 1);
     }
 
     /// <summary>
@@ -51,42 +49,12 @@ public class BossAttack : EnemyAttack
                 yield return new WaitForSeconds(shootRate);
             }
 
-            // fires a scattershot at the player
-            // ScatterShot();
-
             // Half of the bullets are breakable
             int start = 0 + (numBullets / 4);
             int end = numBullets - (numBullets / 4) - 1;
 
             ScatterShotAtPlayer(rightSpawnPoint, breakableEnemyProjectile, enemyProjectile, (a) => (a >= start && a <= end), numBullets, projectileSpeed, baseDamage);
             yield return new WaitForSeconds(shootRate);
-        }
-    }
-
-    /// <summary>
-    /// Uses the right bosses gun to fire a scatter shot. Bullets are either
-    /// breakable or not breakable. 
-    /// </summary>
-    void ScatterShot()
-    {
-        GameObject bullet; // The newly created bullet
-        GameObject proj;   // The type of bullet we will create
-        Vector3 currDir = rightSpawnPoint.forward;
-
-        // Initial spawn direction for smaller bullets
-        currDir = Quaternion.Euler(0, -90 + degreeToRotate, 0) * currDir; // -90 aims directly left of the starting location
-
-        for (int i = 0; i < numBullets; i++)
-        {
-            // Range to decide which bullets are breakable
-            proj = (2 <= i && i <= 4) ? breakableEnemyProjectile : enemyProjectile;
-
-            bullet = Instantiate(proj, rightSpawnPoint.position, rightSpawnPoint.rotation);
-            bullet.GetComponent<EnemyProjectile>().Damage = baseDamage;
-            bullet.GetComponent<Rigidbody>().velocity = currDir * projectileSpeed;
-
-            // Change the direction of the bullet
-            currDir = Quaternion.Euler(0, degreeToRotate, 0) * currDir; // 45
         }
     }
 
@@ -105,21 +73,11 @@ public class BossAttack : EnemyAttack
         // chargeProjectiles entry animation is played when instantiated which scales its size. 
         GameObject bullet = Instantiate(chargeProjectile, pos, rightSpawnPoint.rotation);
 
-        // Set projectiles damage
-        bullet.GetComponent<BossChargeShot>().Damage = 15;
-
         // Set its velocity to go forward by projectileSpeed
         bullet.GetComponent<Rigidbody>().velocity = dir * projectileSpeed;
 
-        float timer = Time.time;
-        // Wait three seconds after shooting charge shot to continue
-        while (timer + 3 >= Time.time)
-        {
-            yield return new WaitForSeconds(1f);
-        }
-
+        yield return new WaitForSeconds(3f);
         boss.bState = Boss1Script.bossState.normalAttacks;
-        yield return null;
     }
 
     // WaveAttack
@@ -144,7 +102,6 @@ public class BossAttack : EnemyAttack
         boss.bState = Boss1Script.bossState.normalAttacks;
         boss.aimAtPlayer = true;
         boss.immune = false;
-        yield return null;
     }
 
     IEnumerator RotateObject(float angle, Vector3 axis, float inTime)
@@ -175,11 +132,5 @@ public class BossAttack : EnemyAttack
             // delay here
             yield return new WaitForSeconds(1);
         }
-        yield return null;
-    }
-
-    public void SetPlayer(Transform player)
-    {
-        this.player = player;
     }
 }

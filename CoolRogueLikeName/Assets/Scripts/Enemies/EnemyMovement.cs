@@ -51,8 +51,7 @@ public class EnemyMovement : MonoBehaviour
             if (hit.transform.name == transform.name)
             {
                 // Implemented Left and Right objects on enemy due to raycasting colliding with
-                // The enemy object itself. I think layermask would problably be the next step to implement and
-                // not use left/right objects. 
+                // The enemy object itself. 
 
                 // Get distance to objects on my right and left
                 Ray rightOfEnemy = new Ray(rightSide.position, rightSide.right);

@@ -6,46 +6,42 @@ public class EnemyProjectile : MonoBehaviour
 {
     public float Damage;
     public bool breakable; // If this projectile can be destroyed by other projectiles.
-    private LayerMask mask;
+    public LayerMask maskPlayer;
+    private LayerMask environment;
     private LayerMask maskBreakable;
+    public float timeTolive;
+    protected float startTime;
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        mask = LayerMask.GetMask("PlayerBody", "Wall", "Door");
+        maskPlayer = LayerMask.GetMask("PlayerBody");
+        environment = LayerMask.GetMask("Wall", "Door", "Floor");
         maskBreakable = LayerMask.GetMask("PlayerBody", "Wall", "Door", "PlayerProjectile", "PlayerMelee");
+        startTime = Time.time;
     }
-    // Projectile ends its life when colliding with a wall
-    // or an enemy. 
-    private void OnCollisionEnter(Collision collision)
+
+    // Destroy projectile if enough time has passed.
+    protected virtual void FixedUpdate()
     {
-        //Debug.Log("Inside projectile collision");
-        string name = collision.transform.gameObject.name;
-        // Don't destroy myself if I collide with other bullets
-        if (name != "Bullet(Clone)" && name != "EnemyBullet(Clone)")
-        {
-            // Destroy myself :(
+        if (startTime + timeTolive < Time.time)
             Destroy(gameObject);
-        }
-
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (breakable && InLayer(other, maskBreakable))
         {
             Destroy(gameObject);
         }
-        else if (InLayer(other, mask))
+        else if (InLayer(other, maskPlayer) || InLayer(other, environment))
         {
             Destroy(gameObject);
         }
     }
-
+    
     private bool InLayer(Collider other, LayerMask mask)
     {
         return ((1 << other.gameObject.layer) & mask.value) > 0;
     }
 
-    // If breakable && (name == Bullet || name == wall) -> Destroy
-    // else if !breakable && (name == wall) -> Destroy
 }

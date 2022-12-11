@@ -99,10 +99,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 456860b551c955e4dbdb11c3a8f7159a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Damage: 1.5
+  breakable: 0
+  maskPlayer:
+    serializedVersion: 2
+    m_Bits: 0
   enemyProj: {fileID: 3618787135062484332, guid: 5aa76b0cbe9356a4291e347e8e36f4d6, type: 3}
-  scaleChange: {x: 0.01, y: 0.01, z: 0.01}
-  positionChange: {x: 0, y: 0, z: -0.1}
-  Damage: 0
   numBulletsPerRow: 0
   numBulletsPerCol: 0
 --- !u!135 &679057937136554228

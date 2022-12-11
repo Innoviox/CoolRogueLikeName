@@ -23,6 +23,7 @@ public class PlayerHealth : MonoBehaviour
     public Slider healthSlider;
     private LayerMask enemyProjectilesLayer;
     private LayerMask enemyMeleeLayer;
+    private bool started = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,8 @@ public class PlayerHealth : MonoBehaviour
         health = maxHealth;
         enemyProjectilesLayer = LayerMask.GetMask("EnemyProjectile");
         enemyMeleeLayer = LayerMask.GetMask("EnemyMelee");
+
+        started = true;
     }
 
     // Update is called once per frame
@@ -93,7 +96,7 @@ public class PlayerHealth : MonoBehaviour
         {
             healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
         }
-        if (health <= 0.0f)
+        if (started && health <= 0.0f)
         {
             Debug.Log("Player Died");
             scoreManager.playerDeath();

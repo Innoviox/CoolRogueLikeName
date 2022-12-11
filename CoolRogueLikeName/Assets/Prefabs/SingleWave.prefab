@@ -46,7 +46,6 @@ GameObject:
   - component: {fileID: 2846518372415671635}
   - component: {fileID: 2846518372415671634}
   - component: {fileID: 2846518372415671633}
-  - component: {fileID: 4243728643430331357}
   m_Layer: 10
   m_Name: WaveFront
   m_TagString: Untagged
@@ -63,7 +62,7 @@ Transform:
   m_GameObject: {fileID: 2846518372415671632}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 0.2, z: 0.8}
+  m_LocalScale: {x: 2, y: 0.1, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6578484446659671903}
@@ -131,10 +130,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c73e0f600d76984bb660ef6e2c8fcad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Damage: 1.1
+  breakable: 0
+  maskPlayer:
+    serializedVersion: 2
+    m_Bits: 0
+  timeTolive: 2.5
   WaveSpeed: 16
-  scaleChange: {x: 0.02, y: 0, z: 0}
-  positionChange: {x: 0, y: 0, z: 0.01}
-  timeTolive: 4
 --- !u!65 &2846518372415671634
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -164,17 +166,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4243728643430331357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2846518372415671632}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbdf3479dcd7d16419c07ee653059f00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damage: 1.5
-  breakable: 0

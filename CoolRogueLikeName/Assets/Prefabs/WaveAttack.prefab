@@ -49,7 +49,6 @@ GameObject:
   - component: {fileID: 2451587856808832270}
   - component: {fileID: 2451587856808832271}
   - component: {fileID: 2451587856808832268}
-  - component: {fileID: 5723019452914289835}
   m_Layer: 10
   m_Name: WaveRight
   m_TagString: Untagged
@@ -134,10 +133,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c73e0f600d76984bb660ef6e2c8fcad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Damage: 1.8
+  breakable: 0
+  maskPlayer:
+    serializedVersion: 2
+    m_Bits: 0
   WaveSpeed: 16
-  scaleChange: {x: 0.02, y: 0, z: 0}
-  positionChange: {x: 0.01, y: 0, z: 0}
-  timeTolive: 6
+  timeTolive: 2.5
 --- !u!65 &2451587856808832271
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -167,20 +169,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5723019452914289835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2451587856808832269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbdf3479dcd7d16419c07ee653059f00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damage: 2
-  breakable: 0
 --- !u!1 &2451587857619801906
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,7 +183,6 @@ GameObject:
   - component: {fileID: 2451587857619801919}
   - component: {fileID: 2451587857619801916}
   - component: {fileID: 2451587857619801917}
-  - component: {fileID: 3851230815510047909}
   m_Layer: 10
   m_Name: WaveBack
   m_TagString: Untagged
@@ -280,10 +267,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c73e0f600d76984bb660ef6e2c8fcad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Damage: 1.8
+  breakable: 0
+  maskPlayer:
+    serializedVersion: 2
+    m_Bits: 0
   WaveSpeed: 16
-  scaleChange: {x: 0.02, y: 0, z: 0}
-  positionChange: {x: 0, y: 0, z: -0.01}
-  timeTolive: 6
+  timeTolive: 2.5
 --- !u!65 &2451587857619801916
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -313,20 +303,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3851230815510047909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2451587857619801906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbdf3479dcd7d16419c07ee653059f00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damage: 2
-  breakable: 0
 --- !u!1 &2451587857850689729
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,7 +317,6 @@ GameObject:
   - component: {fileID: 2451587857850689730}
   - component: {fileID: 2451587857850689731}
   - component: {fileID: 2451587857850689728}
-  - component: {fileID: 1610478649840503227}
   m_Layer: 10
   m_Name: WaveFront
   m_TagString: Untagged
@@ -426,10 +401,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c73e0f600d76984bb660ef6e2c8fcad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Damage: 1.8
+  breakable: 0
+  maskPlayer:
+    serializedVersion: 2
+    m_Bits: 0
   WaveSpeed: 16
-  scaleChange: {x: 0.02, y: 0, z: 0}
-  positionChange: {x: 0, y: 0, z: 0.01}
-  timeTolive: 6
+  timeTolive: 2.5
 --- !u!65 &2451587857850689731
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -459,20 +437,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1610478649840503227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2451587857850689729}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbdf3479dcd7d16419c07ee653059f00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damage: 2
-  breakable: 0
 --- !u!1 &2451587857981254214
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,7 +451,6 @@ GameObject:
   - component: {fileID: 2451587857981254211}
   - component: {fileID: 2451587857981254208}
   - component: {fileID: 2451587857981254209}
-  - component: {fileID: 7592440600676343123}
   m_Layer: 10
   m_Name: WaveLeft
   m_TagString: Untagged
@@ -572,10 +535,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c73e0f600d76984bb660ef6e2c8fcad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Damage: 1.8
+  breakable: 0
+  maskPlayer:
+    serializedVersion: 2
+    m_Bits: 0
   WaveSpeed: 16
-  scaleChange: {x: 0.02, y: 0, z: 0}
-  positionChange: {x: -0.01, y: 0, z: 0}
-  timeTolive: 6
+  timeTolive: 2.5
 --- !u!65 &2451587857981254208
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -605,17 +571,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7592440600676343123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2451587857981254214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbdf3479dcd7d16419c07ee653059f00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Damage: 2
-  breakable: 0

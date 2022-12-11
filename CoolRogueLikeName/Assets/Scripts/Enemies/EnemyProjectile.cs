@@ -9,14 +9,24 @@ public class EnemyProjectile : MonoBehaviour
     public LayerMask maskPlayer;
     private LayerMask environment;
     private LayerMask maskBreakable;
+    public float timeTolive;
+    protected float startTime;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         maskPlayer = LayerMask.GetMask("PlayerBody");
         environment = LayerMask.GetMask("Wall", "Door", "Floor");
         maskBreakable = LayerMask.GetMask("PlayerBody", "Wall", "Door", "PlayerProjectile", "PlayerMelee");
+        startTime = Time.time;
     }
-    
+
+    // Destroy projectile if enough time has passed.
+    protected virtual void FixedUpdate()
+    {
+        if (startTime + timeTolive < Time.time)
+            Destroy(gameObject);
+    }
+
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (breakable && InLayer(other, maskBreakable))

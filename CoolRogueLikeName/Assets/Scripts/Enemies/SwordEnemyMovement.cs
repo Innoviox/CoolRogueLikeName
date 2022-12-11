@@ -63,14 +63,6 @@ public class SwordEnemyMovement : EnemyMovement
     {
         while (true)
         {
-            // transform.LookAt(player);
-
-            //Vector3 lookVector = player.transform.position - transform.position;
-            //lookVector.y = 0;
-            //Quaternion rot = Quaternion.LookRotation(lookVector);
-            //transform.rotation = Quaternion.Slerp(transform.rotation, rot, 1);
-            //transform.rotation = Quaternion.LookRotation(lookVector); ;
-
             var lookPos = player.transform.position - transform.position;
             lookPos.y = 0;
             var rotation = Quaternion.LookRotation(lookPos);

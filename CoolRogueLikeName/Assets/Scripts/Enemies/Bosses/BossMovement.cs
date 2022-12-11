@@ -8,13 +8,10 @@ public class BossMovement : EnemyMovement
     private BossAttack attack;
     public Coroutine aimCo = null;
 
-    // Currently Using updates to Position based movement so boss can be kinematic
-    // and the player cannot simply push the boss around with their rigidbody. 
-
     private void Awake()
     {
         attack = transform.GetComponent<BossAttack>();
-        walkRate = 0.01f; // 0.2f For velocity based
+        walkRate = 0.01f;
         enemyBody = GetComponent<Rigidbody>();
     }
 
@@ -26,17 +23,10 @@ public class BossMovement : EnemyMovement
             // Check if player is close enough, otherwise walk towards player.
             if (EnemyHelpers.DistToPlayer(player, transform) > maxDist)
             {
-                // Transform position based movement
                 Vector3 temp = 20 * Time.deltaTime * (player.position - transform.position).normalized;
                 temp.y = 0;
                 transform.position += temp;
-                // End transform based movement
-
-                // Velocity based
-                //WalkTowardsPlayer(maxDist);
             }
-            //else
-            //  enemyBody.velocity = new Vector3(0, 0, 0);
 
             yield return new WaitForSeconds(walkRate);
         }
@@ -65,18 +55,12 @@ public class BossMovement : EnemyMovement
 
         while (!inRange())
         {
-            // For velocity 
-            // enemyBody.velocity = new Vector3(transform.forward.x * enemySpeed, 0, transform.forward.z * enemySpeed);
-
-            // Transform position based movement
             Vector3 temp = 20 * Time.deltaTime * (center.position - transform.position).normalized;
             temp.y = 0;
             transform.position += temp;
-            // End transform based movement
 
             yield return new WaitForSeconds(walkRate);
         }
-        // enemyBody.velocity = new Vector3(0, 0, 0);
 
         StopAim();
         StartCoroutine(attack.WaveAttack());
@@ -113,10 +97,6 @@ public class BossMovement : EnemyMovement
         }
     }
 
-    public void SetPlayer(Transform player)
-    {
-        this.player = player;
-    }
     public void SetCenter(Transform center)
     {
         this.center = center;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Boss1Script : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class Boss1Script : MonoBehaviour
 
     private LayerMask playerProjectileMask;
     private LayerMask playerMeleeMask;
+    private Slider bossSlider;
 
     public enum bossState
     {
@@ -173,7 +175,7 @@ public class Boss1Script : MonoBehaviour
         if (!immune && InLayer(other, playerProjectileMask))
         {
             TakeDamage(other.transform.gameObject.GetComponent<Projectile>().Damage);
-        } 
+        }
         else if (!immune && InLayer(other, playerMeleeMask))
         {
             TakeDamage(other.transform.gameObject.GetComponent<SwordDamage>().Damage);
@@ -183,6 +185,7 @@ public class Boss1Script : MonoBehaviour
     public void TakeDamage(float da)
     {
         health -= da;
+        bossSlider.value = health;
 
         if (health <= 0.0f)
         {
@@ -200,5 +203,15 @@ public class Boss1Script : MonoBehaviour
     private bool InLayer(Collider other, LayerMask mask)
     {
         return ((1 << other.gameObject.layer) & mask.value) > 0;
+    }
+
+    public void SetHud(Slider bossSlider)
+    {
+        this.bossSlider = bossSlider;
+        bossSlider.minValue = 0;
+        bossSlider.maxValue = health;
+        bossSlider.value = health;
+
+        bossSlider.gameObject.SetActive(true);
     }
 }

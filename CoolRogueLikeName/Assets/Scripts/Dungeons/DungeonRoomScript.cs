@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DungeonRoomScript : MonoBehaviour
 {
@@ -45,6 +46,7 @@ public class DungeonRoomScript : MonoBehaviour
     private int nEnemies;
     private List<Transform> bosses;
     private Tutorial t;
+    private Slider bossSlider;
 
     // Start is called before the first frame update
     void Start()
@@ -211,10 +213,11 @@ public class DungeonRoomScript : MonoBehaviour
         if (room.isBossRoom)
         {
             int dungeonN = roomTransform.parent.GetComponent<DungeonGenerator>().GetDungeonN();
+            bosses = new List<Transform>();
+
             if (dungeonN == 1)
             {
                 // special case: single boss spawns in the center of the room
-                bosses = new List<Transform>();
                 bosses.Add(enemyCreator.CreateBoss(player, room.Center(0.64f)));
                 nEnemies = 1;
             }
@@ -231,7 +234,6 @@ public class DungeonRoomScript : MonoBehaviour
                 int nBosses = (dungeonN + 1) / 2;
                 int nMinions = (dungeonN % 2 == 0) ? dungeonN : 0;
 
-                bosses = new List<Transform>();
                 for (int i = 0; i < nBosses; i++)
                 {
                     bosses.Add(enemyCreator.CreateBoss(player, room.RandomLocation(0.64f)));
@@ -246,6 +248,10 @@ public class DungeonRoomScript : MonoBehaviour
                 nEnemies = nBosses + nMinions;
             }
 
+            foreach (Transform t in bosses)
+            {
+                t.BroadcastMessage("SetHud", bossSlider);
+            }
         }
         else
         {
@@ -296,7 +302,7 @@ public class DungeonRoomScript : MonoBehaviour
         while (t < cameraMoveDuration)
         {
             t += Time.deltaTime;
-            camera.transform.position = Vector3.Lerp(startT, cameraPosition, t/cameraMoveDuration);
+            camera.transform.position = Vector3.Lerp(startT, cameraPosition, t / cameraMoveDuration);
             yield return null;
         }
         Debug.Log("setting camera position to " + cameraPosition);
@@ -370,5 +376,10 @@ public class DungeonRoomScript : MonoBehaviour
     public void DestroyText()
     {
         t.ClearTutorial();
+    }
+
+    public void SetHud(Slider bossSlider)
+    {
+        this.bossSlider = bossSlider;
     }
 }

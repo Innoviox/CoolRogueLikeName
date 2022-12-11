@@ -39,6 +39,7 @@ public class DungeonGenerator : MonoBehaviour
     public Slider weaponSlider;
     public Slider jumpSlider;
     public Slider dashSlider;
+    public Slider bossSlider;
     public TMP_Text maxJumpsText;
     public TMP_Text maxDashText;
 
@@ -317,6 +318,11 @@ public class DungeonGenerator : MonoBehaviour
                 drt.GetComponent<DungeonRoomScript>().AddDelegates(door);
             }
 
+            if (room.isBossRoom)
+            {
+                drt.GetComponent<DungeonRoomScript>().SetHud(bossSlider);
+            }
+
             dungeonRooms.Add(drt);
         }
 
@@ -413,6 +419,8 @@ public class DungeonGenerator : MonoBehaviour
 
         expandableRooms.Add(0); // base room is expandable
         tutorialComp.ClearTutorial();
+
+        bossSlider.gameObject.SetActive(false);
     }
 
     IEnumerator StartDungeon()

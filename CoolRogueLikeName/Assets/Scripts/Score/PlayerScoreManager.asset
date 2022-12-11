@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc0ac71f390503f4a9b0105ec50cc577, type: 3}
   m_Name: PlayerScoreManager
   m_EditorClassIdentifier: 
-  enemiesDestroyed: 19
-  roomsCleared: 11
+  enemiesDestroyed: 0
+  roomsCleared: 0
   levelsCleared: 0
-  enemiesDestroyedHighScore: 19
-  roomsClearedHighScore: 11
+  enemiesDestroyedHighScore: 0
+  roomsClearedHighScore: 0
   levelsClearedHighScore: 0

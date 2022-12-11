@@ -11,13 +11,13 @@ public class BossChargeShot : EnemyProjectile
     private LayerMask maskScatter;
 
     // Hides parents Awake
-    private void Awake()
+    protected override void Awake()
     {
         numBulletsPerRow = 20;
         numBulletsPerCol = 3;
         maskPlayer = LayerMask.GetMask("PlayerBody");
         maskScatter = LayerMask.GetMask("Wall", "Door");
-
+        startTime = Time.time;
         degreeToRotate = 180 / (numBulletsPerRow + 1);
     }
   
@@ -65,7 +65,6 @@ public class BossChargeShot : EnemyProjectile
                     pos += j * currDir; // spawn location of bullet on rows 1 through numBulletsPerCol 
 
                     bullet = Instantiate(enemyProj, pos, transform.rotation);
-                    bullet.GetComponent<EnemyProjectile>().Damage = 5;
                     bullet.GetComponent<Rigidbody>().velocity = currDir * 3;
                     pos = transform.localPosition; // Reset position
                 }

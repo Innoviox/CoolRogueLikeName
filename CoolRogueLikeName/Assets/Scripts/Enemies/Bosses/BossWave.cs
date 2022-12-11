@@ -3,38 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class BossWave : MonoBehaviour
+public class BossWave : EnemyProjectile
 {
     public int WaveSpeed;
     private float scale, pos;
     private Vector3 scaleC, posC;
-    public float timeTolive;
-    private float startTime;
-    // Start is called before the first frame update
-    void Start()
+
+    protected override void Awake()
     {
         startTime = Time.time;
         SetScalePos();
     }
 
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
         transform.localScale += scaleC;
         transform.localPosition += posC;
 
         // Destroy wave if enough time has passed
         if (startTime + timeTolive < Time.time)
-            Destroy(gameObject);
+            Destroy(gameObject.transform.parent.gameObject);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.transform.name == "Player")
-        {
-            // Damage player 
-            // Call players method to take damage
-        }
-    }
+    // Wave is only destroyed after a set amount of time
+    protected override void OnTriggerEnter(Collider other) { }
 
     /// <summary>
     /// Translate Wave Speed into scale change and position change

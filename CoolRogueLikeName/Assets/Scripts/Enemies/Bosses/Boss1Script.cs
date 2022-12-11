@@ -173,27 +173,11 @@ public class Boss1Script : MonoBehaviour
         if (!immune && InLayer(other, playerProjectileMask))
         {
             TakeDamage(other.transform.gameObject.GetComponent<Projectile>().Damage);
-            // Get the projectiles damage
-            //float damageTaken = other.transform.gameObject.GetComponent<Projectile>().Damage;
-
-            //health -= damageTaken;
-
-            // healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
-            // change health bar of Boss
-        } else if (!immune && InLayer(other, playerMeleeMask))
+        } 
+        else if (!immune && InLayer(other, playerMeleeMask))
         {
             TakeDamage(other.transform.gameObject.GetComponent<SwordDamage>().Damage);
-            //float damageTaken = other.transform.gameObject.GetComponent<SwordDamage>().Damage;
-
-            //health -= damageTaken;
         }
-        /*
-        if (health <= 0.0f)
-        {
-            scoreManager.enemyDestroyed();
-            transform.parent.parent.SendMessage("EnemyDestroyed");
-            Destroy(transform.parent.gameObject);
-        }*/
     }
 
     public void TakeDamage(float da)

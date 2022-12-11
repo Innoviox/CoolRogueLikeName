@@ -5,14 +5,6 @@ using UnityEngine;
 
 public class BossWave : MonoBehaviour
 {
-    // With Update() growth depends on lag
-    // Scale change: 0.02
-    // Position Change: 0.01
-
-    // Changed to FixedUpdate so it has less variance on lag
-    // Scale change: 0.08     0.16
-    // Position Change: 0.04  0.08 also feels good
-
     public int WaveSpeed;
     private float scale, pos;
     private Vector3 scaleC, posC;

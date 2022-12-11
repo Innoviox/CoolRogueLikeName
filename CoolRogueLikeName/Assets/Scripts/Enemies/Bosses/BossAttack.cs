@@ -27,7 +27,7 @@ public class BossAttack : EnemyAttack
         numBullets = 8;
         boss = transform.GetComponent<Boss1Script>();
         move = transform.GetComponent<BossMovement>();
-        shootRate = 1.5f;
+        shootRate = 2.5f;
         numWaves = 4;
         numNormalShots = 3;
 

@@ -11,13 +11,13 @@ public class BossMovement : EnemyMovement
     private void Awake()
     {
         attack = transform.GetComponent<BossAttack>();
-        walkRate = 0.01f;
+        walkRate = 0.04f;
         enemyBody = GetComponent<Rigidbody>();
     }
 
     public IEnumerator MoveToPlayer()
     {
-        float maxDist = 9f;
+        float maxDist = 10f;
         while (true)
         {
             // Check if player is close enough, otherwise walk towards player.

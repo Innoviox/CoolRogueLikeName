@@ -104,6 +104,7 @@ MonoBehaviour:
   maskPlayer:
     serializedVersion: 2
     m_Bits: 0
+  timeTolive: 12
   enemyProj: {fileID: 3618787135062484332, guid: 5aa76b0cbe9356a4291e347e8e36f4d6, type: 3}
   numBulletsPerRow: 0
   numBulletsPerCol: 0

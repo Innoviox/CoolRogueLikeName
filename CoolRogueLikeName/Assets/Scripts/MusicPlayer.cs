@@ -11,6 +11,7 @@ public class MusicPlayer : MonoBehaviour
     public AudioClip music;
     public AudioClip bossMusic;
     public AudioClip deathScreenMusic;
+    public float maxVolume = 0.5f;
 
     public int state = 0; // 0 => main menu, 1 => in game, 2 => boss fight, 3 => death screen
     private int oldState = -1;
@@ -23,6 +24,7 @@ public class MusicPlayer : MonoBehaviour
         {
             sources.Add(gameObject.AddComponent<AudioSource>());
             sources[i].loop = true;
+            sources[i].volume = maxVolume;
         }
 
         sources[0].clip = mainMenuMusic;
@@ -57,7 +59,7 @@ public class MusicPlayer : MonoBehaviour
 
     IEnumerator CoolDown()
     {
-        for (int i = 10; i > 0; i--)
+        for (float i = maxVolume * 10f; i > 0; i--)
         {
             foreach (AudioSource source in sources)
             {
@@ -71,7 +73,7 @@ public class MusicPlayer : MonoBehaviour
     {
         foreach (AudioSource source in sources)
         {
-            source.volume = 1.0f;
+            source.volume = maxVolume;
         }
     }
 }

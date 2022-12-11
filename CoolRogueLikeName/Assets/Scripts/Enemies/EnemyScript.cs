@@ -15,6 +15,7 @@ public class EnemyScript : MonoBehaviour
     public GameObject deathSoundContainer;
 
     public ScoreManager scoreManager;
+    public bool dead = false;
 
     void Start()
     {
@@ -22,6 +23,7 @@ public class EnemyScript : MonoBehaviour
         health = maxHealth;
         playerTriggerProjectiles = LayerMask.GetMask("PlayerProjectile");
         playerTriggerMelee = LayerMask.GetMask("PlayerMelee");
+        dead = false;
     }
 
     void Update()
@@ -70,12 +72,13 @@ public class EnemyScript : MonoBehaviour
 
         healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
 
-        if (health <= 0.0f)
+        if (!dead && health <= 0.0f)
         {
             transform.parent.parent.SendMessage("EnemyDestroyed");
             GameObject deathSound = Instantiate(deathSoundContainer, transform.position, Quaternion.identity);
             Destroy(deathSound, deathSoundContainer.GetComponent<AudioSource>().clip.length);
             Destroy(transform.parent.gameObject);
+            dead = true;
         }
     }
 

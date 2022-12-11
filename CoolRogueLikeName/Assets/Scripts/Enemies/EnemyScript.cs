@@ -74,6 +74,7 @@ public class EnemyScript : MonoBehaviour
 
         if (!dead && health <= 0.0f)
         {
+            scoreManager.enemyDestroyed();
             transform.parent.parent.SendMessage("EnemyDestroyed");
             GameObject deathSound = Instantiate(deathSoundContainer, transform.position, Quaternion.identity);
             Destroy(deathSound, deathSoundContainer.GetComponent<AudioSource>().clip.length);

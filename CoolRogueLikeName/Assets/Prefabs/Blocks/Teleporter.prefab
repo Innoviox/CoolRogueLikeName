@@ -100,3 +100,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  scoreManager: {fileID: 11400000, guid: 122bf98c62c8b964e81371072efeb734, type: 2}

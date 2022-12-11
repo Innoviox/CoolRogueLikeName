@@ -377,6 +377,8 @@ public class DungeonGenerator : MonoBehaviour
         var dts = teleporter.GetComponent<DungeonTeleporterScript>();
         dts.teleport += Teleport;
         dts.player = player;
+
+        teleporter.position += new Vector3(5.0f, 0.0f, 0.0f);
     }
 
     void Teleport()

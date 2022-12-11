@@ -93,7 +93,7 @@ public class PlayerHealth : MonoBehaviour
         {
             healthBar.transform.localScale = new Vector3(0.2f, 0.6f * health / maxHealth, 0.2f);
         }
-        if (health < 0.0f)
+        if (health <= 0.0f)
         {
             Debug.Log("Player Died");
             scoreManager.playerDeath();

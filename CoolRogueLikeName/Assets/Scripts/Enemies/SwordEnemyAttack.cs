@@ -30,7 +30,7 @@ public class SwordEnemyAttack : EnemyAttack
             if (EnemyHelpers.DistToPlayer(player, transform) < maxDist)
             {
                 // Wait until animation is finished to continue
-                SlashPlayer(swordAnimator);
+                SlashPlayer(swordAnimator, "NormalAttack");
                 yield return new WaitForSeconds(slashRate);
             }
             else

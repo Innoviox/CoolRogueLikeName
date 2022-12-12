@@ -302,7 +302,6 @@ public class DungeonGenerator : MonoBehaviour
         }
         catch (Exception e) // sometimes there is an index out of range error, just retry
         {
-            Debug.Log($"dungeon failed, retrying {e}");
             Reset();
             GenerateDungeon();
         }

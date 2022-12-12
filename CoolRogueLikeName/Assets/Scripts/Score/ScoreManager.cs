@@ -28,19 +28,16 @@ public class ScoreManager : ScriptableObject
     public void enemyDestroyed()
     {
         enemiesDestroyed++;
-        Debug.Log("Enemy Destroyed");
     }
 
     public void roomCleared()
     {
         roomsCleared++;
-        Debug.Log("Room Cleared");
     }
 
     public void levelCleared()
     {
         levelsCleared++;
-        Debug.Log("Level Cleared");
     }
 
     public void playerDeath()

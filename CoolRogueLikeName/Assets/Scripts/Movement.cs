@@ -55,7 +55,6 @@ public class Movement : MonoBehaviour
             }
 
             Vector3 accelerationDirection = new Vector3(hInput, 0, vInput).normalized; // This holds the direction the player is moving
-            // Debug.Log("Direction: " + accelerationDirection.x + " " + accelerationDirection.y + " " + accelerationDirection.z);
             if (dash)
             {
                 StartCoroutine(Dash(accelerationDirection));
@@ -147,7 +146,5 @@ public class Movement : MonoBehaviour
 
         jumpSlider.maxValue = stats.jumpCoolDown * stats.numJumps;
         jumpSlider.value = jumpSlider.maxValue;
-
-        Debug.Log($"{dashSlider.value} / {dashSlider.maxValue} {jumpSlider.value} / {jumpSlider.maxValue}");
     }
 }

@@ -165,7 +165,7 @@ public class DungeonRoomScript : MonoBehaviour
             {
                 t.TickTutorial(6, room.x, room.y, room.size);
             }
-            else if (room.hasBossDoor)
+            else if (room.hasBossDoor && !room.isBossRoom)
             {
                 t.TickTutorial(8, room.x, room.y, room.size);
             }

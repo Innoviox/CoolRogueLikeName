@@ -189,6 +189,7 @@ public class Boss1Script : MonoBehaviour
 
         if (health <= 0.0f)
         {
+            bossSlider.gameObject.SetActive(false);
             scoreManager.enemyDestroyed();
             transform.parent.parent.SendMessage("EnemyDestroyed");
             Destroy(transform.parent.gameObject);

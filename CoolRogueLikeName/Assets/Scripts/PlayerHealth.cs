@@ -49,7 +49,7 @@ public class PlayerHealth : MonoBehaviour
         health = Math.Max(0, health);
 
         // todo only do this when they change
-        maxHealthText.text = $"{health}";
+        maxHealthText.text = $"{health:f2}";
         healthSlider.value = health;
         healthSlider.maxValue = maxHealth;
     }

@@ -10,7 +10,7 @@ public class Projectile : MonoBehaviour
 
     private void Awake()
     {
-        mask = LayerMask.GetMask("Wall", "Door", "EnemyBody"); // Floor: unsure which prefab refers to floor.
+        mask = LayerMask.GetMask("Wall", "Door", "EnemyBody", "EnemyShield"); // Floor: unsure which prefab refers to floor.
     }
     private void OnCollisionEnter(Collision collision)
     {

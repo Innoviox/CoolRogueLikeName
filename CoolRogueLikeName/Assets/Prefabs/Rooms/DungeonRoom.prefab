@@ -98,4 +98,6 @@ MonoBehaviour:
   - {fileID: 2148692304167481364, guid: 1436f40d9a76b8a40a9e5926ee561028, type: 3}
   - {fileID: 1273177242645884430, guid: fb6b87dfa51b2bb4db15b1ca8af74674, type: 3}
   - {fileID: 5936164383025481818, guid: 7373cf9746e94e7469a6a4c0823387d6, type: 3}
+  - {fileID: 2224560669038727439, guid: 3f7d2dabf1eb5d241ba285ca46ac6cb4, type: 3}
+  - {fileID: 2427908925730686427, guid: a0de5447adc898a4485cff068bc73877, type: 3}
   bossPrefab: {fileID: 8126847467710810305, guid: 442c3a62cedcee247a0ba5c9b1ba16cd, type: 3}

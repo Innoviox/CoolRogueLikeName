@@ -1634,6 +1634,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: alien
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}
 --- !u!1 &8306054595666630473 stripped
@@ -1641,20 +1645,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}
   m_PrefabInstance: {fileID: 9188576292192709144}
   m_PrefabAsset: {fileID: 0}
---- !u!136 &4150036159864189644
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8306054595666630473}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.25
-  m_Height: 0.81
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.375, z: 0}
 --- !u!54 &4488042826922123551
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1671,41 +1661,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &7491839190156022821
-MonoBehaviour:
+--- !u!136 &4150036159864189644
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8306054595666630473}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a53bd39202a6b64f98c5258fc91d6e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
-  player: {fileID: 0}
-  deathSoundContainer: {fileID: 4870482295347389331, guid: 5ffbe5acfb4ab1642a28cc76d929c037, type: 3}
-  scoreManager: {fileID: 11400000, guid: 122bf98c62c8b964e81371072efeb734, type: 2}
-  dead: 0
---- !u!114 &5999939214226357872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8306054595666630473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ea01b3f2934b3f4da4a2a503d4bee65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  shootRate: 0
-  flyingSwordAnimator: {fileID: 167068072140481282}
-  move: {fileID: 0}
-  maxDist: 3
-  enemySword: {fileID: 167068071983732935}
+  m_Radius: 0.25
+  m_Height: 0.81
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.375, z: 0}
 --- !u!114 &4163448231898462999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1727,6 +1696,41 @@ MonoBehaviour:
   walkRate: 0
   stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
   maxDist: 3
+--- !u!114 &5999939214226357872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8306054595666630473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ea01b3f2934b3f4da4a2a503d4bee65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  shootRate: 0
+  flyingSwordAnimator: {fileID: 167068072140481282}
+  move: {fileID: 0}
+  maxDist: 3
+  enemySword: {fileID: 167068071983732935}
+--- !u!114 &7491839190156022821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8306054595666630473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a53bd39202a6b64f98c5258fc91d6e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
+  player: {fileID: 0}
+  deathSoundContainer: {fileID: 4870482295347389331, guid: 5ffbe5acfb4ab1642a28cc76d929c037, type: 3}
+  scoreManager: {fileID: 11400000, guid: 122bf98c62c8b964e81371072efeb734, type: 2}
+  dead: 0
 --- !u!4 &8651089467945618931 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}

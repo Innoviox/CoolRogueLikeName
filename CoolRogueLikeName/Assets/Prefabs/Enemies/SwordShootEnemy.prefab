@@ -894,7 +894,7 @@ MonoBehaviour:
   player: {fileID: 0}
   OriginalPos: {fileID: 4413276873421420672}
   EnemyCenter: {fileID: 4413276874353440727}
-  sword: {fileID: 0}
+  sword: {fileID: 4313566860118266384}
 --- !u!114 &6269019414718891722
 MonoBehaviour:
   m_ObjectHideFlags: 0

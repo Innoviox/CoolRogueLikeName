@@ -10,8 +10,6 @@ public class Room
     public int size;
     public int id;
     public List<Wall> expandableWalls;
-    public List<Transform> doors;
-    public List<Door> doorLocations;
     public int doorWidth = 1; // todo make a class for variables or smth
     public int bossSize = 15; // yeah we need a variables class
     public bool hasBossDoor = false;
@@ -31,24 +29,9 @@ public class Room
         expandableWalls.Add(Wall.South); // south wall
         expandableWalls.Add(Wall.West); // west wall
 
-        doors = new List<Transform>();
         blocks = new List<Transform>();
-        doorLocations = new List<Door>();
 
         isBossRoom = size == bossSize;
-    }
-
-    public bool InRoom(int x, int y)
-    {
-        if (x > this.x - this.size && x < this.x + this.size)
-        {
-            if (y > this.y - this.size && y < this.y + this.size)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public bool Overlaps(int l2x, int l2y, int r2x, int r2y)
@@ -162,20 +145,6 @@ public class Room
         return (min: min + 1, max: max - 1);
     }
 
-    public void ClearDoors()
-    {
-        foreach (Transform door in doors)
-        {
-            GameObject.Destroy(door.gameObject);
-        }
-        doors.Clear();
-    }
-
-    public void AddDoor(Door doorLocation)
-    {
-        doorLocations.Add(doorLocation);
-    }
-
     public Vector3 CameraPosition()
     {
         return new Vector3(x, 10, y - size - 4); // formula should be tweaked but its probably fine for now
@@ -184,67 +153,6 @@ public class Room
     public Vector3 PlayerPosition()
     {
         return new Vector3(x, 2, y);
-    }
-
-    public Bounds GetBounds() // if were gonna call this multiple times make a variable
-    {
-        var bounds = new Bounds(new Vector3(x, 0, y), new Vector3(size * 2, 10, size * 2));
-
-        return bounds;
-    }
-
-    public void MakeRoomBlocks(DungeonRoomScript drs)
-    {
-        blocks.Clear();
-        for (int i = x - size; i < x + size; i++)
-        {
-            for (int j = y - size; j < y + size; j++)
-            {
-                bool isDoor = false;
-                Door d = null;
-                foreach (Door door in doorLocations)
-                {
-                    if (door.x == i && door.y == j)
-                    {
-                        isDoor = true;
-                        d = door;
-                        break;
-                    }
-                }
-
-                if (isDoor)
-                {
-                    // Transform prefab = drs.blocksDict["Door"];
-                    // Transform door = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
-                    // door.name = $"Door ({i}, {j})";
-                    // door.transform.parent = drs.Parent();
-
-                    // drs.UpdateDoorScript(door.GetComponent<DungeonDoorScript>(), d);
-
-                    // doors.Add(door);
-                }
-                else
-                {
-                    Transform block;
-                    if (i == x - size || i == x + size - 1 || j == y - size || j == y + size - 1)
-                    {
-                        // Transform prefab = drs.blocksDict["Wall"];
-                        Transform prefab = drs.blocksDict["Floor"]; // for now don't generate walls
-                        block = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
-                        block.name = $"Wall ({i}, {j})";
-                    }
-                    else
-                    {
-                        Transform prefab = drs.blocksDict["Floor"];
-                        block = GameObject.Instantiate(prefab, new Vector3(i, 0, j), Quaternion.identity);
-                        block.name = $"Floor ({i}, {j})";
-                    }
-
-                    block.transform.parent = drs.Parent();
-                    blocks.Add(block);
-                }
-            }
-        }
     }
 
     public Vector2 RandomLocation()

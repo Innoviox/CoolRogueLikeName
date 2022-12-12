@@ -114,8 +114,7 @@ MonoBehaviour:
   doorUnlockedMaterial: {fileID: 2100000, guid: 6350c5c6d05084631a901b30f379b05a, type: 2}
   doorGoesNowhereMaterial: {fileID: 0}
   playerUnlockDistance: 5
-  maxSwingAngle: 90
-  roomPrefabs: []
   player: {fileID: 0}
   roomThisDoorLeadsFrom: {fileID: 0}
   roomThisDoorLeadsTo: {fileID: 0}
+  max_y: 0

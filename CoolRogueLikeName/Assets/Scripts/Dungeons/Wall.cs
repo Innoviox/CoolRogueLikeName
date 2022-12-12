@@ -17,11 +17,13 @@ namespace WallMethods
     {
         public static Wall Opposite(this Wall wall)
         {
+            // opposite wall
             return (Wall)(((int)wall + 2) % 4);
         }
 
         public static Wall UnGuaranteeable(this Wall wall)
         {
+            // wall to the right since we can't always guarantee a room will fit on that wall
             return (Wall)(((int)wall + 1) % 4);
         }
     }

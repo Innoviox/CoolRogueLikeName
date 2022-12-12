@@ -4,45 +4,37 @@ using UnityEngine;
 
 public class DungeonDoorScript : MonoBehaviour
 {
+    // the door is a different color based on whether it is locked or unlocked
     public Material doorClosedMaterial;
     public Material doorUnlockedMaterial;
     public Material doorGoesNowhereMaterial;
-    public int playerUnlockDistance = 5; // don't know what this should be
-    public float maxSwingAngle = 90.0f;
-    public Transform[] roomPrefabs;
-    public Transform player;
+    public int playerUnlockDistance = 3; // distance at which the door can unlock
+    public Transform player; // player
+    // rooms this door goes between
     public DungeonRoomScript roomThisDoorLeadsFrom;
+    public DungeonRoomScript roomThisDoorLeadsTo;
 
     private new Renderer renderer;
-
     private new Collider collider;
 
     private bool locked = true;
-
-    private bool open = false;
-
-    public DungeonRoomScript roomThisDoorLeadsTo = null;
-    private bool swungOpen = false;
-    private Vector3 rotationPoint;
-
+    private bool open = false; // open = "able to be unlocked"
     private int opening_direction; // 0 => none, -1 => down, 1 => up
     private float opening_speed = 0.02f;
     private float min_y;
     public float max_y;
     public Door door;
 
-
     // Start is called before the first frame update
     void Start()
     {
         renderer = GetComponent<Renderer>();
-        // renderer.material = doorGoesNowhereMaterial;
 
         collider = GetComponent<Collider>();
 
         opening_direction = 0;
         min_y = -2.0f;
-        max_y = door.isBossDoor ? 0.0f : 0.5f;
+        max_y = door.isBossDoor ? 0.0f : 0.5f; // boss door is a different size
     }
 
     // Update is called once per frame
@@ -66,8 +58,11 @@ public class DungeonDoorScript : MonoBehaviour
 
         if (opening_direction != 0)
         {
+            // move door in opening direction
             Vector3 position = transform.position;
             position.y += opening_direction * opening_speed;
+
+            // clamp position
             if (position.y < min_y)
             {
                 position.y = min_y;
@@ -82,19 +77,11 @@ public class DungeonDoorScript : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-    }
-
     public void Unlock()
     {
         if (renderer == null)
         {
-            Start(); // i literally have no idea how this method could get called before start but it does sometimes so here we are
+            Start();
         }
 
         if (roomThisDoorLeadsTo != null)
@@ -104,27 +91,22 @@ public class DungeonDoorScript : MonoBehaviour
             {
                 renderer.material = doorUnlockedMaterial;
             }
-
-            // set collider to trigger
-            // collider.isTrigger = true;
             locked = false;
         }
-    }
-
-    public void Open()
-    {
-        renderer.enabled = false;
     }
 
     public void Lock()
     {
         // lock door
-        // collider.isTrigger = false;
         locked = true;
         if (!door.isBossDoor)
+        {
             renderer.material = doorClosedMaterial;
-        renderer.enabled = true;
+        }
+        renderer.enabled = true; // show door
         if (transform.position.y < max_y)
+        {
             opening_direction = 1; // instantly start locking door
+        }
     }
 }

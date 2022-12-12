@@ -23,6 +23,7 @@ public class RoomGenerator : MonoBehaviour
             this.doorLocations.Add(new Vector3(door.x, center.y, door.y));
         }
 
+
         for (float i = -x + 1.5f; i < x - 1; i++)
         {
             SideInstantiate(side, new Vector3(center.x + i, center.y, center.z - z - 0.5f + 1.0f), Quaternion.identity, roomRootTransform, locationsNextToDoors);
@@ -59,11 +60,11 @@ public class RoomGenerator : MonoBehaviour
         roomTrigger.center = new Vector3(center.x, 2, center.z);
         roomTrigger.isTrigger = true;
         TriggerHandler triggerHandler = triggerHolder.AddComponent<TriggerHandler>();
-        // return roomRoot;
     }
 
     void SideInstantiate(GameObject side, Vector3 pos, Quaternion rot, Transform roomRootTransform, List<Vector2> locationsNextToDoors)
     {
+        // when instantiating a wall, if it's a door just instantiate a floor instead
         foreach (Vector3 doorPos in doorLocations)
         {
             if (Vector3.Distance(doorPos, pos) <= 1.0f)

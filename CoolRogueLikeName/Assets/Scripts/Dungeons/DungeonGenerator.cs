@@ -9,31 +9,31 @@ using TMPro;
 
 public class DungeonGenerator : MonoBehaviour
 {
+    // set sizes for rooms
     public int baseRoomSize = 10;
     public int minRoomSize = 5;
     public int maxRoomSize = 12;
     public int doorSize = 1;
-    public int nRooms = 10;
     public int bossSize = 15;
+    public int nRooms = 10; // number of rooms to be generated (not including center room)
     public List<Transform> blocks; // id prefer this to be a dict but unity doesnt do dicts in the inspector
     private Dictionary<string, Transform> blocksDict;
-    public List<Room> rooms;
-    public List<int> expandableRooms;
     public new Camera camera;
-    public Transform playerPrefab;
-    private Transform player;
-    private int expands;
-    private List<Transform> roomBlocks;
-    private List<Transform> dungeonRooms;
-    private List<Door> globalDoorLocations;
-    private bool started = false;
-    private RoomGenerator roomGenerator;
-    private Transform teleporter = null;
-    public Transform tutorial;
+    public Transform playerPrefab; // the player prefab to instantiate
+    private Transform player; // the actual player
+    private List<Transform> dungeonRooms; // the transform parents of the rooms
+    private List<Door> globalDoorLocations; // the locations of the doors
+    private bool started = false; // if the dungeon has started
+    private RoomGenerator roomGenerator; // the room generator
+    private Transform teleporter = null; // the teleporter
+    public Transform tutorial; // the tutorial
     public Tutorial tutorialComp;
-    private int dungeonN = 0;
-    private int roomN = 0;
-    private List<Vector2> locationsNextToDoors;
+    private int dungeonN = 0; // how many dungeons have been generated
+    private int roomN = 0; // how many rooms have been walked through
+    private List<Vector2> locationsNextToDoors; // the doors were originally one wide but now they are two wide
+    private List<Room> rooms; // all rooms
+    private List<int> expandableRooms; // rooms that still have expandable walls
+    // UI things
     public TMP_Text maxHealthText;
     public Slider healthSlider;
     public Slider weaponSlider;
@@ -47,31 +47,40 @@ public class DungeonGenerator : MonoBehaviour
     void Start()
     {
         tutorialComp = tutorial.GetComponent<Tutorial>();
+
         blocksDict = new Dictionary<string, Transform>();
-        foreach (Transform block in blocks)
+        foreach (Transform block in blocks) // create blocks dictionary
         {
             blocksDict.Add(block.name, block);
         }
+
+        // instantiate player
         player = Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         player.parent = transform;
+
+        // set up hud
         player.GetComponent<PlayerHealth>().SetHud(maxHealthText, healthSlider);
         player.GetComponent<PlayerWeaponHolder>().SetHud(weaponSlider);
         player.GetComponent<Movement>().SetHud(jumpSlider, dashSlider, maxJumpsText, maxDashText);
 
-        roomBlocks = new List<Transform>();
-        rooms = new List<Room>();
-        globalDoorLocations = new List<Door>();
-        dungeonRooms = new List<Transform>();
-        locationsNextToDoors = new List<Vector2>();
-
+        // set up room generator
         roomGenerator = GetComponent<RoomGenerator>();
         roomGenerator.Setup();
 
+        // set up lists
+        rooms = new List<Room>();
+        dungeonRooms = new List<Transform>();
+        globalDoorLocations = new List<Door>();
+        expandableRooms = new List<int>();
+        locationsNextToDoors = new List<Vector2>();
+
+        // teleport = make new dungeon
         Teleport();
     }
 
     Room MakeRoom(int x, int y, int size, int depth)
     {
+        // make a new room, add it to rooms, and mark it expandable
         var room = new Room(x, y, size, depth);
         rooms.Add(room);
         expandableRooms.Add(rooms.Count - 1);
@@ -89,13 +98,17 @@ public class DungeonGenerator : MonoBehaviour
 
     void Expand(bool bossRoom)
     {
+        // pick a random room to expand
         int roomToExpand = expandableRooms[UnityEngine.Random.Range(0, expandableRooms.Count)];
         Room room = rooms[roomToExpand];
+
+        // pick a wall on the room to expand
         Wall wallToExpand = room.expandableWalls[UnityEngine.Random.Range(0, room.expandableWalls.Count)];
 
         int tries = 0, maxTries = bossRoom ? 100 : 10; // we really wanna generate the boss room
         while (!ExpandWall(room, wallToExpand, bossRoom) && tries < maxTries)
         {
+            // if we cant expand the wall, pick a new room and a new wall
             roomToExpand = expandableRooms[UnityEngine.Random.Range(0, expandableRooms.Count)];
             room = rooms[roomToExpand];
             wallToExpand = room.expandableWalls[UnityEngine.Random.Range(0, room.expandableWalls.Count)];
@@ -104,14 +117,13 @@ public class DungeonGenerator : MonoBehaviour
 
         if (room.expandableWalls.Count == 0)
         {
+            // remove room from expandable rooms if it has no more expandable walls
             expandableRooms.Remove(roomToExpand);
         }
     }
 
     bool ExpandWall(Room room, Wall wallToExpand, bool bossRoom)
     {
-        // Debug.Log($"Expanding room {room.id} wall {wallToExpand}");
-
         int maxSize = GetMaxSize(room, wallToExpand, bossRoom);
         if (maxSize == 0 || (bossRoom && maxSize < bossSize))
         {
@@ -127,7 +139,6 @@ public class DungeonGenerator : MonoBehaviour
         Wall oppositeWall = wallToExpand.Opposite();
         Wall unGuaranteeableWall = wallToExpand.UnGuaranteeable();
 
-        // todo door offset
         switch (wallToExpand)
         {
             case Wall.North: // north wall
@@ -155,13 +166,12 @@ public class DungeonGenerator : MonoBehaviour
         // remove wall from expandable walls
         room.expandableWalls.Remove(wallToExpand);
 
-        // Debug.Log($"Made room {newRoom.id} size {newRoom.size} offset {roomOffset}");
-
         return true;
     }
 
     int GetMaxSize(Room room, Wall wallToExpand, bool bossRoom)
     {
+        // get the biggest size that a room could be generated along this wall
         int maxSize = (int)minRoomSize;
         int maximum = bossRoom ? bossSize : maxRoomSize;
 
@@ -170,13 +180,11 @@ public class DungeonGenerator : MonoBehaviour
             maxSize++;
 
             if (InOtherRoom(room, wallToExpand, maxSize))
-            {
+            { // if we've hit another room we are at the max size
                 break;
             }
         }
         maxSize /= 2;
-
-        // Debug.Log($"Found Max size: {maxSize}");
 
         if (maxSize < minRoomSize)
         {
@@ -188,6 +196,7 @@ public class DungeonGenerator : MonoBehaviour
 
     int GenerateRoomSize(int maxSize)
     {
+        // random room size between min and maxSize
         return (int)UnityEngine.Random.Range(minRoomSize, maxSize);
     }
 
@@ -238,6 +247,7 @@ public class DungeonGenerator : MonoBehaviour
 
     int GenerateRoomOffset(int oldRoomSize, int newRoomSize, int maxSize)
     {
+        // generate a random offset for the new room
         int max1 = newRoomSize + oldRoomSize - doorSize * 2;
         int max2 = 2 * maxSize - newRoomSize - oldRoomSize;
         return (int)UnityEngine.Random.Range(newRoomSize - oldRoomSize, Mathf.Min(max1, max2));
@@ -245,6 +255,7 @@ public class DungeonGenerator : MonoBehaviour
 
     void GenerateDoors()
     {
+        // generate all door locations
         var doors = new Dictionary<int, List<Wall>>(); // dict from room id to list of walls with doors
         foreach (Room room1 in rooms)
         {
@@ -252,16 +263,15 @@ public class DungeonGenerator : MonoBehaviour
             {
                 if (room1.id == room2.id) continue;
 
-                Wall wall = room1.SharedWall(room2);
+                Wall wall = room1.SharedWall(room2); // get locaation on shared wall
                 if (wall == Wall.None) continue;
                 if (doors.ContainsKey(room2.id) && doors[room2.id].Contains(wall.Opposite())) continue;
 
-                // room1.AddDoor(room1.GenerateDoorLocation(wall, room2));
-                var locations = room1.GenerateDoorLocation(wall, room2);
+                var locations = room1.GenerateDoorLocation(wall, room2); // returns door location & location next to door
                 globalDoorLocations.Add(new Door((int)locations[0].x, (int)locations[0].y, room1.id, room2.id, wall));
                 locationsNextToDoors.Add(locations[1]);
-                // globalDoorLocations.Add(new Door((int)locations[1].x, (int)locations[1].y, room1.id, room2.id, wall));
 
+                // add to doors dict
                 if (doors.ContainsKey(room1.id))
                 {
                     doors[room1.id].Add(wall);
@@ -272,31 +282,25 @@ public class DungeonGenerator : MonoBehaviour
                 }
 
                 if (room1.isBossRoom || room2.isBossRoom)
-                {
+                { // set up boss variables
                     room1.hasBossDoor = true;
                     room2.hasBossDoor = true;
                     globalDoorLocations[globalDoorLocations.Count - 1].isBossDoor = true;
                 }
-
-                // Debug.Log($"Door on wall {wall} of room {room1.id} going to {room2.id}");
             }
         }
 
-        foreach (Room room in rooms)
-        {
-            room.doorLocations = globalDoorLocations;
-        }
     }
 
     void GenerateDungeon()
     {
         try
         {
-            ExpandN(expands + (dungeonN - 1) * 2); // add 2 rooms per dungeon level
+            ExpandN(nRooms - 1 + (dungeonN - 1) * 2); // add 2 rooms per dungeon level
             Expand(true); // expand the boss room
             GenerateDoors();
         }
-        catch (Exception e)
+        catch (Exception e) // sometimes there is an index out of range error, just retry
         {
             Debug.Log($"dungeon failed, retrying {e}");
             Reset();
@@ -308,16 +312,19 @@ public class DungeonGenerator : MonoBehaviour
     {
         foreach (Room room in rooms)
         {
+            // make the room & generate the blocks
             Transform drt = room.MakeRoom(blocksDict, player, camera);
             roomGenerator.GenerateRoom(drt, new Vector3(room.x, 0, room.y), room.size, room.size, globalDoorLocations, locationsNextToDoors);
 
             drt.parent = GetComponent<Transform>();
 
+            // set up the doors
             foreach (Door door in globalDoorLocations)
             {
                 drt.GetComponent<DungeonRoomScript>().AddDelegates(door);
             }
 
+            // set up the boss HP slider
             if (room.isBossRoom)
             {
                 drt.GetComponent<DungeonRoomScript>().SetHud(bossSlider);
@@ -327,18 +334,19 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         MakeDoors();
-        // MakeTeleporter();
     }
 
     void MakeDoors()
     {
         foreach (Door door in globalDoorLocations)
         {
+            // instantiate the door
             Transform prefab = door.isBossDoor ? blocksDict["BossDoor"] : blocksDict["Door"];
             Transform doorTransform = GameObject.Instantiate(prefab, new Vector3(door.x, 0.5f, door.y), Quaternion.identity);
             doorTransform.name = $"Door ({door.x}, {door.y})";
             doorTransform.parent = transform;
 
+            // proper rotation
             switch (door.onWall)
             {
                 case Wall.North:
@@ -355,6 +363,7 @@ public class DungeonGenerator : MonoBehaviour
                     break;
             }
 
+            // set up door script
             var drs = doorTransform.GetComponent<DungeonDoorScript>();
             drs.player = player;
             drs.door = door;
@@ -362,7 +371,9 @@ public class DungeonGenerator : MonoBehaviour
             drs.roomThisDoorLeadsTo = dungeonRooms[door.room2].GetComponent<DungeonRoomScript>();
 
             if (!door.isBossDoor)
+            {
                 doorTransform.Rotate(0, 0, 90);
+            }
             else
             {
                 doorTransform.Rotate(0, 90, 0);
@@ -389,10 +400,7 @@ public class DungeonGenerator : MonoBehaviour
 
     void Teleport()
     {
-        // todo clean this a bit
         Reset();
-
-        expands = nRooms - 1;
 
         camera.transform.position = rooms[0].CameraPosition();
         player.transform.position = rooms[0].PlayerPosition();
@@ -408,12 +416,13 @@ public class DungeonGenerator : MonoBehaviour
     void Reset()
     {
         ClearDungeon();
-        rooms = new List<Room>();
-        roomBlocks = new List<Transform>();
-        dungeonRooms = new List<Transform>();
-        globalDoorLocations = new List<Door>();
-        expandableRooms = new List<int>();
-        locationsNextToDoors = new List<Vector2>();
+
+        // clear all the lists
+        rooms.Clear();
+        dungeonRooms.Clear();
+        globalDoorLocations.Clear();
+        expandableRooms.Clear();
+        locationsNextToDoors.Clear();
 
         MakeRoom(0, 0, baseRoomSize, 0); // base room
 
@@ -425,14 +434,17 @@ public class DungeonGenerator : MonoBehaviour
 
     IEnumerator StartDungeon()
     {
-        yield return new WaitForSeconds(0.01f);
-        Debug.Log("starting dungeon");
+        yield return new WaitForSeconds(0.01f); // wait for Start to get called
 
-        if (started) yield break;
+        if (started)
+        {
+            yield break;
+        }
         started = true;
+
         foreach (Transform r in dungeonRooms)
         {
-            r.GetComponent<DungeonRoomScript>().StartRoom();
+            r.GetComponent<DungeonRoomScript>().StartRoom(); // start all rooms
         }
 
         dungeonRooms[0].GetComponent<DungeonRoomScript>().ShowRoom(true); // show doors
@@ -442,16 +454,13 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         tutorialComp.StartTutorial();
-        GetComponent<MusicPlayer>().state = 1; // in game state
+        GetComponent<MusicPlayer>().state = 1; // in-game music state
         yield break;
     }
 
     void ClearDungeon()
     {
-        // foreach (Transform block in roomBlocks)
-        // {
-        //     Destroy(block.gameObject);
-        // }
+        // delete blocks that make up the dungeon
         foreach (Transform room in dungeonRooms)
         {
             Destroy(room.gameObject);
@@ -466,8 +475,6 @@ public class DungeonGenerator : MonoBehaviour
             Destroy(teleporter.gameObject);
         }
 
-        // todo destroy old teleporter
-        roomBlocks.Clear();
         started = false;
     }
 

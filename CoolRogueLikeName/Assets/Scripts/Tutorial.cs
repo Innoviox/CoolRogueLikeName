@@ -38,6 +38,7 @@ public class Tutorial : MonoBehaviour
 
         transform.position = new Vector3(0, 0.5f, 0);
 
+        // set up textmesh: fontSize is large & characterSize is small in an attempt to increase the resolution
         tm = gameObject.AddComponent<TextMesh>();
         tm.text = " ";
         tm.color = Color.black;
@@ -54,6 +55,7 @@ public class Tutorial : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // tutorial in first room
         if (tutorialIdx == 0 && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0))
         {
             TickTutorial(1, 0, 0, 10);
@@ -82,7 +84,6 @@ public class Tutorial : MonoBehaviour
 
     public void TutorialUpdate(int idx)
     {
-        // transform.position = new Vector3(x, 0.5f, z);
         if (tutorialIdx < strings.Length)
         {
             tm.text = strings[idx];
@@ -97,6 +98,7 @@ public class Tutorial : MonoBehaviour
     {
         if (!unusedTutorials.Contains(idx))
         {
+            // only see each tutorial once
             return;
         }
 

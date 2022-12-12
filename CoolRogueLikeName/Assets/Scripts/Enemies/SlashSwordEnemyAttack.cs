@@ -8,6 +8,7 @@ public class SlashSwordEnemyAttack : EnemyAttack
     private Coroutine moveCo = null;
     public SlashSwordEnemyMovement move;
     public float maxDist;
+    public GameObject enemySword;
 
     // Start is called before the first frame update
     void Start()
@@ -28,8 +29,12 @@ public class SlashSwordEnemyAttack : EnemyAttack
             {
                 StopMoving();
                 move.StopAim();
+                // Change swords hitbox to be attacking
+                enemySword.layer = LayerMask.NameToLayer("EnemyMelee");
                 SlashPlayer(flyingSwordAnimator, "FlyingSwordSwing");
-                yield return new WaitForSeconds(4f); // Sword swing time
+                yield return new WaitForSeconds(2.3f); // wait for swing animation
+                // change swords hitbox to be defending
+                enemySword.layer = LayerMask.NameToLayer("EnemyShield");
                 StartMoving();
                 move.StartAim();
             }

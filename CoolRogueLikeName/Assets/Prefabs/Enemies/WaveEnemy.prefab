@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1203145082285957594}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WaveSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,7 +138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1273177241848090420}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1273177242638039567}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -315,6 +315,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -17.64
       objectReference: {fileID: 0}
+    - target: {fileID: -4819223349682164798, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3949436395788077964, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -3924740746642414787, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -3670109843512462444, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.1
@@ -343,9 +355,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 17.64
       objectReference: {fileID: 0}
+    - target: {fileID: -2652130149045022449, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -2511240423080479738, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}
       propertyPath: m_Name
       value: alien
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7668100837431030959, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}
@@ -359,20 +387,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5bb5b1a5ff02d9b42a5e2aabb6570fe7, type: 3}
   m_PrefabInstance: {fileID: 3546465538112291990}
   m_PrefabAsset: {fileID: 0}
---- !u!136 &7862682261792736675
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4465031285098953159}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.25
-  m_Height: 0.79
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.39, z: 0}
 --- !u!54 &6502157998217104068
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -389,6 +403,56 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!136 &7862682261792736675
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4465031285098953159}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.25
+  m_Height: 0.79
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.39, z: 0}
+--- !u!114 &2842568230764392163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4465031285098953159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5e4d69d5fe4c941b3d053f5014c6d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  rightSide: {fileID: 1273177242638039567}
+  leftSide: {fileID: 1273177241848090420}
+  enemyBody: {fileID: 6502157998217104068}
+  baseEnemySpeed: 2.5
+  dodgeSpeed: 3
+  walkRate: 0
+  stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
+--- !u!114 &3324994178481675217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4465031285098953159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a8e8d2a0e54bb041829ea07beebf570, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  shootRate: 0
+  wave: {fileID: 291113511128858965, guid: 3a3f642ef7d72ea4fb153d6f497c6412, type: 3}
+  waveSpawn: {fileID: 1203145082285957594}
 --- !u!114 &9176743603317204286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,39 +470,3 @@ MonoBehaviour:
   deathSoundContainer: {fileID: 4870482295347389331, guid: 5ffbe5acfb4ab1642a28cc76d929c037, type: 3}
   scoreManager: {fileID: 11400000, guid: 122bf98c62c8b964e81371072efeb734, type: 2}
   dead: 0
---- !u!114 &3324994178481675217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4465031285098953159}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a8e8d2a0e54bb041829ea07beebf570, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  shootRate: 0
-  wave: {fileID: 291113511128858965, guid: 3a3f642ef7d72ea4fb153d6f497c6412, type: 3}
-  waveSpawn: {fileID: 1203145082285957594}
---- !u!114 &2842568230764392163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4465031285098953159}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f5e4d69d5fe4c941b3d053f5014c6d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  rightSide: {fileID: 0}
-  leftSide: {fileID: 0}
-  enemyBody: {fileID: 0}
-  baseEnemySpeed: 2.5
-  dodgeSpeed: 3
-  walkRate: 0
-  stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}

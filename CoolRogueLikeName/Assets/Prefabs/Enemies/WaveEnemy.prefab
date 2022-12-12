@@ -430,9 +430,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  rightSide: {fileID: 0}
-  leftSide: {fileID: 0}
-  enemyBody: {fileID: 0}
+  rightSide: {fileID: 1273177242638039567}
+  leftSide: {fileID: 1273177241848090420}
+  enemyBody: {fileID: 6502157998217104068}
   baseEnemySpeed: 2.5
   dodgeSpeed: 3
   walkRate: 0

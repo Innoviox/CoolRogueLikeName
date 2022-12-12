@@ -1697,9 +1697,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  rightSide: {fileID: 0}
-  leftSide: {fileID: 0}
-  enemyBody: {fileID: 0}
+  rightSide: {fileID: 2427908925822357978}
+  leftSide: {fileID: 2427908924928615649}
+  enemyBody: {fileID: 8401094649183312456}
   baseEnemySpeed: 2.5
   dodgeSpeed: 3
   walkRate: 0
@@ -1720,7 +1720,7 @@ MonoBehaviour:
   player: {fileID: 0}
   shootRate: 0
   swordAttacks: {fileID: 4413276874123250706}
-  move: {fileID: 0}
+  move: {fileID: 1881417827427690641}
   shootingSword: 0
   currentState: 0
 --- !u!114 &5204905652680771118

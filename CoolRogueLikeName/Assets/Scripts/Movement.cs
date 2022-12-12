@@ -10,10 +10,8 @@ public class Movement : MonoBehaviour
     public float decceleration; // Rate at which the player slows down, changes the drag value of the Rigidbody
     public float baseMaxSpeed; // Max speed of the player
     public float jumpForce; // Increases the jump height of the player
-    public float jumpCoolDown; // Amount of time between jumps
     // public bool doubleJump; // Enables the player to double jump
     public float dashForce; // Sets the distance of the player dash
-    public float dashTime; // Sets the time the player is dashing for
     public KeyCode jumpKey; // Sets the jump key
     public KeyCode dashKey; // Sets the dash key
     public PowerupManager stats;
@@ -29,9 +27,6 @@ public class Movement : MonoBehaviour
 
     private bool dash;
     private bool jump;
-    public int numJumps = 2;
-    public int numDashes = 1;
-
 
     void Start()
     {
@@ -41,9 +36,6 @@ public class Movement : MonoBehaviour
 
         dash = false;
         jump = false;
-
-        numJumps = 2;
-        numDashes = 1;
     }
 
     // Update is called once per frame
@@ -68,7 +60,7 @@ public class Movement : MonoBehaviour
             {
                 StartCoroutine(Dash(accelerationDirection));
                 rb.velocity = Vector3.zero;
-                dashSlider.value -= dashTime;
+                dashSlider.value -= stats.dashCoolDown;
                 dash = false;
                 return;
             }
@@ -76,7 +68,7 @@ public class Movement : MonoBehaviour
             if (jump)
             {
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                jumpSlider.value -= jumpCoolDown;
+                jumpSlider.value -= stats.jumpCoolDown;
                 jump = false;
                 return;
             }
@@ -98,21 +90,26 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        dashSlider.maxValue = dashTime * numDashes;
+        dashSlider.maxValue = stats.dashCoolDown * stats.numDashes;
         dashSlider.value += Time.deltaTime;
-        maxDashText.text = ((int)(dashSlider.value / dashTime)).ToString();
+        maxDashText.text = ((int)(dashSlider.value / stats.dashCoolDown)).ToString();
 
-        jumpSlider.maxValue = jumpCoolDown * numJumps;
+        jumpSlider.maxValue = stats.jumpCoolDown * stats.numJumps;
         jumpSlider.value += Time.deltaTime;
-        maxJumpsText.text = ((int)(jumpSlider.value / jumpCoolDown)).ToString();
+        maxJumpsText.text = ((int)(jumpSlider.value / stats.jumpCoolDown)).ToString();
 
-        dash = dash || Input.GetKeyDown(dashKey);
+        dash = dash || Input.GetKeyDown(dashKey) && CanDash();
         jump = jump || Input.GetKeyDown(jumpKey) && CanJump();
     }
 
     bool CanJump()
     {
-        return jumpSlider.value >= jumpCoolDown;
+        return jumpSlider.value >= stats.jumpCoolDown;
+    }
+
+    bool CanDash()
+    {
+        return dashSlider.value >= stats.dashCoolDown;
     }
 
     IEnumerator Dash(Vector3 direction)
@@ -123,7 +120,7 @@ public class Movement : MonoBehaviour
             direction = new Vector3(0, 0, 1);
         }
         rb.AddForce(direction * dashForce, ForceMode.Impulse);
-        yield return new WaitForSeconds(dashTime);
+        yield return new WaitForSeconds(0.5f);
         dashLock = false;
         yield break;
         //while(true)
@@ -145,10 +142,10 @@ public class Movement : MonoBehaviour
         this.maxJumpsText = maxJumpsText;
         this.maxDashText = maxDashText;
 
-        dashSlider.maxValue = dashTime * numDashes;
+        dashSlider.maxValue = stats.dashCoolDown * stats.numDashes;
         dashSlider.value = dashSlider.maxValue;
 
-        jumpSlider.maxValue = jumpCoolDown * numJumps;
+        jumpSlider.maxValue = stats.jumpCoolDown * stats.numJumps;
         jumpSlider.value = jumpSlider.maxValue;
 
         Debug.Log($"{dashSlider.value} / {dashSlider.maxValue} {jumpSlider.value} / {jumpSlider.maxValue}");

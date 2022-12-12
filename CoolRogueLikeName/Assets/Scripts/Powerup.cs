@@ -62,7 +62,6 @@ public class Powerup : MonoBehaviour
                 effects[effect] = Random.Range(0, 1.0f) > 0.5 ? 1 : -1;
             }
         }
-        Debug.Log(GetText());
 
         startPos = transform.position;
         t = Random.Range(0, 1.0f) * oscillationSpeed;

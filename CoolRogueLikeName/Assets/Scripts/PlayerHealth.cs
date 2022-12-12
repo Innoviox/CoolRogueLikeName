@@ -98,7 +98,6 @@ public class PlayerHealth : MonoBehaviour
         }
         if (started && health <= 0.0f)
         {
-            Debug.Log("Player Died");
             scoreManager.playerDeath();
             transform.parent.GetComponent<MusicPlayer>().state = 3;
             SceneManager.LoadScene(2);

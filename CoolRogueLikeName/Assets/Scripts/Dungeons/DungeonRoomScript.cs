@@ -289,7 +289,6 @@ public class DungeonRoomScript : MonoBehaviour
             camera.transform.position = Vector3.Lerp(startT, cameraPosition, t / cameraMoveDuration);
             yield return null;
         }
-        Debug.Log("setting camera position to " + cameraPosition);
         camera.transform.position = cameraPosition;
         yield break;
     }

@@ -7,6 +7,12 @@ public class ExplosionBehavior : Projectile
     public GameObject explosionRad;
    
     public float expTime;
+    private LayerMask enemyMask;
+
+    void Awake()
+    {
+        enemyMask = LayerMask.GetMask("EnemyBody"); // Floor: unsure which prefab refers to floor.
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -21,18 +27,23 @@ public class ExplosionBehavior : Projectile
     // Update is called once per frame
     void Update()
     {
-        
     
     }
 
     protected override void DoTrigger(Collider other)
     {
-        // do nothing
+        if (InLayer(other, mask))
+        {
+            GetComponent<Collider>().enabled = false;
+        }
     }
 
     protected override void DoCollision(Collision collision)
     {
-        // do nothing
+        if (InLayer(collision.collider, mask))
+        {
+            GetComponent<Collider>().enabled = false;
+        }
     }
 
 }

@@ -49,7 +49,7 @@ public class Projectile : MonoBehaviour
         */
     }
 
-    private bool InLayer(Collider other, LayerMask mask)
+    protected bool InLayer(Collider other, LayerMask mask)
     {
         return ((1 << other.gameObject.layer) & mask.value) > 0;
     }

@@ -29,6 +29,12 @@ public class PowerupManager : ScriptableObject
     // used in BaseWeapon.cs
     public float bulletSpeedFactor = 1;
 
+    // used in Movement.cs
+    public int numJumps = 2;
+    public int numDashes = 1;
+    public float jumpCoolDown = 3.0f;
+    public float dashCoolDown = 2.0f;
+
     // used somewhere
     public float enemySpawnFactor = 0.5f;
     public List<string> acquiredPowerups;

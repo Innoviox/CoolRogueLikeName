@@ -30,15 +30,19 @@ public class Powerup : MonoBehaviour
     {
         effects = new SortedDictionary<string, int>();
         List<string> effectList = new List<string> {
-            "Enemy Movement Speed",     //enemyMoveSpeedFactor
+            "Enemy Movement",     //enemyMoveSpeedFactor
             "Enemy Health",             //enemyHealthFactor
             "Enemy Damage",             //enemyDamageFactor
-            "Player Movement Speed",    //playerMoveSpeedFactor
+            "Player Movement",    //playerMoveSpeedFactor
             "Max Health",               //playerHealthFactor
             "Weapon Damage",            //playerDamageFactor
             "Weapon Reload Time",       //playerReloadSpeedFactor
             "Bullet Speed",             //bulletSpeedFactor
-            "Heal Yourself"
+            "Heal Yourself",
+            "Number of Dashes",
+            "Number of Jumps",
+            "Jump Cooldown",
+            "Dash Cooldown"
         };
 
         string effect;
@@ -136,7 +140,7 @@ public class Powerup : MonoBehaviour
     void ApplyEffects(Collider other)
     {
         int count;
-        if (effects.TryGetValue("Enemy Movement Speed", out count))
+        if (effects.TryGetValue("Enemy Movement", out count))
         {
             stats.enemyMoveSpeedFactor *= 1 + count * powerUpFactor;
         }
@@ -148,7 +152,7 @@ public class Powerup : MonoBehaviour
         {
             stats.enemyDamageFactor *= 1 + count * powerUpFactor;
         }
-        if (effects.TryGetValue("Player Movement Speed", out count))
+        if (effects.TryGetValue("Player Movement", out count))
         {
             stats.playerMoveSpeedFactor *= 1 + count * powerUpFactor;
         }
@@ -173,6 +177,28 @@ public class Powerup : MonoBehaviour
         {
             other.gameObject.GetComponent<PlayerHealth>().Heal(count);
         }
+        if (effects.TryGetValue("Number of Dashes", out count))
+        {
+            stats.numDashes += count;
+            if (stats.numDashes < 0) stats.numDashes = 0;
+        }
+        if (effects.TryGetValue("Number of Jumps", out count))
+        {
+            stats.numJumps += count;
+            if (stats.numJumps < 0) stats.numJumps = 0;
+        }
+        if (effects.TryGetValue("Jump Cooldown", out count))
+        {
+            stats.jumpCoolDown *= 1 + count * powerUpFactor;
+        }
+        if (effects.TryGetValue("Dash Cooldown", out count))
+        {
+            stats.dashCoolDown *= 1 + count * powerUpFactor;
+        }
+
+
+
+
         stats.acquiredPowerups.Add(GetText());
     }
 

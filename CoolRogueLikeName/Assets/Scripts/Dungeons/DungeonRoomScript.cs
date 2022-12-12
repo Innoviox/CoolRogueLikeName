@@ -243,6 +243,15 @@ public class DungeonRoomScript : MonoBehaviour
             {
                 enemyCreator.SetOnly(0, 1, 2);
             }
+            else if (roomN < 16)
+            {
+                enemyCreator.SetOnly(0, 1, 2, 3);
+            }
+            else if (roomN < 20)
+            {
+                enemyCreator.SetOnly(0, 1, 2, 3, 4);
+
+            }
 
             var enemyScaling = player.GetComponent<Movement>().stats.enemySpawnFactor + roomN * 0.125f;
             nEnemies = 0;

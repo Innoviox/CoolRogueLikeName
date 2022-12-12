@@ -13,7 +13,8 @@ public class PlayerWeaponHolder : MonoBehaviour
     void Start()
     {
         //weapon.position = weaponPosition;
-        weapon.rotation = Quaternion.identity;
+        // weapon.rotation = Quaternion.identity;
+        weapon.localRotation = Quaternion.identity;
         weapon.gameObject.GetComponent<BaseWeapon>().EnableWeapon();
     }
 

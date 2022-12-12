@@ -74,6 +74,8 @@ public class RoomGenerator : MonoBehaviour
             }
         }
 
+        // unfortunately we have to separate these locations; because of the way
+        // they are generated we have to check if they are within 0.5f rather than 1.0f
         foreach (Vector2 doorPos in locationsNextToDoors)
         {
             Vector3 loc = new Vector3(doorPos.x, 0.0f, doorPos.y);

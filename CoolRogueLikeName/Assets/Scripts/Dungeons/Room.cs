@@ -64,13 +64,14 @@ public class Room
         drs.player = player;
         drs.camera = camera;
         drs.generateEnemies = id == 0; // only first room is shown at first
-        drs.nEnemiesBase = id == 0 ? 0 : 2;
+        drs.nEnemiesBase = id == 0 ? 0 : 2; // first room has no enemies
 
         return dungeonRoom;
     }
 
     public Wall SharedWall(Room o)
     {
+        // return which wall the two rooms share
         Wall w = Wall.None;
         if (y + size == o.y - o.size) w = Wall.North;
         if (x + size == o.x - o.size) w = Wall.East;
@@ -122,6 +123,7 @@ public class Room
 
     private (int min, int max) Overlap(Wall wall, Room other)
     {
+        // get the overlap of the two rooms along the wall
         int min = 0, max = 0;
         switch (wall)
         {

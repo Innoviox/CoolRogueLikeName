@@ -645,7 +645,7 @@ GameObject:
   - component: {fileID: 167068071983732933}
   - component: {fileID: 167068071983732932}
   - component: {fileID: 708954494300894318}
-  m_Layer: 14
+  m_Layer: 15
   m_Name: EnemySword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1608,7 +1608,7 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: a93ad710d8de46549bcf77f72735a19d, type: 2}
   player: {fileID: 0}
   deathSoundContainer: {fileID: 4870482295347389331, guid: 5ffbe5acfb4ab1642a28cc76d929c037, type: 3}
-  scoreManager: {fileID: 0}
+  scoreManager: {fileID: 11400000, guid: 122bf98c62c8b964e81371072efeb734, type: 2}
   dead: 0
 --- !u!114 &2224560668974747955
 MonoBehaviour:
@@ -1627,6 +1627,7 @@ MonoBehaviour:
   flyingSwordAnimator: {fileID: 167068072140481282}
   move: {fileID: 2224560668974747964}
   maxDist: 3
+  enemySword: {fileID: 167068071983732935}
 --- !u!114 &2224560668974747964
 MonoBehaviour:
   m_ObjectHideFlags: 0

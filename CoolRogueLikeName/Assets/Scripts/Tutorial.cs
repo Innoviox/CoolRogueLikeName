@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System;
 
 public class Tutorial : MonoBehaviour
 {
     public int unlockFirstRoom = 0;
-    private TextMesh tm;
+    private TextMeshPro tm;
+    private Vector3 position; // textmeshpro overrides position or something so we set it manually
 
     private string[] strings = {
         "Use the WASD or arrow\nkeys to move",
@@ -15,9 +18,7 @@ public class Tutorial : MonoBehaviour
         "Click to shoot",
         "Move the mouse to aim",
         "Walk close to a door to open it",
-        // "The doors lock behind you",
         "Defeat the enemies\nto progress",
-        // "Pick up powerups or \nweapons to enhance\n your abilities",
         "Pick up a new weapon by\npressing E",
         "The red door represents \nthe boss room - beware!",
         "Get to the teleporter to get to the next level",
@@ -36,15 +37,10 @@ public class Tutorial : MonoBehaviour
             unusedTutorials.Add(i);
         }
 
-        transform.position = new Vector3(0, 0.5f, 0);
+        position = new Vector3(0, 0f, 0);
+        transform.rotation = Quaternion.Euler(90, 0, 0);
 
-        // set up textmesh: fontSize is large & characterSize is small in an attempt to increase the resolution
-        tm = gameObject.AddComponent<TextMesh>();
-        tm.text = " ";
-        tm.color = Color.black;
-        tm.fontSize = 175;
-        tm.characterSize = 0.05f;
-        tm.transform.rotation = Quaternion.Euler(90, 0, 0);
+        tm = GetComponent<TextMeshPro>();
     }
 
     public void StartTutorial()
@@ -55,6 +51,8 @@ public class Tutorial : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.position = position;
+
         // tutorial in first room
         if (tutorialIdx == 0 && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0))
         {
@@ -109,7 +107,7 @@ public class Tutorial : MonoBehaviour
 
         unusedTutorials.Remove(idx);
 
-        transform.position = new Vector3(roomX - roomSize / 2 - 2, 0.5f, roomY + roomSize / 2 + 1);
+        position = new Vector3(roomX + xDelta(roomSize), 1f, roomY + yDelta(roomSize));
         tutorialIdx = idx;
 
         TutorialUpdate(idx);
@@ -127,7 +125,33 @@ public class Tutorial : MonoBehaviour
 
     public void CustomTutorial(string s, int roomX, int roomY, int roomSize)
     {
-        transform.position = new Vector3(roomX - roomSize / 2 - 2, 0.5f, roomY + roomSize / 2 + 2);
+        position = new Vector3(roomX + xDelta(roomSize), 1f, roomY + yDelta(roomSize));
         tm.text = s;
+    }
+
+    // hardcode some offsets to make sure text fits
+    private int xDelta(int roomSize)
+    {
+        switch (roomSize)
+        {
+            case 7: return 4;
+            case 8: return 3;
+            case 9: return 2;
+            case 10: case 11: return 2;
+            case 12: return 0;
+            default: return 0;
+        }
+    }
+
+    private int yDelta(int roomSize)
+    {
+        switch (roomSize)
+        {
+            case 7: case 8: return 3;
+            case 9: case 10: return 4;
+            case 11: return 6;
+            case 12: return 7;
+            default: return 7;
+        }
     }
 }

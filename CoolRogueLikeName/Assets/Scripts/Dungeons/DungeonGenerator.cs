@@ -11,7 +11,7 @@ public class DungeonGenerator : MonoBehaviour
 {
     // set sizes for rooms
     public int baseRoomSize = 10;
-    public int minRoomSize = 5;
+    public int minRoomSize = 7;
     public int maxRoomSize = 12;
     public int doorSize = 1;
     public int bossSize = 15;

@@ -44,7 +44,6 @@ public class Tutorial : MonoBehaviour
         tm.fontSize = 175;
         tm.characterSize = 0.05f;
         tm.transform.rotation = Quaternion.Euler(90, 0, 0);
-        // tm.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
     }
 
     public void StartTutorial()

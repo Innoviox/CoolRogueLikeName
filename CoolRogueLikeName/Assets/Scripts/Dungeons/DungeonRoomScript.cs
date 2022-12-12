@@ -143,7 +143,7 @@ public class DungeonRoomScript : MonoBehaviour
                 SpawnPowerups();
                 t.TickTutorial(10, room.x, room.y, room.size);
             }
-            else if (true || willSpawnWeapon)
+            else if (willSpawnWeapon)
             {
                 SpawnWeaponChest();
                 t.TickTutorial(7, room.x, room.y, room.size);

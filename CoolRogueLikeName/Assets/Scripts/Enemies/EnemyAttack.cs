@@ -61,9 +61,9 @@ public class EnemyAttack : MonoBehaviour
     /// <summary>
     /// Sets the trigger for normal attack
     /// </summary>
-    protected virtual void SlashPlayer(Animator swordAnimator)
+    protected virtual void SlashPlayer(Animator swordAnimator, String attack)
     {
-        swordAnimator.SetTrigger("NormalAttack");
+        swordAnimator.SetTrigger(attack);
     }
 
     public void SetPlayer(Transform player)
